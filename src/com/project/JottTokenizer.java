@@ -9,10 +9,10 @@ package project;
 import java.util.ArrayList;
 
 public class JottTokenizer {
-  // constants do not include numbers or letters, that would just be dumb
   private static final String WHITESPACE = " ", NEWLINE = "\n", COMMENT = "#", COMMA = ",", RBRACKET = "]", LBRACKET = "[", RBRACE = "}", LBRACE = "{";
   private static final String EQUALS = "=", LRARROW = "<>", MULTIPLY = "*", DIVIDE = "/", ADD = "+", SUBTRACT = "-", SEMICOLON = ";", DECIMAL = ".";
   private static final String COLON = ":", EXCLAMATION = "!", QUOTE = "\"";
+  private static final String DIGIT_REGEX = "\\d", DIGITS_REGEX = "\\d+", LETTER_REGEX = "[A-Za-z]", LETTERS_REGEX = "[A-Za-z]+";
 
 	/**
      * Takes in a filename and tokenizes that file into Tokens
