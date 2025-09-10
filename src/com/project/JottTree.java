@@ -1,4 +1,4 @@
-package provided;
+package project;
 
 /**
  * Interface for all Jott parse tree nodes
