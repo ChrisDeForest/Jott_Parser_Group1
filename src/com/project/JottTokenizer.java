@@ -9,13 +9,29 @@ package project;
 import java.util.ArrayList;
 
 public class JottTokenizer {
-  private static final String WHITESPACE = " ", NEWLINE = "\n", COMMENT = "#", COMMA = ",", RBRACKET = "]",
-      LBRACKET = "[", RBRACE = "}", LBRACE = "{";
-  private static final String EQUALS = "=", LRARROW = "<>", MULTIPLY = "*", DIVIDE = "/", ADD = "+", SUBTRACT = "-",
-      SEMICOLON = ";", DECIMAL = ".";
-  private static final String COLON = ":", EXCLAMATION = "!", QUOTE = "\"";
-  private static final String DIGIT_REGEX = "\\d", DIGITS_REGEX = "\\d+", LETTER_REGEX = "[A-Za-z]",
-      LETTERS_REGEX = "[A-Za-z]+";
+  private static final String WHITESPACE = " ";
+  private static final String NEWLINE = "\n";
+  private static final String COMMENT = "#";
+  private static final String COMMA = ",";
+  private static final String RBRACKET = "]";
+  private static final String LBRACKET = "[";
+  private static final String RBRACE = "}";
+  private static final String LBRACE = "{";
+  private static final String EQUALS = "=";
+  private static final String LRARROW = "<>";
+  private static final String MULTIPLY = "*";
+  private static final String DIVIDE = "/";
+  private static final String ADD = "+";
+  private static final String SUBTRACT = "-";
+  private static final String SEMICOLON = ";";
+  private static final String DECIMAL = ".";
+  private static final String COLON = ":";
+  private static final String EXCLAMATION = "!";
+  private static final String QUOTE = "\"";
+  private static final String DIGIT_REGEX = "\\d";
+  private static final String DIGITS_REGEX = "\\d+";
+  private static final String LETTER_REGEX = "[A-Za-z]";
+  private static final String LETTERS_REGEX = "[A-Za-z]+";
 
   /**
    * Takes in a filename and tokenizes that file into Tokens
@@ -299,6 +315,3 @@ public class JottTokenizer {
     }
   }
 }
-
-// any error, report to System.err, return NULL
-// make repetitive code into helper functions when possible
