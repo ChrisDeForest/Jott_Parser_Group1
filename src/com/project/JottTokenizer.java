@@ -91,8 +91,8 @@ public class JottTokenizer {
         continue;
       }
 
-      // numbers (DIGITS ( . DIGITS )?)
-      if (isDigit(c)) {
+      // numbers (DIGITS ( . DIGITS )? | . DIGITS)
+      if (isDigit(c) || (c == '.' && i + 1 < input.length() && isDigit(input.charAt(i + 1)))) {
         Result r = scanNumber(input, i, line, filename);
         if (r == null)
           return null;
@@ -263,20 +263,31 @@ public class JottTokenizer {
 
   private static Result scanNumber(String input, int i, int line, String filename) {
     int start = i;
-    while (i < input.length() && isDigit(input.charAt(i)))
-      i++;
-    boolean sawDot = false;
-    if (i < input.length() && input.charAt(i) == DECIMAL.charAt(0)) {
-      // look ahead for at least one digit after dot
-      if (i + 1 >= input.length() || !isDigit(input.charAt(i + 1))) {
+    
+    // Handle case where number starts with decimal point (.5)
+    if (input.charAt(i) == DECIMAL.charAt(0)) {
+      i++; // consume dot
+      // Must have at least one digit after the decimal point for .5 case
+      if (i >= input.length() || !isDigit(input.charAt(i))) {
         syntaxError("Invalid number: missing digits after decimal point.", filename, line);
         return null;
       }
-      sawDot = true;
-      i++; // consume dot
       while (i < input.length() && isDigit(input.charAt(i)))
         i++;
+    } else {
+      // Handle normal case starting with digits (5, 5.5, 5.)
+      while (i < input.length() && isDigit(input.charAt(i)))
+        i++;
+      
+      // Check for optional decimal part
+      if (i < input.length() && input.charAt(i) == DECIMAL.charAt(0)) {
+        i++; // consume dot
+        // For cases like "5.", digits after decimal are optional
+        while (i < input.length() && isDigit(input.charAt(i)))
+          i++;
+      }
     }
+    
     String lexeme = input.substring(start, i);
     return new Result(makeToken(lexeme, filename, line, TokenType.NUMBER), i, line);
   }
