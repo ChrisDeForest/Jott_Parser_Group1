@@ -286,16 +286,25 @@ public class JottTokenizer {
   }
 
   private static void syntaxError(String msg, String filename, int line) {
-    System.err.println("Syntax Error:");
+    System.err.print("Syntax Error: ");
     System.err.println(msg);
-    System.err.println(filename + ":" + line);
+    System.err.println("\tFilepath: " + filename + ":" + line);
   }
 
   // Reads the file content into a String
   private static String readFile(String filename) {
-    try {
-      java.nio.file.Path path = java.nio.file.Paths.get(filename);
-      return java.nio.file.Files.readString(path);
+    java.io.File file = new java.io.File("src/com/testcases/" + filename);
+    try (java.io.FileReader fr = new java.io.FileReader(file);
+        java.io.BufferedReader br = new java.io.BufferedReader(fr)) {
+      StringBuilder sb = new StringBuilder();
+      String line;
+      boolean first = true;
+      while ((line = br.readLine()) != null) {
+        if (!first) sb.append('\n');
+        sb.append(line);
+        first = false;
+      }
+      return sb.toString();
     } catch (Exception e) {
       System.err.println("Error reading file: " + e.getMessage());
       return null;
