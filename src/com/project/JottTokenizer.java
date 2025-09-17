@@ -293,7 +293,7 @@ public class JottTokenizer {
 
   // Reads the file content into a String
   private static String readFile(String filename) {
-    java.io.File file = new java.io.File("src/com/testcases/" + filename);
+    java.io.File file = new java.io.File(filename);
     try (java.io.FileReader fr = new java.io.FileReader(file);
         java.io.BufferedReader br = new java.io.BufferedReader(fr)) {
       StringBuilder sb = new StringBuilder();

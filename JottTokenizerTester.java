@@ -1,4 +1,3 @@
-package testcases;
 
 /*
  * Tester for phase 1 of the Jott Translator
