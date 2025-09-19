@@ -1,4 +1,12 @@
 package project;
+/**
+ * JottTokenizer.java
+ * Tokenizes a Jott source file into a list of Tokens
+ * 
+ * 
+ * @author Chris Deforest, Emile Racquet, Dan Birley, Aditya Kumar, Carlo Clerigo.
+ **/
+
 
 import java.util.ArrayList;
 
