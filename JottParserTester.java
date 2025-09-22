@@ -1,4 +1,3 @@
-package testers;
 
 /*
   Jott parser tester. This will test the parsing phase of the Jott

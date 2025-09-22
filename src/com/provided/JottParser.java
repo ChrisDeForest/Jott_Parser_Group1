@@ -1,4 +1,4 @@
-package project;
+package provided;
 
 /**
  * This class is responsible for paring Jott Tokens
