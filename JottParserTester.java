@@ -12,11 +12,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import project.JottTokenizer;
-import project.JottParser;
-import project.TokenType;
-import project.JottTree;
-import project.Token;
+import provided.JottTokenizer;
+import provided.JottParser;
+import provided.TokenType;
+import provided.JottTree;
+import provided.Token;
 
 public class JottParserTester {
     ArrayList<TestCase> testCases;
