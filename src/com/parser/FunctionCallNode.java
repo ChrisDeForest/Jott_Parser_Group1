@@ -5,7 +5,7 @@ import provided.TokenType;
 import provided.Token;
 import java.util.ArrayList;
 
-public class FunctionCallNode implements JottTree {
+public class FunctionCallNode implements OperandNode {
     private final String functionName;
 
     public FunctionCallNode(String functionName) {

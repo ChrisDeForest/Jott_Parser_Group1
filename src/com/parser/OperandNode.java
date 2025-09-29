@@ -1,21 +1,35 @@
 package parser;
 
-import provided.JottTree;
+import java.util.ArrayList;
 
-public class OperandNode implements JottTree {
-    public String convertToJott() {
-        return null;
+import provided.JottTree;
+import provided.Token;
+import provided.TokenType;
+
+public interface OperandNode extends JottTree {
+    public static OperandNode parseOperand(ArrayList<Token> tokens){
+        Token t = tokens.get(0);
+
+        if(t.getTokenType().equals(TokenType.ID_KEYWORD)){
+            return IDNode.parseIDNode(tokens);
+        }
+        else if(t.getTokenType().equals(TokenType.NUMBER)){
+            return NumberNode.parseNumberNode(tokens);
+        }
+        else if(t.getTokenType().equals(TokenType.FC_HEADER)){
+            return FunctionCallNode.parseFunctionCallNode(tokens);
+        }
+        return null; // Add return statement for cases where no condition matches
     }
-    public String convertToJava(String classname) {
-        return null;
-    }
-    public String convertToC() {
-        return null;
-    }
-    public String convertToPython() {
-        return null;
-    }
-    public boolean validateTree() {
-        return false;
-    }
+
+    public String convertToJott();
+
+    public String convertToJava(String classname);
+
+    public String convertToC();
+
+    public String convertToPython();
+
+
+    public boolean validateTree();
 }
