@@ -30,6 +30,5 @@ public interface OperandNode extends JottTree {
 
     public String convertToPython();
 
-
     public boolean validateTree();
 }
