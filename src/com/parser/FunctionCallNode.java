@@ -13,6 +13,8 @@ public class FunctionCallNode implements JottTree {
     }
 
     public static FunctionCallNode parseFunctionCallNode(ArrayList<Token> tokens) {
+         // < func_call > -> :: < id >[ < params >]
+         
         if (tokens == null || tokens.size() == 0) {
             System.err.println("parseFunctionCallNode: expected function call but no tokens available");
             return null;

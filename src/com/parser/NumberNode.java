@@ -6,7 +6,7 @@ import provided.TokenType;
 import java.util.ArrayList;
 
 
-public class NumberNode implements JottTree {
+public class NumberNode implements OperandNode {
     private final int number;
 
     public NumberNode(int number) {
