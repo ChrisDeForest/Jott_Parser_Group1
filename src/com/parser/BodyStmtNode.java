@@ -2,42 +2,24 @@ package parser;
 
 import provided.JottTree;
 
-public class BodyStmtNode implements JottTree {
-    public BodyStmtNode() {
-    }   
-
+public interface BodyStmtNode extends JottTree { 
 
     public static BodyStmtNode parseBodyStmtNode() {
-        return new BodyStmtNode();
+        return null;
     }
 
 	@Override
-	public String convertToJava(String indentLevel) {
-		// TODO: Implement conversion logic
-		return "";
-	}
+	public String convertToJava(String indentLevel);
 
 	@Override
-	public boolean validateTree() {
-		// TODO: Implement validation logic
-		return true;
-	}
+	public boolean validateTree();
 
 	@Override
-	public String convertToJott() {
-		// TODO: Implement conversion logic
-		return "";
-	}
+	public String convertToJott();
 
 	@Override
-	public String convertToC() {
-		// TODO: Implement conversion logic
-		return "";
-	}
+	public String convertToC();
 
 	@Override
-	public String convertToPython() {
-		// TODO: Implement conversion logic
-		return "";
-	}
+	public String convertToPython();
 }
