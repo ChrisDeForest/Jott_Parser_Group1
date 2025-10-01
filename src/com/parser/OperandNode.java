@@ -14,11 +14,20 @@ public interface OperandNode extends JottTree {
             return IDNode.parseIDNode(tokens);
         }
         else if(t.getTokenType().equals(TokenType.NUMBER)){
-            return NumberNode.parseNumberNode(tokens);
+            return NumberNode.parseNumberNode(tokens, false);
         }
         else if(t.getTokenType().equals(TokenType.FC_HEADER)){
             return FunctionCallNode.parseFunctionCallNode(tokens);
         }
+        else if(t.getTokenType().equals(TokenType.MATH_OP)){
+            if(t.getToken().equals("-")){
+                tokens.remove(0);
+                t = tokens.get(0);
+                if(t.getTokenType().equals(TokenType.NUMBER)){
+                    return NumberNode.parseNumberNode(tokens, true);
+                }
+            }
+            }
         return null; // Add return statement for cases where no condition matches
     }
 

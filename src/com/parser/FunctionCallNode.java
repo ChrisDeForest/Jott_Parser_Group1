@@ -1,6 +1,5 @@
 package parser;
 
-import provided.JottTree;
 import provided.TokenType;
 import provided.Token;
 import java.util.ArrayList;

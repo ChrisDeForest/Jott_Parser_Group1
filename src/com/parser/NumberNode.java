@@ -1,19 +1,20 @@
 package parser;
 
-import provided.JottTree;
 import provided.Token;
 import provided.TokenType;
 import java.util.ArrayList;
 
 
 public class NumberNode implements OperandNode {
-    private final int number;
+    private final Token token;
+    private final boolean isNegative;
 
-    public NumberNode(int number) {
-        this.number = number;   
+    public NumberNode(Token token, boolean isNegative) {
+        this.token = token;   
+        this.isNegative = isNegative;
     }
 
-    public static NumberNode parseNumberNode(ArrayList<Token> tokens) {
+    public static NumberNode parseNumberNode(ArrayList<Token> tokens, boolean isNegative) {
         if (tokens == null || tokens.size() == 0) {
             System.err.println("parseNumberNode: expected number but no tokens available");
             return null;
@@ -30,12 +31,17 @@ public class NumberNode implements OperandNode {
         }
         // consume the token and return a new NumberNode
         tokens.remove(0);
-        return new NumberNode(Integer.parseInt(t.getToken()));
+        return new NumberNode(t, isNegative);
     }
 
     public String convertToJott() {
         // returns a string representation of the number
-        return Integer.toString(number);
+        if (isNegative) {
+            return "-" + token.getToken();
+        }
+        else {
+            return token.getToken();
+        }
     }
 
     public String convertToJava(String classname) {
