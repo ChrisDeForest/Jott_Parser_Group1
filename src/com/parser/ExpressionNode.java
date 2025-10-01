@@ -2,42 +2,24 @@ package parser;
 
 import provided.JottTree;
 
-public class ExpressionNode implements JottTree {
-
-    public ExpressionNode() { 
-    }
-
+public interface ExpressionNode extends JottTree {
+	
     public static ExpressionNode parseExpressionNode() {
-        return new ExpressionNode();
+        return null;
     }
 
 	@Override
-	public String convertToJava(String indentLevel) {
-		// TODO: Implement conversion logic
-		return "";
-	}
+	public String convertToJava(String indentLevel);
 
 	@Override
-	public boolean validateTree() {
-		// TODO: Implement validation logic
-		return true;
-	}
+	public boolean validateTree();
 
 	@Override
-	public String convertToJott() {
-		// TODO: Implement conversion logic
-		return "";
-	}
+	public String convertToJott();
 
 	@Override
-	public String convertToC() {
-		// TODO: Implement conversion logic
-		return "";
-	}
+	public String convertToC();
 
 	@Override
-	public String convertToPython() {
-		// TODO: Implement conversion logic
-		return "";
-	}
+	public String convertToPython();
 }
