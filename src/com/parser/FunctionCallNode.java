@@ -5,10 +5,14 @@ import provided.Token;
 import java.util.ArrayList;
 
 public class FunctionCallNode implements OperandNode {
-    private final String functionName;
+    private final Token functionHeaderToken;
+    private final IDNode functionName;
+    private final ParamNode params;
 
-    public FunctionCallNode(String functionName) {
+    public FunctionCallNode(Token functionHeaderToken, IDNode functionName, ParamNode params) {
+        this.functionHeaderToken = functionHeaderToken;
         this.functionName = functionName;
+        this.params = params;
     }
 
     public static FunctionCallNode parseFunctionCallNode(ArrayList<Token> tokens) {
@@ -26,11 +30,18 @@ public class FunctionCallNode implements OperandNode {
 
         // consume the token and return a new FunctionCallNode
         tokens.remove(0);
-        return new FunctionCallNode(t.getToken());
+        IDNode functionName = IDNode.parseIDNode(tokens);
+        tokens.remove(0);
+        ParamNode params = ParamNode.parseParamNode(tokens);
+        tokens.remove(0);
+        
+        return new FunctionCallNode(t, functionName, params);
     }
 
     public String convertToJott() {
-        return this.functionName;
+        return this.functionHeaderToken.getToken() + " " + 
+        this.functionName.convertToJott() + " " + 
+        this.params.convertToJott();
     }
     public String convertToJava(String classname) {
         return null;

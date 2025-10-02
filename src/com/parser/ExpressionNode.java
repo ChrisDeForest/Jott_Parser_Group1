@@ -1,10 +1,13 @@
 package parser;
 
+import java.util.ArrayList;
+
+import provided.Token;
 import provided.JottTree;
 
 public interface ExpressionNode extends JottTree {
 	
-    public static ExpressionNode parseExpressionNode() {
+    public static ExpressionNode parseExpressionNode(ArrayList<Token> tokens) {
         return null;
     }
 

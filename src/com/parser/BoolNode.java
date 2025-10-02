@@ -1,43 +1,50 @@
 package parser;
 
+import java.util.ArrayList;
+
+import provided.Token;
 import provided.JottTree;
+import provided.TokenType;
 
 public class BoolNode implements JottTree {
     
-    public BoolNode() {
+    private final Token boolToken;
+
+    public BoolNode(Token boolToken) {
+        this.boolToken = boolToken;
     }
 
-    public static BoolNode parseBoolNode() {
-        return new BoolNode();
+    public static BoolNode parseBoolNode(ArrayList<Token> tokens) {
+        Token t = tokens.remove(0);
+        if (t.getTokenType() != TokenType.ID_KEYWORD) {
+            if (t.getToken().equals("true") || t.getToken().equals("false")) {
+                return new BoolNode(t);
+            }
+        }
+        return new BoolNode(t);
     }
-
+    @Override
+    public String convertToJott() {
+        return this.boolToken.getToken();
+    }
     @Override
     public String convertToJava(String indentLevel) {
-        // TODO: Implement conversion logic
         return "";
     }
 
     @Override
     public boolean validateTree() {
-        // TODO: Implement validation logic
         return true;
     }
 
-    @Override
-    public String convertToJott() {
-        // TODO: Implement conversion logic
-        return "";
-    }
 
     @Override
     public String convertToC() {
-        // TODO: Implement conversion logic
         return "";
     }
 
     @Override
     public String convertToPython() {
-        // TODO: Implement conversion logic
         return "";
     }
 }
