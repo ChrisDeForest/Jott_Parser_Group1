@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 
 public class NumberNode implements OperandNode {
-    private final Token token;
+    private final Token numberToken;
     private final boolean isNegative;
 
     public NumberNode(Token token, boolean isNegative) {
-        this.token = token;   
+        this.numberToken = token;   
         this.isNegative = isNegative;
     }
 
@@ -37,10 +37,10 @@ public class NumberNode implements OperandNode {
     public String convertToJott() {
         // returns a string representation of the number
         if (isNegative) {
-            return "-" + token.getToken();
+            return "-" + numberToken.getToken();
         }
         else {
-            return token.getToken();
+            return numberToken.getToken();
         }
     }
 

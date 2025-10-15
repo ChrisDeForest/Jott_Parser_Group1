@@ -5,10 +5,10 @@ import provided.TokenType;
 import java.util.ArrayList;
 
 public class IDNode implements OperandNode {
-    private final String id;
+    private final Token idToken;
 
-    public IDNode(String id) {
-        this.id = id;
+    public IDNode(Token idToken) {
+        this.idToken = idToken;
     }
 
     public static IDNode parseIDNode(ArrayList<Token> tokens) {
@@ -30,12 +30,12 @@ public class IDNode implements OperandNode {
 
         // consume the token and return a new IDNode
         tokens.remove(0);
-        return new IDNode(t.getToken());
+        return new IDNode(t);
     }
 
     public String convertToJott() {
         // returns a string representation of the token/ID
-        return id;
+        return idToken.getToken();
     }
     public String convertToJava(String classname) {
         return null;

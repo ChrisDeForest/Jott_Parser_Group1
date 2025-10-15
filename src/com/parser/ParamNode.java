@@ -1,13 +1,14 @@
 package parser;
 
 import provided.JottTree;
-
+import provided.Token;
+import java.util.ArrayList;
 public class ParamNode implements JottTree{
    
     public ParamNode() {
     }
 
-    public static ParamNode parseParamNode() {
+    public static ParamNode parseParamNode(ArrayList<Token> tokens) {
         return new ParamNode();
     }
 
