@@ -1,22 +1,53 @@
 package parser;
 
+import provided.Token;
+import provided.TokenType;
 import provided.JottTree;
 import java.util.ArrayList;
-import provided.Token;
 
 public class ProgramNode implements JottTree {
+    private final ArrayList<FunctionDefNode> functionDefs;
 
-    public ProgramNode() {
+    public ProgramNode(ArrayList<FunctionDefNode> functionDefs) {
+        this.functionDefs = functionDefs;
     }
 
     public static ProgramNode parseProgramNode(ArrayList<Token> tokens) {
-        return new ProgramNode();
-    }
+        if (tokens == null) {
+            System.err.println("parseProgramNode: tokens list is null");
+            return null;
+        }
 
+        ArrayList<FunctionDefNode> functionDefs = new ArrayList<>();
+
+        // Parse zero or more function definitions (Kleene star)
+        while (tokens.size() > 0) {
+            Token t = tokens.get(0);
+            
+            if (t.getTokenType() == TokenType.ID_KEYWORD && t.getToken().equals("Def")) {
+                FunctionDefNode funcDef = FunctionDefNode.parseFunctionDefNode(tokens);
+                if (funcDef == null) {
+                    System.err.println("parseProgramNode: failed to parse function definition");
+                    return null;
+                }
+                functionDefs.add(funcDef);
+            } else {
+                break;
+            }
+        }
+
+        // At this point, we should have consumed all tokens (EOF)
+
+        return new ProgramNode(functionDefs);
+    }
 
     @Override
     public String convertToJott() {
-        return null;
+        StringBuilder sb = new StringBuilder();
+        for (FunctionDefNode funcDef : functionDefs) {
+            sb.append(funcDef.convertToJott());
+        }
+        return sb.toString();
     }
 
     @Override
@@ -38,7 +69,4 @@ public class ProgramNode implements JottTree {
     public boolean validateTree() {
         return false;
     }
-    
 }
-
-

@@ -1,12 +1,15 @@
 package parser;
 
+import java.util.ArrayList;
+
 import provided.JottTree;
+import provided.Token;
 
 public class FunctionDefNode implements JottTree {
     public FunctionDefNode() {
     }
 
-    public static FunctionDefNode parseFunctionDefNode() {
+    public static FunctionDefNode parseFunctionDefNode(ArrayList<Token> tokens) {
         return new FunctionDefNode();
     }
 
