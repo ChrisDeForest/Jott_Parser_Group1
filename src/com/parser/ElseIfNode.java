@@ -1,11 +1,14 @@
 package parser;
+import java.util.ArrayList;
+
 import provided.JottTree;
+import provided.Token;
 
 public class ElseIfNode implements JottTree {
     public ElseIfNode() {
     }
 
-    public static ElseIfNode parseElseIfNode() {
+    public static ElseIfNode parseElseIfNode(ArrayList<Token> tokens) {
         return new ElseIfNode();
     }
 

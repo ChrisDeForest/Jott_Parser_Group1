@@ -1,12 +1,15 @@
 package parser;
+import java.util.ArrayList;
+
 import provided.JottTree;
+import provided.Token;
 
 public class ElseNode implements JottTree{
 
     public ElseNode() {
     }
 
-    public static ElseNode parseElseNode() {
+    public static ElseNode parseElseNode(ArrayList<Token> tokens) {
         return new ElseNode();
     }
 

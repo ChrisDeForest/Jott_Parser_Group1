@@ -1,12 +1,15 @@
 package parser;
+import java.util.ArrayList;
+
 import provided.JottTree;
+import provided.Token;
 
 public class BodyNode implements JottTree{
 
     public BodyNode() {
     }
 
-    public static BodyNode parseBodyNode() {
+    public static BodyNode parseBodyNode(ArrayList<Token> tokens) {
         return new BodyNode();
     }
 
