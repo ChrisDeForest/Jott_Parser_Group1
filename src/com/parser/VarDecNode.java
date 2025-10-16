@@ -1,12 +1,23 @@
 package parser;
+
 import provided.JottTree;
+import provided.Token;
+import provided.TokenType;
+import java.util.ArrayList;
 
 public class VarDecNode implements JottTree {
+
+    private final Token varDecToken;
+    private final TypeNode typeNode;
+    private final IDNode idNode;
     
-    public VarDecNode() {
+    public VarDecNode(Token varDecToken) {
+        this.varDecToken = varDecToken;
     }
 
-    public static VarDecNode parseVarDecNode() {
+    public static VarDecNode parseVarDecNode(ArrayList<Token> tokens) {
+        parseTypeNode(tokens);
+        parseIdNode(tokens);
         return new VarDecNode();
     }
 
