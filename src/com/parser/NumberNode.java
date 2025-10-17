@@ -1,5 +1,6 @@
 package parser;
 
+import provided.ParseException;
 import provided.Token;
 import provided.TokenType;
 import java.util.ArrayList;
@@ -15,20 +16,14 @@ public class NumberNode implements OperandNode {
     }
 
     public static NumberNode parseNumberNode(ArrayList<Token> tokens, boolean isNegative) {
-        if (tokens == null || tokens.size() == 0) {
-            System.err.println("parseNumberNode: expected number but no tokens available");
-            return null;
-        }
+        if (tokens == null || tokens.isEmpty()) throw new ParseException("parseNumberNode: expected number but no tokens available", null);
+           
         Token t = tokens.get(0);
-        if (t.getTokenType() != TokenType.NUMBER) {
-            System.err.println("parseNumberNode: expected NUMBER token, got '" + t.getToken() + "' at " + t.getFilename() + ":" + t.getLineNum());
-            return null;
-        }
+        if (t.getTokenType() != TokenType.NUMBER) throw new ParseException("parseNumberNode: expected NUMBER token, got ", t);
+            
         char firstChar = t.getToken().charAt(0);
-        if (!Character.isDigit(firstChar)){
-            System.err.println("parseNumberNode: expected number, got '" + t.getToken() + "' at " + t.getFilename() + ":" + t.getLineNum());
-            return null;
-        }
+        if (!Character.isDigit(firstChar)) throw new ParseException("parseNumberNode: expected number, got ", t);
+            
         // consume the token and return a new NumberNode
         tokens.remove(0);
         return new NumberNode(t, isNegative);
@@ -36,12 +31,7 @@ public class NumberNode implements OperandNode {
 
     public String convertToJott() {
         // returns a string representation of the number
-        if (isNegative) {
-            return "-" + numberToken.getToken();
-        }
-        else {
-            return numberToken.getToken();
-        }
+        return isNegative ? "-" + numberToken.getToken() : numberToken.getToken();
     }
 
     public String convertToJava(String classname) {

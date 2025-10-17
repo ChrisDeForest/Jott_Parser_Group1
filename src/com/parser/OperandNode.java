@@ -2,6 +2,7 @@ package parser;
 
 import java.util.ArrayList;
 
+import provided.ParseException;
 import provided.Token;
 import provided.TokenType;
 
@@ -18,16 +19,14 @@ public interface OperandNode extends ExpressionNode {
         else if(t.getTokenType().equals(TokenType.FC_HEADER)){
             return FunctionCallNode.parseFunctionCallNode(tokens);
         }
-        else if(t.getTokenType().equals(TokenType.MATH_OP)){
-            if(t.getToken().equals("-")){
-                tokens.remove(0);
-                t = tokens.get(0);
-                if(t.getTokenType().equals(TokenType.NUMBER)){
-                    return NumberNode.parseNumberNode(tokens, true);
-                }
+        else if(t.getTokenType().equals(TokenType.MATH_OP) && t.getToken().equals("-")){
+            tokens.remove(0);
+            t = tokens.get(0);
+            if(t.getTokenType().equals(TokenType.NUMBER)){
+                return NumberNode.parseNumberNode(tokens, true);
             }
-            }
-        return null; // Add return statement for cases where no condition matches
+        }
+        throw new ParseException("parseOperand: invalid token", t);
     }
 
     public String convertToJott();

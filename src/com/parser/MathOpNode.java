@@ -1,5 +1,6 @@
 package parser;
 
+import provided.ParseException;
 import provided.Token;
 import provided.TokenType;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class MathOpNode implements ExpressionNode{
         if (t.getTokenType() == TokenType.MATH_OP) {
             return new MathOpNode(t);
         }
-        return null;
+        throw new ParseException("parseMathOpNode: Expected mathematical operator, found: " + t.getToken() + " ", t);
     }
 
     @Override

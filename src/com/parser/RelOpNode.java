@@ -1,6 +1,8 @@
 package parser;
 
 import java.util.ArrayList;
+
+import provided.ParseException;
 import provided.Token;
 import provided.TokenType;
 
@@ -17,7 +19,7 @@ public class RelOpNode implements ExpressionNode {
         if (t.getTokenType() == TokenType.REL_OP) {
             return new RelOpNode(t);
         }
-        return null;
+        throw new ParseException("parseRelOpNode: Expected relational operator, found: " + t.getToken() + " ", t);
     }
 
     @Override

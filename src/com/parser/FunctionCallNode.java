@@ -19,38 +19,27 @@ public class FunctionCallNode implements OperandNode {
     public static FunctionCallNode parseFunctionCallNode(ArrayList<Token> tokens) {
          // < func_call > -> :: < id >[ < params >]
          
-        if (tokens == null || tokens.size() == 0) {
-            throw new ParseException("Unexpected EOF", null);
-        }
-
+        if (tokens == null || tokens.isEmpty()) throw new ParseException("Unexpected EOF", null);
+        
         Token t = tokens.get(0);
-        if (t.getTokenType() != TokenType.FC_HEADER) {
-            throw new ParseException("Missing" + TokenType.FC_HEADER + " to begin a function call", t);
-        }
-
+        if (t.getTokenType() != TokenType.FC_HEADER) throw new ParseException("Missing" + TokenType.FC_HEADER + " to begin a function call", t);
+        
         // consume the token and return a new FunctionCallNode
         tokens.remove(0);
         IDNode functionName = IDNode.parseIDNode(tokens);
         tokens.remove(0);
 
         // Check for opening bracket ([)
-		if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
-		}
-		if (!(tokens.get(0).getTokenType() == TokenType.L_BRACKET)) {
-			throw new ParseException("Missing '[' after 'Elseif'", tokens.get(0));
-		}
-		tokens.remove(0); // consume ([)
-
+		if (tokens.isEmpty()) throw new ParseException("Unexpected EOF", null);
+		if (tokens.get(0).getTokenType() != TokenType.L_BRACKET) throw new ParseException("Missing '[' after 'Elseif'", tokens.get(0));
+	    
+        // consume ([)
+		tokens.remove(0); 
 		ParamNode params = ParamNode.parseParamNode(tokens);
 
 		// Check for closing bracket (])
-		if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
-		}
-		if (!(tokens.get(0).getTokenType() == TokenType.R_BRACKET)) {
-			throw new ParseException("Missing ']' after Elseif condition", tokens.get(0));
-		}
+		if (tokens.isEmpty()) throw new ParseException("Unexpected EOF", null);
+		if (tokens.get(0).getTokenType() != TokenType.R_BRACKET) throw new ParseException("Missing ']' after Elseif condition", tokens.get(0));
 		tokens.remove(0); // consume (])
 
         return new FunctionCallNode(t, functionName, params);
