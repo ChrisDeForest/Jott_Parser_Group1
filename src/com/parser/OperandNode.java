@@ -2,11 +2,10 @@ package parser;
 
 import java.util.ArrayList;
 
-import provided.JottTree;
 import provided.Token;
 import provided.TokenType;
 
-public interface OperandNode extends JottTree {
+public interface OperandNode extends ExpressionNode {
     public static OperandNode parseOperand(ArrayList<Token> tokens){
         Token t = tokens.get(0);
 

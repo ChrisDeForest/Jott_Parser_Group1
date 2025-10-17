@@ -3,10 +3,9 @@ package parser;
 import java.util.ArrayList;
 
 import provided.Token;
-import provided.JottTree;
 import provided.TokenType;
 
-public class BoolNode implements JottTree {
+public class BoolNode implements ExpressionNode {
     
     private final Token boolToken;
 
@@ -16,17 +15,17 @@ public class BoolNode implements JottTree {
 
     public static BoolNode parseBoolNode(ArrayList<Token> tokens) {
         Token t = tokens.remove(0);
-        if (t.getTokenType() != TokenType.ID_KEYWORD) {
-            if (t.getToken().equals("true") || t.getToken().equals("false")) {
+        if (t.getTokenType() != TokenType.ID_KEYWORD && (t.getToken().equals("true") || t.getToken().equals("false"))) {
                 return new BoolNode(t);
             }
-        }
-        return new BoolNode(t);
+        return null;
     }
+    
     @Override
     public String convertToJott() {
         return this.boolToken.getToken();
     }
+
     @Override
     public String convertToJava(String indentLevel) {
         return "";
