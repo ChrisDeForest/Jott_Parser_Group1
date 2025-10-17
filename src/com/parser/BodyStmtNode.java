@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 public interface BodyStmtNode extends JottTree { 
 
-
-
 	public static JottTree parseBodyStmtNode(ArrayList<Token> tokens) {
-		// <body_stmt > -> <if_stmt > | <while_loop > <asmt > | <func_call>;
+		// <body_stmt > -> <if_stmt > | <while_loop > | <asmt > | <func_call>;
+		  
+        if (tokens.isEmpty()){
+			throw new ParseException("Unexpected EOF", null);
+		}
 		Token token = tokens.get(0);
 
 		if (token.getToken().equals("If")) {
