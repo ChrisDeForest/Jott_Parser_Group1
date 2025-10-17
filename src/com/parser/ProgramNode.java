@@ -13,23 +13,15 @@ public class ProgramNode implements JottTree {
     }
 
     public static ProgramNode parseProgramNode(ArrayList<Token> tokens) {
-        if (tokens == null) {
-            System.err.println("parseProgramNode: tokens list is null");
-            return null;
-        }
-
         ArrayList<FunctionDefNode> functionDefs = new ArrayList<>();
 
         // Parse zero or more function definitions (Kleene star)
-        while (tokens.size() > 0) {
+        while (!tokens.isEmpty()) {
             Token t = tokens.get(0);
             
             if (t.getTokenType() == TokenType.ID_KEYWORD && t.getToken().equals("Def")) {
+                // Will throw ParseException if it fails
                 FunctionDefNode funcDef = FunctionDefNode.parseFunctionDefNode(tokens);
-                if (funcDef == null) {
-                    System.err.println("parseProgramNode: failed to parse function definition");
-                    return null;
-                }
                 functionDefs.add(funcDef);
             } else {
                 break;
