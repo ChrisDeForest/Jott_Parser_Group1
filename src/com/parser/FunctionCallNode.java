@@ -1,6 +1,7 @@
 package parser;
 
 import provided.TokenType;
+import provided.ParseException;
 import provided.Token;
 import java.util.ArrayList;
 
@@ -19,30 +20,49 @@ public class FunctionCallNode implements OperandNode {
          // < func_call > -> :: < id >[ < params >]
          
         if (tokens == null || tokens.size() == 0) {
-            System.err.println("parseFunctionCallNode: expected function call but no tokens available");
-            return null;
+            throw new ParseException("Unexpected EOF", null);
         }
+
         Token t = tokens.get(0);
         if (t.getTokenType() != TokenType.FC_HEADER) {
-            System.err.println("parseFunctionCallNode: expected function name token, got '" + t.getToken() + "' at " + t.getFilename() + ":" + t.getLineNum());
-            return null;
+            throw new ParseException("Missing" + TokenType.FC_HEADER + " to begin a function call", t);
         }
 
         // consume the token and return a new FunctionCallNode
         tokens.remove(0);
         IDNode functionName = IDNode.parseIDNode(tokens);
         tokens.remove(0);
-        ParamNode params = ParamNode.parseParamNode(tokens);
-        tokens.remove(0);
-        
+
+        // Check for opening bracket ([)
+		if (tokens.isEmpty()){
+			throw new ParseException("Unexpected EOF", null);
+		}
+		if (!(tokens.get(0).getTokenType() == TokenType.L_BRACKET)) {
+			throw new ParseException("Missing '[' after 'Elseif'", tokens.get(0));
+		}
+		tokens.remove(0); // consume ([)
+
+		ParamNode params = ParamNode.parseParamNode(tokens);
+
+		// Check for closing bracket (])
+		if (tokens.isEmpty()){
+			throw new ParseException("Unexpected EOF", null);
+		}
+		if (!(tokens.get(0).getTokenType() == TokenType.R_BRACKET)) {
+			throw new ParseException("Missing ']' after Elseif condition", tokens.get(0));
+		}
+		tokens.remove(0); // consume (])
+
         return new FunctionCallNode(t, functionName, params);
     }
 
     public String convertToJott() {
+         // < func_call > -> :: < id >[ < params >]
         return this.functionHeaderToken.getToken() + " " + 
-        this.functionName.convertToJott() + " " + 
-        this.params.convertToJott();
+        this.functionName.convertToJott() + "[" +
+        this.params.convertToJott() + "]"; 
     }
+
     public String convertToJava(String classname) {
         return null;
     }

@@ -1,7 +1,6 @@
 package parser;
 
-import provided.Token;
-import provided.TokenType;
+import provided.*;
 import java.util.ArrayList;
 
 public class IDNode implements OperandNode {
@@ -12,20 +11,14 @@ public class IDNode implements OperandNode {
     }
 
     public static IDNode parseIDNode(ArrayList<Token> tokens) {
-        if (tokens == null || tokens.size() == 0) {
-            System.err.println("parseIDNode: expected identifier but no tokens available");
-            return null;
-        }
+        
+          if (tokens.isEmpty()){
+			throw new ParseException("Unexpected EOF", null);
+		}
+
         Token t = tokens.get(0);
         if (t.getTokenType() != TokenType.ID_KEYWORD) {
-            System.err.println("parseIDNode: expected ID token, got '" + t.getToken() + "' at " + t.getFilename() + ":" + t.getLineNum());
-            return null;
-        }
-        // TODO this is technically redundant thanks Carlo
-        char firstChar = t.getToken().charAt(0);
-        if (!Character.isLetter(firstChar)){    
-            System.err.println("parseIDNode: expected letter, got '" + t.getToken() + "' at " + t.getFilename() + ":" + t.getLineNum());
-            return null;
+            throw new ParseException("Missing an ID Keyword", t);
         }
 
         // consume the token and return a new IDNode

@@ -3,6 +3,7 @@ package parser;
 import provided.Token;
 import provided.TokenType;
 import provided.JottTree;
+import provided.ParseException;
 import java.util.ArrayList;
 
 public class ReturnStmtNode implements JottTree {
@@ -15,9 +16,9 @@ public class ReturnStmtNode implements JottTree {
     }
 
     public static ReturnStmtNode parseReturnStmtNode(ArrayList<Token> tokens) {
-        if (tokens == null || tokens.size() == 0) {
-            // Epsilon case - no return statement
-            return new ReturnStmtNode(null, true);
+        if (tokens.isEmpty()) {
+            // Even if there is no return statement, there should be more token(s) like }
+            throw new ParseException("Unexpected EOF while parsing <return_stmt>", null);
         }
 
         Token t = tokens.get(0);
@@ -31,23 +32,17 @@ public class ReturnStmtNode implements JottTree {
         // Consume "Return" keyword
         tokens.remove(0);
 
-        // Parse the expression
+        // Parse the expression (will throw ParseException if it fails)
         ExpressionNode expr = ExpressionNode.parseExpressionNode(tokens);
-        if (expr == null) {
-            System.err.println("parseReturnStmtNode: expected expression after 'Return' at " + t.getFilename() + ":" + t.getLineNum());
-            return null;
-        }
 
         // Check for semicolon
-        if (tokens.size() == 0) {
-            System.err.println("parseReturnStmtNode: expected ';' after return expression");
-            return null;
+        if (tokens.isEmpty()) {
+            throw new ParseException("Unexpected EOF", null);
         }
 
         Token semicolon = tokens.get(0);
         if (semicolon.getTokenType() != TokenType.SEMICOLON) {
-            System.err.println("parseReturnStmtNode: expected ';', got '" + semicolon.getToken() + "' at " + semicolon.getFilename() + ":" + semicolon.getLineNum());
-            return null;
+            throw new ParseException("Expected ';' after return expression, got '" + semicolon.getToken() + "'", semicolon);
         }
 
         // Consume semicolon
