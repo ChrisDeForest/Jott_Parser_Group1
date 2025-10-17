@@ -1,14 +1,45 @@
 package parser;
 import provided.JottTree;
-
+import provided.Token;
+import provided.TokenType;
+import provided.ParseException;
+import java.util.ArrayList;
 
 public class FunctionReturnNode implements JottTree {
+    private final Token returnTypeToken;
+    private final boolean isVoid;
 
-    public FunctionReturnNode() {
+    public FunctionReturnNode(Token returnTypeToken, boolean isVoid) {
+        this.returnTypeToken = returnTypeToken;
+        this.isVoid = isVoid;
     }
 
-    public static FunctionReturnNode parseFunctionReturnNode() {
-        return new FunctionReturnNode();
+    public static FunctionReturnNode parseFunctionReturnNode(ArrayList<Token> tokens) {
+		// <function_return> -> <type> | Void
+        if (tokens.isEmpty()) {
+            throw new ParseException("Unexpected EOF while parsing function return type", null);
+        }
+        
+        Token token = tokens.get(0);
+        
+        // Check if it's "Void"
+        if (token.getTokenType() == TokenType.ID_KEYWORD && token.getToken().equals("Void")) {
+            tokens.remove(0); // consume "Void"
+            return new FunctionReturnNode(token, true);
+        }
+        
+        // Check if it's a valid type (Double, Integer, String, Boolean)
+        if (token.getTokenType() == TokenType.ID_KEYWORD) {
+            String tokenValue = token.getToken();
+            if (tokenValue.equals("Double") || tokenValue.equals("Integer") || 
+                tokenValue.equals("String") || tokenValue.equals("Boolean")) {
+                tokens.remove(0); // consume the type token
+                return new FunctionReturnNode(token, false);
+            }
+        }
+        
+        // If we get here, it's neither Void nor a valid type
+        throw new ParseException("Expected return type (Double, Integer, String, Boolean, or Void), got '" + token.getToken() + "'", token);
     }
     
 
@@ -26,8 +57,7 @@ public class FunctionReturnNode implements JottTree {
 
 	@Override
 	public String convertToJott() {
-		// TODO: Implement conversion logic
-		return "";
+		return returnTypeToken.getToken();
 	}
 
 	@Override
