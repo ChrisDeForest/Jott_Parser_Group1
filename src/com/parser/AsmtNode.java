@@ -1,13 +1,13 @@
 package parser;
-
-import provided.JottTree;
+import provided.*;
+import java.util.ArrayList;
 
 public class AsmtNode implements JottTree {
 
     public AsmtNode() {
     }
 
-    public static AsmtNode parseAsmtNode() {
+    public static AsmtNode parseAsmtNode(ArrayList<Token> tokens) {
         return new AsmtNode();
     }
     
