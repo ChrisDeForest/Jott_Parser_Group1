@@ -15,11 +15,16 @@ public class ElseNode implements JottTree{
         // Else { < body >} | ε
         
         if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
+			return new ElseNode(null, true); // epsilon case
 		}
+		
+		// Check if next token is "Else"
 		if (!tokens.get(0).getToken().equals("Else")) {
-			throw new ParseException("Missing 'Else' Keyword", tokens.get(0));
+			return new ElseNode(null, true); // epsilon case - no Else clause
 		}
+		
+		// Consume "Else" token
+		tokens.remove(0);
 
         
 		// Check for opening brace ({)
@@ -27,7 +32,7 @@ public class ElseNode implements JottTree{
 			throw new ParseException("Unexpected EOF", null);
 		}
 		if (!(tokens.get(0).getTokenType() == TokenType.L_BRACE)) {
-			throw new ParseException("Missing '{' after 'Elseif'", tokens.get(0));
+			throw new ParseException("Missing '{' after 'Else'", tokens.get(0));
 		}
 		tokens.remove(0); // consume ({)
 

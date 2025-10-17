@@ -25,7 +25,7 @@ public class BodyNode implements JottTree{
 			if (token.getToken().equals("If") ||
 				token.getToken().equals("While") ||
 				token.getTokenType() == TokenType.FC_HEADER ||
-				token.getTokenType() == TokenType.ID_KEYWORD) {
+				(token.getTokenType() == TokenType.ID_KEYWORD && !token.getToken().equals("Return"))) {
 				bodyStmtNodes.add(BodyStmtNode.parseBodyStmtNode(tokens)); // if it is, parse
 			} else {
 				break; // else, it reached return_stmt or end of block

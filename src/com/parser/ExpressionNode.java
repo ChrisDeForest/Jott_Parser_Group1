@@ -33,32 +33,33 @@ public interface ExpressionNode extends JottTree {
 		if (tokens.isEmpty()) return left;	// if only one operand left, return <operand>
 		
 		Token operand = tokens.get(0);
-		ExpressionNode opNode = null;
-		if (operand.getTokenType().equals(TokenType.MATH_OP)) {
-			opNode = MathOpNode.parseMathOpNode(tokens);
-		} else if (operand.getTokenType().equals(TokenType.REL_OP)) {
-			opNode = RelOpNode.parseRelOpNode(tokens);
-		}
-		String opToken = opNode.convertToJott();
-		
-		// parsing right operand
-		if (tokens.isEmpty()) throw new ParseException("parseExpressionNode: Unexpected EOF", null);
-		OperandNode right = OperandNode.parseOperand(tokens);
-		if (right == null) throw new ParseException("parseExpressionNode: Error parsing right operand", null);
+		if (operand.getTokenType().equals(TokenType.MATH_OP) || operand.getTokenType().equals(TokenType.REL_OP)) {
+			// Consume the operator token
+			tokens.remove(0);
+			String opToken = operand.getToken();
+			
+			// parsing right operand
+			if (tokens.isEmpty()) throw new ParseException("parseExpressionNode: Unexpected EOF", null);
+			OperandNode right = OperandNode.parseOperand(tokens);
+			if (right == null) throw new ParseException("parseExpressionNode: Error parsing right operand", null);
 
-		return new ExpressionNode() {
-			@Override public String convertToJott(){
-				StringBuilder sb = new StringBuilder();
-				sb.append(left.convertToJott());
-				sb.append(" " + opToken + " ");
-				sb.append(right.convertToJott());
-				return sb.toString();
-			}
-			@Override public boolean validateTree(){ return false;}
-			@Override public String convertToJava(String indentLevel){ return null;}
-			@Override public String convertToC(){ return null; }
-			@Override public String convertToPython(){ return null;}
-		};
+			return new ExpressionNode() {
+				@Override public String convertToJott(){
+					StringBuilder sb = new StringBuilder();
+					sb.append(left.convertToJott());
+					sb.append(" " + opToken + " ");
+					sb.append(right.convertToJott());
+					return sb.toString();
+				}
+				@Override public boolean validateTree(){ return false;}
+				@Override public String convertToJava(String indentLevel){ return null;}
+				@Override public String convertToC(){ return null; }
+				@Override public String convertToPython(){ return null;}
+			};
+		} else {
+			// No operator found, return single operand
+			return left;
+		}
     }
 
 	@Override

@@ -17,6 +17,7 @@ public class ElseIfNode implements JottTree {
     public static ElseIfNode parseElseIfNode(ArrayList<Token> tokens) {
         // Elseif [ < expr >]{ < body >}
 
+
        	if (tokens.isEmpty()){
 			throw new ParseException("Unexpected EOF", null);
 		}

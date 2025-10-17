@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import provided.JottTree;
 import provided.Token;
 import provided.TokenType;
+import provided.ParseException;
 
 public class AsmtNode implements JottTree {
 
@@ -19,47 +20,39 @@ public class AsmtNode implements JottTree {
     public static AsmtNode parseAsmtNode(ArrayList<Token> tokens) {
 		// parse id section
         if (tokens == null || tokens.isEmpty()) {
-            System.err.println("parseAsmtNode: expected id but no tokens available");
-            return null;
+            throw new ParseException("Expected id but no tokens available", null);
         }
 		IDNode id = IDNode.parseIDNode(tokens);
 		if (id == null) {
-			System.err.println("parseAsmtNode: failed to parse id");
-			return null;
+			throw new ParseException("Failed to parse id", null);
 		}
 
 		// parse assignment section
 		if (tokens.isEmpty()) {
-			System.err.println("parseAsmtNode: expected '=' but no tokens available");
-			return null;
+			throw new ParseException("Expected '=' but no tokens available", null);
 		}
 		Token assignToken = tokens.get(0);
 		if (!assignToken.getTokenType().equals(TokenType.ASSIGN)) {
-			System.err.println("parseAsmtNode: expected '=', but got '" + assignToken.getToken() + "' at " + assignToken.getFilename() + ":" + assignToken.getLineNum());
-			return null;
+			throw new ParseException("Expected '=', but got '" + assignToken.getToken() + "'", assignToken);
 		}
 		tokens.remove(0);
 
 		// parse expression section
 		if (tokens.isEmpty()) {		
-			System.err.println("parseAsmtNode: expected expression but no tokens available");
-			return null;
+			throw new ParseException("Expected expression but no tokens available", null);
 		}
 		ExpressionNode expr = ExpressionNode.parseExpressionNode(tokens);
 		if (expr == null) {
-			System.err.println("parseAsmtNode: failed to parse expression");
-			return null;
+			throw new ParseException("Failed to parse expression", null);
 		}
 
 		// parse semicolon section
 		if (tokens.isEmpty()) {
-			System.err.println("parseAsmtNode: expected ';' but no tokens available");
-			return null;
+			throw new ParseException("Expected ';' but no tokens available", null);
 		}
 		Token semiToken = tokens.get(0);
 		if (!semiToken.getTokenType().equals(TokenType.SEMICOLON)) {
-			System.err.println("parseAsmtNode: expected ';', but got '" + semiToken.getToken() + "' at " + semiToken.getFilename() + ":" + semiToken.getLineNum());
-			return null;
+			throw new ParseException("Expected ';', but got '" + semiToken.getToken() + "'", semiToken);
 		}
 		tokens.remove(0);
 
