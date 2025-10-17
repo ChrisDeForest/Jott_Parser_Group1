@@ -31,7 +31,7 @@ public class ElseIfNode implements JottTree {
 		if (tokens.isEmpty()){
 			throw new ParseException("Unexpected EOF", null);
 		}
-		if (!(tokens.get(0).getTokenType() == TokenType.L_BRACKET)) {
+		if (tokens.get(0).getTokenType() != TokenType.L_BRACKET) {
 			throw new ParseException("Missing '[' after 'Elseif'", tokens.get(0));
 		}
 		tokens.remove(0); // consume ([)
@@ -42,7 +42,7 @@ public class ElseIfNode implements JottTree {
 		if (tokens.isEmpty()){
 			throw new ParseException("Unexpected EOF", null);
 		}
-		if (!(tokens.get(0).getTokenType() == TokenType.R_BRACKET)) {
+		if (tokens.get(0).getTokenType() != TokenType.R_BRACKET) {
 			throw new ParseException("Missing ']' after Elseif condition", tokens.get(0));
 		}
 		tokens.remove(0); // consume (])
@@ -51,7 +51,7 @@ public class ElseIfNode implements JottTree {
 		if (tokens.isEmpty()){
 			throw new ParseException("Unexpected EOF", null);
 		}
-		if (!(tokens.get(0).getTokenType() == TokenType.L_BRACE)) {
+		if (tokens.get(0).getTokenType() != TokenType.L_BRACE) {
 			throw new ParseException("Missing '{' to start Elseif body", tokens.get(0));
 		}
 		tokens.remove(0); // consume ({)
@@ -62,7 +62,7 @@ public class ElseIfNode implements JottTree {
 		if (tokens.isEmpty()){
 			throw new ParseException("Unexpected EOF", null);
 		}
-		if (!(tokens.get(0).getTokenType() == TokenType.R_BRACE)) {
+		if (tokens.get(0).getTokenType() != TokenType.R_BRACE) {
 			throw new ParseException("Missing '{' to end Elseif body", tokens.get(0));
 		}
 		tokens.remove(0); // consume ({)

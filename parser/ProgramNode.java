@@ -4,7 +4,6 @@ import provided.Token;
 import provided.TokenType;
 import provided.JottTree;
 import java.util.ArrayList;
-import provided.ParseException;
 public class ProgramNode implements JottTree {
     private final ArrayList<FunctionDefNode> functionDefs;
 

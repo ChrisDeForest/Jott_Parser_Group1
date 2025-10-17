@@ -1,4 +1,6 @@
-package provided;
+package parser;
+
+import provided.Token;
 
 public class ParseException extends RuntimeException {
 

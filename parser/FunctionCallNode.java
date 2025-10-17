@@ -1,7 +1,6 @@
 package parser;
 
 import provided.TokenType;
-import provided.ParseException;
 import provided.Token;
 import java.util.ArrayList;
 

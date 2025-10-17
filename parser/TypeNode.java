@@ -3,7 +3,7 @@ package parser;
 import provided.Token;
 import provided.TokenType;
 import provided.JottTree;
-import provided.ParseException;
+
 import java.util.ArrayList;
 
 public class TypeNode implements JottTree {

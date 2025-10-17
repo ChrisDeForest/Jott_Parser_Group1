@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import provided.Token;
 import provided.TokenType;
-import provided.ParseException;
 
 public class BoolNode implements ExpressionNode {
     

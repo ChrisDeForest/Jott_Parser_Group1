@@ -1,3 +1,4 @@
+package testers;
 
 /*
   Jott parser tester. This will test the parsing phase of the Jott
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 
 import provided.JottTokenizer;
 import provided.JottParser;
-import provided.TokenType;
 import provided.JottTree;
 import provided.Token;
 

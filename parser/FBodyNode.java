@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import provided.JottTree;
 import provided.Token;
 import provided.TokenType;
-import provided.ParseException;
 
 public class FBodyNode implements JottTree {
     private final ArrayList<VarDecNode> varDecs;

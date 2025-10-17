@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import provided.JottTree;
 import provided.Token;
 import provided.TokenType;
-import provided.ParseException;
 
 public class FunctionDefNode implements JottTree {
     private final IDNode functionId;

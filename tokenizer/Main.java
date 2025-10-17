@@ -1,7 +1,12 @@
-package provided;
+package tokenizer;
 
 import java.util.ArrayList;
 
+import provided.JottTokenizer;
+import provided.Token;
+
+// this class was used as an alternative main method for testing phase 1
+// until we got the tester working
 public class Main {
     public static void main(String[] args) {
         // check if no file paths were given on the command line

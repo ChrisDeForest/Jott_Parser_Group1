@@ -2,7 +2,7 @@ package parser;
 import provided.JottTree;
 import provided.Token;
 import provided.TokenType;
-import provided.ParseException;
+
 import java.util.ArrayList;
 
 public class FunctionReturnNode implements JottTree {

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import provided.Token;
 import provided.JottTree;
-import provided.ParseException;
 import provided.TokenType;
 
 public interface ExpressionNode extends JottTree {

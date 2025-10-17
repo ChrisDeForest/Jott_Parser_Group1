@@ -2,7 +2,6 @@ package parser;
 
 import java.util.ArrayList;
 
-import provided.ParseException;
 import provided.Token;
 import provided.TokenType;
 
@@ -38,8 +37,6 @@ public class RelOpNode implements ExpressionNode {
 		// TODO: Implement this method
 		return true;
 	}
-
-	
 
 	@Override
 	public String convertToC() {

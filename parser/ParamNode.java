@@ -3,7 +3,6 @@ package parser;
 import provided.JottTree;
 import provided.Token;
 import provided.TokenType;
-import provided.ParseException;
 
 import java.util.ArrayList;
 import java.util.List;
