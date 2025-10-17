@@ -83,7 +83,6 @@ public class IfStmtNode implements JottTree {
             Token t = tokens.get(0);
             if (t.getTokenType() == TokenType.ID_KEYWORD && t.getToken().equals("Elseif")) {
                 // Will throw ParseException if it fails
-                System.err.println("HERE");
                 ElseIfNode elseIfNode = ElseIfNode.parseElseIfNode(tokens);
                 elseIfList.add(elseIfNode);
             } else if (t.getTokenType() == TokenType.ID_KEYWORD && t.getToken().equals("Else")) {

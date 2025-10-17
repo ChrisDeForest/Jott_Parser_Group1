@@ -4,7 +4,7 @@ import provided.Token;
 import provided.TokenType;
 import provided.JottTree;
 import java.util.ArrayList;
-
+import provided.ParseException;
 public class ProgramNode implements JottTree {
     private final ArrayList<FunctionDefNode> functionDefs;
 
@@ -29,6 +29,9 @@ public class ProgramNode implements JottTree {
         }
 
         // At this point, we should have consumed all tokens (EOF)
+        if (!tokens.isEmpty()) {
+            throw new ParseException("Unexpected tokens after function definitions: '" + tokens.get(0).getToken() + "'", tokens.get(0));
+        }
 
         return new ProgramNode(functionDefs);
     }
