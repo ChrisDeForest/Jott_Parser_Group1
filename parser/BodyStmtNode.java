@@ -18,6 +18,12 @@ public interface BodyStmtNode extends JottTree {
 		else if (token.getToken().equals("While")) {
 			return WhileLoopNode.parseWhileLoopNode(tokens);
 		}
+		else if (token.getToken().equals("Else")) {
+        	throw new ParseException("Unexpected 'Else' without preceding 'If'", token);
+		}
+		else if (token.getToken().equals("Elseif")) {
+			throw new ParseException("Unexpected 'Elseif' without preceding 'If'", token);
+		}
 		else if (token.getTokenType() == TokenType.FC_HEADER){
 			return FunctionCallNode.parseFunctionCallNode(tokens);
 		}
