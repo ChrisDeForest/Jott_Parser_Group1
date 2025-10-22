@@ -20,8 +20,8 @@ public interface ExpressionNode extends JottTree {
 			return StringLiteralNode.parseStringLiteralNode(tokens);
 		}
 		// checking bool
-		String tToken = t.getToken().toLowerCase();		
-		if (tToken.equals("true") || tToken.equals("false")){
+		String tToken = t.getToken();
+		if (tToken.equals("True") || tToken.equals("False")){
 			return BoolNode.parseBoolNode(tokens);
 		}
 

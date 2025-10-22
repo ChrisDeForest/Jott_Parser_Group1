@@ -18,7 +18,7 @@ public class ReturnStmtNode implements JottTree {
     public static ReturnStmtNode parseReturnStmtNode(ArrayList<Token> tokens) {
         if (tokens.isEmpty()) {
             // Even if there is no return statement, there should be more token(s) like }
-            throw new ParseException("Unexpected EOF while parsing <return_stmt>", null);
+            throw new ParseException("missing closing }", null);
         }
 
         Token t = tokens.get(0);

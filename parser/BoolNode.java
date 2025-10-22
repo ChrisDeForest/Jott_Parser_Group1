@@ -18,7 +18,7 @@ public class BoolNode implements ExpressionNode {
             throw new ParseException("Unexpected EOF while parsing boolean", null);
         }
         Token t = tokens.remove(0);
-        if (t.getTokenType() == TokenType.ID_KEYWORD && (t.getToken().equals("true") || t.getToken().equals("false"))) {
+        if (t.getTokenType() == TokenType.ID_KEYWORD && (t.getToken().equals("True") || t.getToken().equals("False"))) {
             return new BoolNode(t);
         }
         throw new ParseException("Expected boolean value (true or false), got '" + t.getToken() + "'", t);
