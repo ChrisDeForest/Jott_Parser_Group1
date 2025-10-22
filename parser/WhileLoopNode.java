@@ -18,20 +18,20 @@ public class WhileLoopNode implements JottTree{
 
 		// Check for while keyword
 		if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
+			throw new ParseException("parseWhileLoopNode: Unexpected EOF", null);
 		}
 		if (!tokens.get(0).getToken().equals("While")) {
-			throw new ParseException("Expected 'While' Keyword", tokens.get(0));
+			throw new ParseException("parseWhileLoopNode: Expected 'While' Keyword", tokens.get(0));
 		}
 		Token whileToken = tokens.remove(0); // consume While
 
 
 		// Check for opening bracket ([)
 		if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
+			throw new ParseException("parseWhileLoopNode: Unexpected EOF", null);
 		}
 		if (!(tokens.get(0).getTokenType() == TokenType.L_BRACKET)) {
-			throw new ParseException("Expected '[' after 'While'", tokens.get(0));
+			throw new ParseException("parseWhileLoopNode: Expected '[' after 'While'", tokens.get(0));
 		}
 		tokens.remove(0); // consume ([)
 
@@ -39,19 +39,19 @@ public class WhileLoopNode implements JottTree{
 
 		// Check for closing bracket (])
 		if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
+			throw new ParseException("parseWhileLoopNode: Unexpected EOF", null);
 		}
 		if (!(tokens.get(0).getTokenType() == TokenType.R_BRACKET)) {
-			throw new ParseException("Expected ']' to end condition", tokens.get(0));
+			throw new ParseException("parseWhileLoopNode: Expected ']' to end condition", tokens.get(0));
 		}
 		tokens.remove(0); // consume (])
 		
 		// Check for opening brace ({)
 		if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
+			throw new ParseException("parseWhileLoopNode: Unexpected EOF", null);
 		}
 		if (!(tokens.get(0).getTokenType() == TokenType.L_BRACE)) {
-			throw new ParseException("Expected '{' to start while body", tokens.get(0));
+			throw new ParseException("parseWhileLoopNode: Expected '{' to start while body", tokens.get(0));
 		}
 		tokens.remove(0); // consume ({)
 
@@ -59,10 +59,10 @@ public class WhileLoopNode implements JottTree{
 
 		// Check for closing brace (})
 		if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
+			throw new ParseException("parseWhileLoopNode: Unexpected EOF", null);
 		}
 		if (!(tokens.get(0).getTokenType() == TokenType.R_BRACE)) {
-			throw new ParseException("Expected '{' to end while body", tokens.get(0));
+			throw new ParseException("parseWhileLoopNode: Expected '{' to end while body", tokens.get(0));
 		}
 		tokens.remove(0); // consume ({)
 		

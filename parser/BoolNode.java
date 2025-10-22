@@ -15,13 +15,13 @@ public class BoolNode implements ExpressionNode {
 
     public static BoolNode parseBoolNode(ArrayList<Token> tokens) {
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF while parsing boolean", null);
+            throw new ParseException("parseBoolNode: Unexpected EOF while parsing boolean", null);
         }
         Token t = tokens.remove(0);
         if (t.getTokenType() == TokenType.ID_KEYWORD && (t.getToken().equals("True") || t.getToken().equals("False"))) {
             return new BoolNode(t);
         }
-        throw new ParseException("Expected boolean value (true or false), got '" + t.getToken() + "'", t);
+        throw new ParseException("parseBoolNode: Expected boolean value (true or false), got '" + t.getToken() + "'", t);
     }
     
     @Override

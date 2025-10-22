@@ -17,11 +17,11 @@ public class ParamTNode implements JottTree {
     // <params_t> -> , <expr>
     public static ParamTNode parseParamTNode(ArrayList<Token> tokens) {
         if (tokens.isEmpty())
-            throw new ParseException("Unexpected EOF in params tail", null);
+            throw new ParseException("parseParamTNode: Unexpected EOF in params tail", null);
 
         Token comma = tokens.get(0);
         if (comma.getTokenType() != TokenType.COMMA) {
-            throw new ParseException("Expected ',' between function call arguments", comma);
+            throw new ParseException("parseParamTNode: Expected ',' between function call arguments", comma);
         }
         tokens.remove(0);
 

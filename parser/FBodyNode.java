@@ -17,7 +17,7 @@ public class FBodyNode implements JottTree {
 
     public static FBodyNode parseFBodyNode(ArrayList<Token> tokens) {
         if (tokens.isEmpty()) {
-			throw new ParseException("Unexpected EOF while parsing <f_body>", null);
+			throw new ParseException("parseFBodyNody: Unexpected EOF while parsing <f_body>", null);
 		}
         ArrayList<VarDecNode> varDecs = new ArrayList<>();
 

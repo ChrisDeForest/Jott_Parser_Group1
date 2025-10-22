@@ -34,7 +34,7 @@ public class FunctionDefParamsNode implements JottTree {
         FunctionDefParamsNode node = new FunctionDefParamsNode();
 
         if (tokens.isEmpty())
-            throw new ParseException("Unexpected EOF parsing function parameters", null);
+            throw new ParseException("parseFunctionDefParamsNode: Unexpected EOF parsing function parameters", null);
 
         // epsilon: if next is ']' we have no params
         if (tokens.get(0).getTokenType() == TokenType.R_BRACKET) {
@@ -44,14 +44,14 @@ public class FunctionDefParamsNode implements JottTree {
         // first param: <id> : <type>
         Token idTok = tokens.get(0);
         if (idTok.getTokenType() != TokenType.ID_KEYWORD) {
-            throw new ParseException("Expected parameter name (id) in function definition", idTok);
+            throw new ParseException("parseFunctionDefParamsNode: Expected parameter name (id) in function definition", idTok);
         }
         tokens.remove(0); // consume id
 
         if (tokens.isEmpty())
-            throw new ParseException("Unexpected EOF after parameter name", null);
+            throw new ParseException("parseFunctionDefParamsNode: Unexpected EOF after parameter name", null);
         if (tokens.get(0).getTokenType() != TokenType.COLON) {
-            throw new ParseException("Expected ':' after parameter name", tokens.get(0));
+            throw new ParseException("parseFunctionDefParamsNode: Expected ':' after parameter name", tokens.get(0));
         }
         tokens.remove(0); // consume ':'
 
@@ -69,11 +69,11 @@ public class FunctionDefParamsNode implements JottTree {
 
     private static Token expectType(ArrayList<Token> tokens) {
         if (tokens.isEmpty())
-            throw new ParseException("Unexpected EOF after ':'", null);
+            throw new ParseException("parseFunctionDefParamsNode: Unexpected EOF after ':'", null);
         Token t = tokens.get(0);
         String s = t.getToken();
         if (!("Double".equals(s) || "Integer".equals(s) || "String".equals(s) || "Boolean".equals(s))) {
-            throw new ParseException("Expected a type (Double | Integer | String | Boolean)", t);
+            throw new ParseException("parseFunctionDefParamsNode: Expected a type (Double | Integer | String | Boolean)", t);
         }
         tokens.remove(0);
         return t;

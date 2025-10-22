@@ -8,7 +8,7 @@ public interface BodyStmtNode extends JottTree {
 		// <body_stmt > -> <if_stmt > | <while_loop > | <asmt > | <func_call>;
 		  
         if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
+			throw new ParseException("parseBodyStmtNode: Unexpected EOF", null);
 		}
 		Token token = tokens.get(0);
 
@@ -19,10 +19,10 @@ public interface BodyStmtNode extends JottTree {
 			return WhileLoopNode.parseWhileLoopNode(tokens);
 		}
 		else if (token.getToken().equals("Else")) {
-        	throw new ParseException("Unexpected 'Else' without preceding 'If'", token);
+        	throw new ParseException("parseBodyStmtNode: Unexpected 'Else' without preceding 'If'", token);
 		}
 		else if (token.getToken().equals("Elseif")) {
-			throw new ParseException("Unexpected 'Elseif' without preceding 'If'", token);
+			throw new ParseException("parseBodyStmtNode: Unexpected 'Elseif' without preceding 'If'", token);
 		}
 		else if (token.getTokenType() == TokenType.FC_HEADER){
 			return FunctionCallNode.parseFunctionCallNode(tokens);
@@ -31,7 +31,7 @@ public interface BodyStmtNode extends JottTree {
 			return AsmtNode.parseAsmtNode(tokens);
 		}
 		else {
-			throw new ParseException("Invalid body statement", token);
+			throw new ParseException("parseBodyStmtNode: Invalid body statement", token);
 		}
 	}
 

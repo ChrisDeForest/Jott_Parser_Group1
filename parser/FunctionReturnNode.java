@@ -17,7 +17,7 @@ public class FunctionReturnNode implements JottTree {
     public static FunctionReturnNode parseFunctionReturnNode(ArrayList<Token> tokens) {
 		// <function_return> -> <type> | Void
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF while parsing function return type", null);
+            throw new ParseException("parseFunctionReturnNode: Unexpected EOF while parsing function return type", null);
         }
         
         Token token = tokens.get(0);
@@ -39,7 +39,7 @@ public class FunctionReturnNode implements JottTree {
         }
         
         // If we get here, it's neither Void nor a valid type
-        throw new ParseException("Expected return type (Double, Integer, String, Boolean, or Void), got '" + token.getToken() + "'", token);
+        throw new ParseException("parseFunctionReturnNode: Expected return type (Double, Integer, String, Boolean, or Void), got '" + token.getToken() + "'", token);
     }
     
 

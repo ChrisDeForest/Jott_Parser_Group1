@@ -21,23 +21,23 @@ public class IfStmtNode implements JottTree {
 
     public static IfStmtNode parseIfStmtNode(ArrayList<Token> tokens) {
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF while parsing <if_stmt>", null);
+            throw new ParseException("parseIfStmtNode: Unexpected EOF while parsing <if_stmt>", null);
         }
 
         // Parse "If" keyword
         Token ifToken = tokens.get(0);
         if (ifToken.getTokenType() != TokenType.ID_KEYWORD || !ifToken.getToken().equals("If")) {
-            throw new ParseException("Expected 'If', got '" + ifToken.getToken() + "'", ifToken);
+            throw new ParseException("parseIfStmtNode: Expected 'If', got '" + ifToken.getToken() + "'", ifToken);
         }
         tokens.remove(0);
 
         // Parse left bracket [
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF", null);
+            throw new ParseException("parseIfStmtNode: Unexpected EOF", null);
         }
         Token leftBracket = tokens.get(0);
         if (leftBracket.getTokenType() != TokenType.L_BRACKET) {
-            throw new ParseException("Expected '[' after 'If', got '" + leftBracket.getToken() + "'", leftBracket);
+            throw new ParseException("parseIfStmtNode: Expected '[' after 'If', got '" + leftBracket.getToken() + "'", leftBracket);
         }
         tokens.remove(0);
 
@@ -46,21 +46,21 @@ public class IfStmtNode implements JottTree {
 
         // Parse right bracket ]
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF", null);
+            throw new ParseException("parseIfStmtNode: Unexpected EOF", null);
         }
         Token rightBracket = tokens.get(0);
         if (rightBracket.getTokenType() != TokenType.R_BRACKET) {
-            throw new ParseException("Expected ']' after condition, got '" + rightBracket.getToken() + "'", rightBracket);
+            throw new ParseException("parseIfStmtNode: Expected ']' after condition, got '" + rightBracket.getToken() + "'", rightBracket);
         }
         tokens.remove(0);
 
         // Parse left brace {
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF", null);
+            throw new ParseException("parseIfStmtNode: Unexpected EOF", null);
         }
         Token leftBrace = tokens.get(0);
         if (leftBrace.getTokenType() != TokenType.L_BRACE) {
-            throw new ParseException("Expected '{' after condition, got '" + leftBrace.getToken() + "'", leftBrace);
+            throw new ParseException("parseIfStmtNode: Expected '{' after condition, got '" + leftBrace.getToken() + "'", leftBrace);
         }
         tokens.remove(0);
 
@@ -69,11 +69,11 @@ public class IfStmtNode implements JottTree {
 
         // Parse right brace }
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF", null);
+            throw new ParseException("parseIfStmtNode: Unexpected EOF", null);
         }
         Token rightBrace = tokens.get(0);
         if (rightBrace.getTokenType() != TokenType.R_BRACE) {
-            throw new ParseException("Expected '}' after body, got '" + rightBrace.getToken() + "'", rightBrace);
+            throw new ParseException("parseIfStmtNode: Expected '}' after body, got '" + rightBrace.getToken() + "'", rightBrace);
         }
         tokens.remove(0);
 

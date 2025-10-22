@@ -29,7 +29,7 @@ public class ProgramNode implements JottTree {
 
         // At this point, we should have consumed all tokens (EOF)
         if (!tokens.isEmpty()) {
-            throw new ParseException("Unexpected tokens after function definitions: '" + tokens.get(0).getToken() + "'", tokens.get(0));
+            throw new ParseException("parseProgramNode: Unexpected tokens after function definitions: '" + tokens.get(0).getToken() + "'", tokens.get(0));
         }
 
         return new ProgramNode(functionDefs);

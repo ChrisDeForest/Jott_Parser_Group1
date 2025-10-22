@@ -20,7 +20,7 @@ public class VarDecNode implements JottTree {
         // < var_dec > -> < type > < id >;
         
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF while parsing variable declaration", null);
+            throw new ParseException("parseVarDecNode: Unexpected EOF while parsing variable declaration", null);
         }
         
         // Parse the type
@@ -31,12 +31,12 @@ public class VarDecNode implements JottTree {
         
         // Check for semicolon
         if (tokens.isEmpty()) {
-            throw new ParseException("Expected semicolon after variable declaration", null);
+            throw new ParseException("parseVarDecNode: Expected semicolon after variable declaration", null);
         }
         
         Token semicolon = tokens.get(0);
         if (semicolon.getTokenType() != TokenType.SEMICOLON) {
-            throw new ParseException("Expected semicolon after variable declaration, got '" + semicolon.getToken() + "'", semicolon);
+            throw new ParseException("parseVarDecNode: Expected semicolon after variable declaration, got '" + semicolon.getToken() + "'", semicolon);
         }
         
         // Consume the semicolon

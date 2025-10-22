@@ -29,10 +29,10 @@ public class ElseNode implements JottTree{
         
 		// Check for opening brace ({)
 		if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
+			throw new ParseException("parseElseNode: Unexpected EOF", null);
 		}
 		if (tokens.get(0).getTokenType() != TokenType.L_BRACE) {
-			throw new ParseException("Missing '{' after 'Else'", tokens.get(0));
+			throw new ParseException("parseElseNode: Missing '{' after 'Else'", tokens.get(0));
 		}
 		tokens.remove(0); // consume ({)
 
@@ -45,10 +45,10 @@ public class ElseNode implements JottTree{
 
 		// Check for closing brace (})
 		if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
+			throw new ParseException("parseElseNode: Unexpected EOF", null);
 		}
 		if (tokens.get(0).getTokenType() != TokenType.R_BRACE) {
-			throw new ParseException("Missing '}' to end Else body", tokens.get(0));
+			throw new ParseException("parseElseNode: Missing '}' to end Else body", tokens.get(0));
 		}
 		tokens.remove(0); // consume (})
 

@@ -17,7 +17,7 @@ public class BodyNode implements JottTree{
 	public static BodyNode parseBodyNode(ArrayList<Token> tokens) {
 		// < body > -> < body_stmt >⋆ < return_stmt >
 		if (tokens.isEmpty()) {
-			throw new ParseException("Unexpected EOF while parsing <body>", null);
+			throw new ParseException("parseBodyNode: Unexpected EOF while parsing <body>", null);
 		}
 
 		ArrayList<JottTree> bodyStmtNodes = new ArrayList<>(); // to keep track of all bodystatements
@@ -44,11 +44,11 @@ public class BodyNode implements JottTree{
 				// If it's a function call, consume the semicolon
 				if (isFuncCall) {
 					if (tokens.isEmpty()) {
-						throw new ParseException("Expected ';' after function call", null);
+						throw new ParseException("parseBodyNode: Expected ';' after function call", null);
 					}
 					Token semicolon = tokens.get(0);
 					if (semicolon.getTokenType() != TokenType.SEMICOLON) {
-						throw new ParseException("Expected ';' after function call, got '" + semicolon.getToken() + "'", semicolon);
+						throw new ParseException("parseBodyNode: Expected ';' after function call, got '" + semicolon.getToken() + "'", semicolon);
 					}
 					tokens.remove(0); // consume semicolon
 				}

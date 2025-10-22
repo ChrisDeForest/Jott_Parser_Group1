@@ -20,30 +20,30 @@ public class FunctionsDefParamsTNode implements JottTree {
 	// NEW: accept the token list and actually parse: , <id> : <type>
 	public static FunctionsDefParamsTNode parseFunctionsDefParamsTNode(ArrayList<Token> tokens) {
 		if (tokens.isEmpty())
-			throw new ParseException("Unexpected EOF in parameter tail", null);
+			throw new ParseException("parseFunctionsDefParamsTNode: Unexpected EOF in parameter tail", null);
 
 		if (tokens.get(0).getTokenType() != TokenType.COMMA) {
-			throw new ParseException("Expected ',' before additional parameter", tokens.get(0));
+			throw new ParseException("parseFunctionsDefParamsTNode: Expected ',' before additional parameter", tokens.get(0));
 		}
 		tokens.remove(0); // consume ','
 
 		if (tokens.isEmpty())
-			throw new ParseException("Unexpected EOF after ','", null);
+			throw new ParseException("parseFunctionsDefParamsTNode: Unexpected EOF after ','", null);
 		Token id = tokens.get(0);
 		if (id.getTokenType() != TokenType.ID_KEYWORD) {
-			throw new ParseException("Expected parameter name (id) after ','", id);
+			throw new ParseException("parseFunctionsDefParamsTNode: Expected parameter name (id) after ','", id);
 		}
 		tokens.remove(0); // consume id
 
 		if (tokens.isEmpty())
-			throw new ParseException("Unexpected EOF after parameter name", null);
+			throw new ParseException("parseFunctionsDefParamsTNode: Unexpected EOF after parameter name", null);
 		if (tokens.get(0).getTokenType() != TokenType.COLON) {
-			throw new ParseException("Expected ':' after parameter name", tokens.get(0));
+			throw new ParseException("parseFunctionsDefParamsTNode: Expected ':' after parameter name", tokens.get(0));
 		}
 		tokens.remove(0); // consume ':'
 
 		if (tokens.isEmpty())
-			throw new ParseException("Unexpected EOF after ':'", null);
+			throw new ParseException("parseFunctionsDefParamsTNode: Unexpected EOF after ':'", null);
 		Token typeTok = tokens.get(0);
 		String tt = typeTok.getToken();
 		if (!("Double".equals(tt) || "Integer".equals(tt) || "String".equals(tt) || "Boolean".equals(tt))) {

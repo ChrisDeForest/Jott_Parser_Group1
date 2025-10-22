@@ -19,20 +19,20 @@ public class ElseIfNode implements JottTree {
 
 
        	if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
+			throw new ParseException("parseElseIfNode: Unexpected EOF", null);
 		}
 		if (!tokens.get(0).getToken().equals("Elseif")) {
-			throw new ParseException("Missing 'Elseif' Keyword", tokens.get(0));
+			throw new ParseException("parseElseIfNode: Missing 'Elseif' Keyword", tokens.get(0));
 		}
 		Token elseIfToken = tokens.remove(0); // consume Elseif
 
 
 		// Check for opening bracket ([)
 		if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
+			throw new ParseException("parseElseIfNode: Unexpected EOF", null);
 		}
 		if (tokens.get(0).getTokenType() != TokenType.L_BRACKET) {
-			throw new ParseException("Missing '[' after 'Elseif'", tokens.get(0));
+			throw new ParseException("parseElseIfNode: Missing '[' after 'Elseif'", tokens.get(0));
 		}
 		tokens.remove(0); // consume ([)
 
@@ -40,19 +40,19 @@ public class ElseIfNode implements JottTree {
 
 		// Check for closing bracket (])
 		if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
+			throw new ParseException("parseElseIfNode: Unexpected EOF", null);
 		}
 		if (tokens.get(0).getTokenType() != TokenType.R_BRACKET) {
-			throw new ParseException("Missing ']' after Elseif condition", tokens.get(0));
+			throw new ParseException("parseElseIfNode: Missing ']' after Elseif condition", tokens.get(0));
 		}
 		tokens.remove(0); // consume (])
 		
 		// Check for opening brace ({)
 		if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
+			throw new ParseException("parseElseIfNode: Unexpected EOF", null);
 		}
 		if (tokens.get(0).getTokenType() != TokenType.L_BRACE) {
-			throw new ParseException("Missing '{' to start Elseif body", tokens.get(0));
+			throw new ParseException("parseElseIfNode: Missing '{' to start Elseif body", tokens.get(0));
 		}
 		tokens.remove(0); // consume ({)
 
@@ -60,10 +60,10 @@ public class ElseIfNode implements JottTree {
 
 		// Check for closing brace (})
 		if (tokens.isEmpty()){
-			throw new ParseException("Unexpected EOF", null);
+			throw new ParseException("parseElseIfNode: Unexpected EOF", null);
 		}
 		if (tokens.get(0).getTokenType() != TokenType.R_BRACE) {
-			throw new ParseException("Missing '{' to end Elseif body", tokens.get(0));
+			throw new ParseException("parseElseIfNode: Missing '{' to end Elseif body", tokens.get(0));
 		}
 		tokens.remove(0); // consume ({)
 

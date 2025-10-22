@@ -20,7 +20,7 @@ public class ParamNode implements JottTree {
         List<JottTree> list = new ArrayList<>();
 
         if (tokens.isEmpty())
-            throw new ParseException("Unexpected EOF parsing function call params", null);
+            throw new ParseException("parseParamNode: Unexpected EOF parsing function call params", null);
 
         // epsilon if next is R_BRACKET
         if (tokens.get(0).getTokenType() == TokenType.R_BRACKET) {

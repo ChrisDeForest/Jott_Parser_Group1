@@ -18,7 +18,7 @@ public class ReturnStmtNode implements JottTree {
     public static ReturnStmtNode parseReturnStmtNode(ArrayList<Token> tokens) {
         if (tokens.isEmpty()) {
             // Even if there is no return statement, there should be more token(s) like }
-            throw new ParseException("missing closing }", null);
+            throw new ParseException("parseReturnStmtNode: missing closing }", null);
         }
 
         Token t = tokens.get(0);
@@ -37,12 +37,12 @@ public class ReturnStmtNode implements JottTree {
 
         // Check for semicolon
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF", null);
+            throw new ParseException("parseReturnStmtNode: Unexpected EOF", null);
         }
 
         Token semicolon = tokens.get(0);
         if (semicolon.getTokenType() != TokenType.SEMICOLON) {
-            throw new ParseException("Expected ';' after return expression, got '" + semicolon.getToken() + "'", semicolon);
+            throw new ParseException("parseReturnStmtNode: Expected ';' after return expression, got '" + semicolon.getToken() + "'", semicolon);
         }
 
         // Consume semicolon

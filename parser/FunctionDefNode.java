@@ -23,13 +23,13 @@ public class FunctionDefNode implements JottTree {
         // <function_def> -> Def <id> [function_def_params]:<function_return>{<f_body>}
         
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF while parsing function definition", null);
+            throw new ParseException("parseFunctionDefNode: Unexpected EOF while parsing function definition", null);
         }
         
         // Check for "Def" keyword
         Token defToken = tokens.get(0);
         if (defToken.getTokenType() != TokenType.ID_KEYWORD || !defToken.getToken().equals("Def")) {
-            throw new ParseException("Expected 'Def' keyword, got '" + defToken.getToken() + "'", defToken);
+            throw new ParseException("parseFunctionDefNode: Expected 'Def' keyword, got '" + defToken.getToken() + "'", defToken);
         }
         tokens.remove(0); // consume "Def"
         
@@ -38,11 +38,11 @@ public class FunctionDefNode implements JottTree {
         
         // Check for opening bracket '['
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF after function name", null);
+            throw new ParseException("parseFunctionDefNode: Unexpected EOF after function name", null);
         }
         Token openBracket = tokens.get(0);
         if (openBracket.getTokenType() != TokenType.L_BRACKET) {
-            throw new ParseException("Expected '[' after function name, got '" + openBracket.getToken() + "'", openBracket);
+            throw new ParseException("parseFunctionDefNode: Expected '[' after function name, got '" + openBracket.getToken() + "'", openBracket);
         }
         tokens.remove(0); // consume '['
         
@@ -51,21 +51,21 @@ public class FunctionDefNode implements JottTree {
         
         // Check for closing bracket ']'
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF after function parameters", null);
+            throw new ParseException("parseFunctionDefNode: Unexpected EOF after function parameters", null);
         }
         Token closeBracket = tokens.get(0);
         if (closeBracket.getTokenType() != TokenType.R_BRACKET) {
-            throw new ParseException("Expected ']' after function parameters, got '" + closeBracket.getToken() + "'", closeBracket);
+            throw new ParseException("parseFunctionDefNode: Expected ']' after function parameters, got '" + closeBracket.getToken() + "'", closeBracket);
         }
         tokens.remove(0); // consume ']'
         
         // Check for colon ':'
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF after function parameters", null);
+            throw new ParseException("parseFunctionDefNode: Unexpected EOF after function parameters", null);
         }
         Token colon = tokens.get(0);
         if (colon.getTokenType() != TokenType.COLON) {
-            throw new ParseException("Expected ':' after function parameters, got '" + colon.getToken() + "'", colon);
+            throw new ParseException("parseFunctionDefNode: Expected ':' after function parameters, got '" + colon.getToken() + "'", colon);
         }
         tokens.remove(0); // consume ':'
         
@@ -74,11 +74,11 @@ public class FunctionDefNode implements JottTree {
         
         // Check for opening brace '{'
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF after function return type", null);
+            throw new ParseException("parseFunctionDefNode: Unexpected EOF after function return type", null);
         }
         Token openBrace = tokens.get(0);
         if (openBrace.getTokenType() != TokenType.L_BRACE) {
-            throw new ParseException("Expected '{' after function return type, got '" + openBrace.getToken() + "'", openBrace);
+            throw new ParseException("parseFunctionDefNode: Expected '{' after function return type, got '" + openBrace.getToken() + "'", openBrace);
         }
         tokens.remove(0); // consume '{'
         
@@ -87,11 +87,11 @@ public class FunctionDefNode implements JottTree {
         
         // Check for closing brace '}'
         if (tokens.isEmpty()) {
-            throw new ParseException("Unexpected EOF after function body", null);
+            throw new ParseException("parseFunctionDefNode: Unexpected EOF after function body", null);
         }
         Token closeBrace = tokens.get(0);
         if (closeBrace.getTokenType() != TokenType.R_BRACE) {
-            throw new ParseException("Expected '}' after function body, got '" + closeBrace.getToken() + "'", closeBrace);
+            throw new ParseException("parseFunctionDefNode: Expected '}' after function body, got '" + closeBrace.getToken() + "'", closeBrace);
         }
         tokens.remove(0); // consume '}'
         

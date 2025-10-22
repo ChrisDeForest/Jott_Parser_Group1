@@ -11,10 +11,10 @@ public class IDNode implements OperandNode {
     }
 
     public static IDNode parseIDNode(ArrayList<Token> tokens) {
-        if (tokens.isEmpty()) throw new ParseException("Unexpected EOF", null);
+        if (tokens.isEmpty()) throw new ParseException("parseIDNode: Unexpected EOF", null);
 		
         Token t = tokens.get(0);
-        if (t.getTokenType() != TokenType.ID_KEYWORD) throw new ParseException("Missing an ID Keyword", t);
+        if (t.getTokenType() != TokenType.ID_KEYWORD) throw new ParseException("parseIDNode: Missing an ID Keyword", t);
         
         // consume the token and return a new IDNode
         tokens.remove(0);
