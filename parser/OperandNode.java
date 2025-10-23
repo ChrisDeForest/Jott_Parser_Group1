@@ -25,7 +25,7 @@ public interface OperandNode extends ExpressionNode {
                 return NumberNode.parseNumberNode(tokens, true);
             }
         }
-        throw new ParseException("parseOperand: invalid token", t);
+        throw new ParseException("parseOperand: Expected <exp>, got <end_stmt>", t);
     }
 
     public String convertToJott();

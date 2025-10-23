@@ -45,7 +45,7 @@ public class FunctionCallNode implements OperandNode {
 
     public String convertToJott() {
          // < func_call > -> :: < id >[ < params >]
-        return this.functionHeaderToken.getToken() + " " + 
+        return this.functionHeaderToken.getToken() + 
         this.functionName.convertToJott() + "[" +
         this.params.convertToJott() + "]"; 
     }
