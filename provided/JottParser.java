@@ -9,6 +9,8 @@ package provided;
 
 import java.util.ArrayList;
 
+import parser.ProgramNode;
+
 public class JottParser {
 
     /**
@@ -18,6 +20,14 @@ public class JottParser {
      *         or null upon an error in parsing.
      */
     public static JottTree parse(ArrayList<Token> tokens){
-		return null;
+      ProgramNode root = null;
+      
+      try {
+        root = ProgramNode.parseProgramNode(tokens);
+        return root;
+      } catch (Exception e) {
+        System.err.println("JottParser: Uncaught exception: " + e.getMessage());
+        return null;
+      }
     }
 }
