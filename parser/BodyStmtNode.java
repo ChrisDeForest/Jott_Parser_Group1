@@ -27,7 +27,7 @@ public interface BodyStmtNode extends JottTree {
 		else if (token.getTokenType() == TokenType.FC_HEADER){
 			return FunctionCallNode.parseFunctionCallNode(tokens);
 		}
-		else if(token.getTokenType() == TokenType.ASSIGN) { // last option would be Asmt node
+		else if(token.getTokenType() == TokenType.ID_KEYWORD) { // last option would be Asmt node
 			return AsmtNode.parseAsmtNode(tokens);
 		}
 		else {
