@@ -2,6 +2,7 @@ package parser;
 
 import provided.Token;
 import provided.TokenType;
+import semantics.SemanticException;
 import provided.JottTree;
 import java.util.ArrayList;
 public class ProgramNode implements JottTree {
@@ -61,6 +62,7 @@ public class ProgramNode implements JottTree {
 
     @Override
     public boolean validateTree() {
+        // throw new SemanticException("test", null);
         return false;
     }
 }
