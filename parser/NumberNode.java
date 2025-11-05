@@ -43,6 +43,6 @@ public class NumberNode implements OperandNode {
         return null;
     }
     public boolean validateTree() {
-        return false;
+        return true;
     }
 }
