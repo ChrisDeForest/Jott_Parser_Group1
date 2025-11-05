@@ -63,6 +63,9 @@ public class SymbolTable {
     
     // Global function table (functions are not scoped)
     private final Map<String, FunctionInfo> functions;
+
+    // global symbol table
+    public static final SymbolTable globalSymbolTable = new SymbolTable();
     
     public SymbolTable() {
         this.variableScopes = new Stack<>();
