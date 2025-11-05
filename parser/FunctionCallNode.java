@@ -2,6 +2,7 @@ package parser;
 
 import provided.TokenType;
 import provided.Token;
+import semantics.SymbolTable;
 import java.util.ArrayList;
 
 public class FunctionCallNode implements OperandNode {
@@ -41,6 +42,13 @@ public class FunctionCallNode implements OperandNode {
 		tokens.remove(0); // consume (])
 
         return new FunctionCallNode(t, functionName, params);
+    }
+
+    @Override
+    public String getType(SymbolTable symbolTable) {
+        // Look up the function in the symbol table and return its return type
+        String funcName = functionName.convertToJott();
+        return symbolTable.getFunctionReturnType(funcName);
     }
 
     public String convertToJott() {

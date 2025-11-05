@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import provided.Token;
 import provided.TokenType;
+import semantics.SymbolTable;
 
 public class BoolNode implements ExpressionNode {
     
@@ -27,6 +28,11 @@ public class BoolNode implements ExpressionNode {
     @Override
     public String convertToJott() {
         return this.boolToken.getToken();
+    }
+
+    @Override
+    public String getType(SymbolTable symbolTable) {
+        return "Boolean";
     }
 
     @Override

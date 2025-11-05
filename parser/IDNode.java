@@ -1,6 +1,7 @@
 package parser;
 
 import provided.*;
+import semantics.SymbolTable;
 import java.util.ArrayList;
 
 public class IDNode implements OperandNode {
@@ -19,6 +20,12 @@ public class IDNode implements OperandNode {
         // consume the token and return a new IDNode
         tokens.remove(0);
         return new IDNode(t);
+    }
+
+    @Override
+    public String getType(SymbolTable symbolTable) {
+        // Look up the variable in the symbol table
+        return symbolTable.getVariableType(idToken.getToken());
     }
 
     public String convertToJott() {

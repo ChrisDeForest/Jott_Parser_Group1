@@ -3,6 +3,7 @@ package parser;
 import java.util.ArrayList;
 
 import provided.Token;
+import semantics.SymbolTable;
 
 public class StringLiteralNode implements ExpressionNode {
 
@@ -15,6 +16,11 @@ public class StringLiteralNode implements ExpressionNode {
     public static StringLiteralNode parseStringLiteralNode(ArrayList<Token> tokens) {
         Token t = tokens.remove(0);
         return new StringLiteralNode(t);
+    }
+
+    @Override
+    public String getType(SymbolTable symbolTable) {
+        return "String";
     }
 
     @Override

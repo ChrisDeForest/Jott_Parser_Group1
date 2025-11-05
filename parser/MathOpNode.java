@@ -2,6 +2,8 @@ package parser;
 
 import provided.Token;
 import provided.TokenType;
+import semantics.SymbolTable;
+
 import java.util.ArrayList;
 
 public class MathOpNode implements ExpressionNode{
@@ -18,6 +20,12 @@ public class MathOpNode implements ExpressionNode{
             return new MathOpNode(t);
         }
         throw new ParseException("parseMathOpNode: Expected mathematical operator, found: " + t.getToken() + " ", t);
+    }
+
+	@Override
+    public String getType(SymbolTable symbolTable) {
+        // Look up the variable in the symbol table
+        return null;
     }
 
     @Override

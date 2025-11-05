@@ -2,6 +2,7 @@ package parser;
 
 import provided.Token;
 import provided.TokenType;
+import semantics.SymbolTable;
 import java.util.ArrayList;
 
 
@@ -26,6 +27,17 @@ public class NumberNode implements OperandNode {
         // consume the token and return a new NumberNode
         tokens.remove(0);
         return new NumberNode(t, isNegative);
+    }
+
+    @Override
+    public String getType(SymbolTable symbolTable) {
+        // Check if the number contains a decimal point
+        String tokenValue = numberToken.getToken();
+        if (tokenValue.contains(".")) {
+            return "Double";
+        } else {
+            return "Integer";
+        }
     }
 
     public String convertToJott() {

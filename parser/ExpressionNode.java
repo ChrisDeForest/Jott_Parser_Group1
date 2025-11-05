@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import provided.Token;
 import provided.JottTree;
 import provided.TokenType;
+import semantics.SymbolTable;
 
 public interface ExpressionNode extends JottTree {
 		// < expr > -> < operand > | < operand > < relop > < operand > |
@@ -42,24 +43,51 @@ public interface ExpressionNode extends JottTree {
 			OperandNode right = OperandNode.parseOperand(tokens);
 			if (right == null) throw new ParseException("parseExpressionNode: Error parsing right operand", null);
 
-			return new ExpressionNode() {
-				@Override public String convertToJott(){
-					StringBuilder sb = new StringBuilder();
-					sb.append(left.convertToJott());
-					sb.append(" " + opToken + " ");
-					sb.append(right.convertToJott());
-					return sb.toString();
+		return new ExpressionNode() {
+			@Override public String convertToJott(){
+				StringBuilder sb = new StringBuilder();
+				sb.append(left.convertToJott());
+				sb.append(" " + opToken + " ");
+				sb.append(right.convertToJott());
+				return sb.toString();
+			}
+			@Override public String getType(SymbolTable symbolTable) {
+				// For relational operators, result is always Boolean
+				if (opToken.equals("==") || opToken.equals("!=") || 
+					opToken.equals("<") || opToken.equals(">") || 
+					opToken.equals("<=") || opToken.equals(">=")) {
+					return "Boolean";
 				}
-				@Override public boolean validateTree(){ return false;}
-				@Override public String convertToJava(String indentLevel){ return null;}
-				@Override public String convertToC(){ return null; }
-				@Override public String convertToPython(){ return null;}
-			};
+				// For math operators, determine result type from operands
+				String leftType = left.getType(symbolTable);
+				String rightType = right.getType(symbolTable);
+				// If either operand is Double, result is Double
+				if ("Double".equals(leftType) || "Double".equals(rightType)) {
+					return "Double";
+				}
+				// Otherwise, if both are Integer, result is Integer
+				if ("Integer".equals(leftType) && "Integer".equals(rightType)) {
+					return "Integer";
+				}
+				return null; // Type error
+			}
+			@Override public boolean validateTree(){ return false;}
+			@Override public String convertToJava(String indentLevel){ return null;}
+			@Override public String convertToC(){ return null; }
+			@Override public String convertToPython(){ return null;}
+		};
 		} else {
 			// No operator found, return single operand
 			return left;
 		}
     }
+
+	/**
+	 * Get the type of this expression
+	 * @param symbolTable The symbol table for looking up variable and function types
+	 * @return The type string ("Integer", "Double", "String", "Boolean"), or null if type cannot be determined
+	 */
+	public String getType(SymbolTable symbolTable);
 
 	@Override
 	public String convertToJott();
