@@ -63,9 +63,6 @@ public class SymbolTable {
     
     // Global function table (functions are not scoped)
     private final Map<String, FunctionInfo> functions;
-
-    // global symbol table
-    public static final SymbolTable globalSymbolTable = new SymbolTable();
     
     public SymbolTable() {
         this.variableScopes = new Stack<>();
@@ -205,7 +202,7 @@ public class SymbolTable {
     }
     
     /**
-     * Check if a function has a main function with signature: main[]:Integer
+     * Check if a function has a main function with signature: main[]:Void
      * @return true if main function exists with correct signature
      */
     public boolean hasMainFunction() {
@@ -213,8 +210,8 @@ public class SymbolTable {
         if (main == null) {
             return false;
         }
-        // Check: return type is Integer and no parameters
-        return "Integer".equals(main.getReturnType()) && main.getParamCount() == 0;
+        // Check: return type is Void and no parameters
+        return "Void".equals(main.getReturnType()) && main.getParamCount() == 0;
     }
 }
 
