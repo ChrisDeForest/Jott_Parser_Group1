@@ -63,6 +63,8 @@ public class SymbolTable {
     
     // Global function table (functions are not scoped)
     private final Map<String, FunctionInfo> functions;
+
+    public static final SymbolTable globalSymbolTable = new SymbolTable();
     
     public SymbolTable() {
         this.variableScopes = new Stack<>();
@@ -74,18 +76,18 @@ public class SymbolTable {
     /**
      * Enter a new scope (e.g., when entering a function body).
      */
-    public void enterScope() {
-        variableScopes.push(new HashMap<>());
+    public static void enterScope() {
+        globalSymbolTable.variableScopes.push(new HashMap<>());
     }
     
     /**
      * Exit the current scope (e.g., when leaving a function body).
      */
-    public void exitScope() {
-        if (variableScopes.size() <= 1) {
+    public static void exitScope() {
+        if (globalSymbolTable.variableScopes.size() <= 1) {
             throw new IllegalStateException("Cannot exit the global scope");
         }
-        variableScopes.pop();
+        globalSymbolTable.variableScopes.pop();
     }
     
     /**
@@ -94,8 +96,8 @@ public class SymbolTable {
      * @param type The variable type ("Double", "Integer", "String", "Boolean")
      * @return true if added successfully, false if variable already exists in current scope
      */
-    public boolean addVariable(String name, String type) {
-        Map<String, VariableInfo> currentScope = variableScopes.peek();
+    public static boolean addVariable(String name, String type) {
+        Map<String, VariableInfo> currentScope = globalSymbolTable.variableScopes.peek();
         if (currentScope.containsKey(name)) {
             return false;  // Variable already declared in this scope
         }
@@ -108,10 +110,10 @@ public class SymbolTable {
      * @param name The variable name
      * @return true if the variable exists, false otherwise
      */
-    public boolean variableExists(String name) {
+    public static boolean variableExists(String name) {
         // Search from current scope up to global scope
-        for (int i = variableScopes.size() - 1; i >= 0; i--) {
-            if (variableScopes.get(i).containsKey(name)) {
+        for (int i = globalSymbolTable.variableScopes.size() - 1; i >= 0; i--) {
+            if (globalSymbolTable.variableScopes.get(i).containsKey(name)) {
                 return true;
             }
         }
@@ -123,10 +125,10 @@ public class SymbolTable {
      * @param name The variable name
      * @return VariableInfo if found, null otherwise
      */
-    public VariableInfo getVariable(String name) {
+    public static VariableInfo getVariable(String name) {
         // Search from current scope up to global scope
-        for (int i = variableScopes.size() - 1; i >= 0; i--) {
-            VariableInfo info = variableScopes.get(i).get(name);
+        for (int i = globalSymbolTable.variableScopes.size() - 1; i >= 0; i--) {
+            VariableInfo info = globalSymbolTable.variableScopes.get(i).get(name);
             if (info != null) {
                 return info;
             }
@@ -139,7 +141,7 @@ public class SymbolTable {
      * @param name The variable name
      * @return The type string if found, null otherwise
      */
-    public String getVariableType(String name) {
+    public static String getVariableType(String name) {
         VariableInfo info = getVariable(name);
         return info != null ? info.getType() : null;
     }
@@ -149,7 +151,7 @@ public class SymbolTable {
      * @param name The variable name
      * @return true if variable was found and marked, false otherwise
      */
-    public boolean initializeVariable(String name) {
+    public static boolean initializeVariable(String name) {
         VariableInfo info = getVariable(name);
         if (info != null) {
             info.setInitialized(true);
@@ -165,11 +167,11 @@ public class SymbolTable {
      * @param paramTypes List of parameter types in order
      * @return true if added successfully, false if function already exists
      */
-    public boolean addFunction(String name, String returnType, List<String> paramTypes) {
-        if (functions.containsKey(name)) {
+    public static boolean addFunction(String name, String returnType, List<String> paramTypes) {
+        if (globalSymbolTable.functions.containsKey(name)) {
             return false;  // Function already defined
         }
-        functions.put(name, new FunctionInfo(returnType, paramTypes));
+        globalSymbolTable.functions.put(name, new FunctionInfo(returnType, paramTypes));
         return true;
     }
     
@@ -178,8 +180,8 @@ public class SymbolTable {
      * @param name The function name
      * @return true if the function exists, false otherwise
      */
-    public boolean functionExists(String name) {
-        return functions.containsKey(name);
+    public static boolean functionExists(String name) {
+        return globalSymbolTable.functions.containsKey(name);
     }
     
     /**
@@ -187,8 +189,8 @@ public class SymbolTable {
      * @param name The function name
      * @return FunctionInfo if found, null otherwise
      */
-    public FunctionInfo getFunction(String name) {
-        return functions.get(name);
+    public static FunctionInfo getFunction(String name) {
+        return globalSymbolTable.functions.get(name);
     }
     
     /**
@@ -196,17 +198,17 @@ public class SymbolTable {
      * @param name The function name
      * @return The return type string if found, null otherwise
      */
-    public String getFunctionReturnType(String name) {
-        FunctionInfo info = getFunction(name);
-        return info != null ? info.getReturnType() : null;
+    public static String getFunctionReturnType(String name) {
+        FunctionInfo info = globalSymbolTable.functions.get(name);
+        return info != null ? globalSymbolTable.functions.get(name).getReturnType() : null;
     }
     
     /**
      * Check if a function has a main function with signature: main[]:Void
      * @return true if main function exists with correct signature
      */
-    public boolean hasMainFunction() {
-        FunctionInfo main = functions.get("main");
+    public static boolean hasMainFunction() {
+        FunctionInfo main = globalSymbolTable.functions.get("main");
         if (main == null) {
             return false;
         }
