@@ -55,6 +55,7 @@ public class NumberNode implements OperandNode {
         return null;
     }
     public boolean validateTree() {
+        // num literals are always valid
         return true;
     }
 }

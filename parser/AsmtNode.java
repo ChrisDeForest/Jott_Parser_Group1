@@ -77,7 +77,10 @@ public class AsmtNode implements JottTree {
 
 	@Override
 	public boolean validateTree() {
-		// TODO: Implement validation logic
+		expr.validateTree();
+		id.validateTree();
+
+		
 		return false;
 	}
 

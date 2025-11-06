@@ -41,7 +41,7 @@ public class RelOpNode implements ExpressionNode {
 
 	@Override
 	public boolean validateTree() {
-		// TODO: Implement this method
+		// just returns true no validation needed
 		return true;
 	}
 

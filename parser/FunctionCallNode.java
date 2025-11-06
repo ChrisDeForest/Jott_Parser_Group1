@@ -68,6 +68,12 @@ public class FunctionCallNode implements OperandNode {
         return null;
     }
     public boolean validateTree() {
-        return false;
+        // - Verify function exists
+
+        
+        // - Check parameter count matches
+        // - Check each parameter type matches expected type
+
+        return true;
     }
 }
