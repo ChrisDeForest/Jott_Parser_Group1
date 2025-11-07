@@ -1,9 +1,8 @@
 package parser;
-
-import provided.TokenType;
-import provided.Token;
-import semantics.SymbolTable;
+import provided.*;
 import java.util.ArrayList;
+import java.util.List;
+import semantics.*;
 
 public class FunctionCallNode implements OperandNode {
     private final Token functionHeaderToken;
@@ -68,11 +67,40 @@ public class FunctionCallNode implements OperandNode {
         return null;
     }
     public boolean validateTree() {
-        // - Verify function exists
+        String funcName = functionName.getName();
+        List<JottTree> argList = params.getArgs();
+        int actualArgCount = argList.size();
 
-        
-        // - Check parameter count matches
+
+        // - Verify function exists
+        if (!SymbolTable.functionExists(funcName)) {
+            throw new SemanticException("FunctionCallNode: Function '" + funcName + "' is not declared.", functionHeaderToken);
+        }
+
+         // - Check parameter count matches
+        SymbolTable.FunctionInfo funcInfo = SymbolTable.getFunction(funcName);
+        int expectedArgCount = funcInfo.getParamCount();
+        if (expectedArgCount != actualArgCount) {
+            throw new SemanticException("FunctionCallNode: Function '" + funcName + "' expects " + expectedArgCount + " parameters, but got " + actualArgCount + ".", functionHeaderToken);
+        }
+
         // - Check each parameter type matches expected type
+        List<String> expectedParamTypes = funcInfo.getParamTypes();
+        
+        // TODO: finish IDK how to implement this yet
+        for (int i = 0; i < actualArgCount; i++) {
+
+            JottTree argNode = argList.get(i);
+            if (!argNode.validateTree()) {
+                throw new SemanticException("FunctionCallNode: Invalid parameter at position " + (i + 1) + " in function call to '" + funcName + "'.", functionHeaderToken);
+            }
+
+
+
+          
+
+        }
+
 
         return true;
     }

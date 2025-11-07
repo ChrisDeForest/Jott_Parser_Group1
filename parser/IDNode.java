@@ -1,12 +1,9 @@
 package parser;
 
 import provided.*;
-import semantics.SemanticException;
-import semantics.SymbolTable;
-import semantics.SymbolTable.VariableInfo;
+import semantics.*;
 
 import java.util.ArrayList;
-import semantics.*;
 
 public class IDNode implements OperandNode {
     private final Token idToken;
@@ -32,6 +29,11 @@ public class IDNode implements OperandNode {
         return symbolTable.getVariableType(idToken.getToken());
     }
 
+    public String getName() {
+        // returns string name of ID
+        return idToken.getToken();
+    }
+
     public String convertToJott() {
         // returns a string representation of the token/ID
         return idToken.getToken();
@@ -45,18 +47,20 @@ public class IDNode implements OperandNode {
     public String convertToPython() {
         return null;
     }
+
+
     public boolean validateTree() {
         String varName = idToken.getToken();
 
         // check if var exists
         if (!SymbolTable.variableExists(varName)) {
-            throw new SemanticException("parseIdNode: Variable '" + varName + "' is not declared.", idToken);
+            throw new SemanticException("IdNode: Variable '" + varName + "' is not declared.", idToken);
         }
         
-        VariableInfo varInfo = SymbolTable.getVariable(varName);
+        SymbolTable.VariableInfo varInfo = SymbolTable.getVariable(varName);
          // check if var is initialized before use
         if (!varInfo.isInitialized()) {
-            throw new SemanticException("parseIdNode: Variable '" + varName + "' is not initialized before use.", idToken);
+            throw new SemanticException("IdNode: Variable '" + varName + "' is not initialized before use.", idToken);
         }
 
         return true;
