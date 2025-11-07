@@ -30,7 +30,7 @@ public class FunctionDefNode implements JottTree {
 
         // Check for "Def" keyword
         Token defToken = tokens.get(0);
-        if (defToken.getTokenType() != TokenType.ID_KEYWORD || !defToken.getToken().equals("Def")) {
+        if (defToken.getTokenType() != TokenType.ID_KEYWORD || (!defToken.getToken().equals("Def") && !defToken.getToken().equals("def"))) {
             throw new ParseException("parseFunctionDefNode: Expected 'Def' keyword, got '" + defToken.getToken() + "'",
                     defToken);
         }

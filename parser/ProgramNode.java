@@ -20,7 +20,7 @@ public class ProgramNode implements JottTree {
         while (!tokens.isEmpty()) {
             Token t = tokens.get(0);
 
-            if (t.getTokenType() == TokenType.ID_KEYWORD && t.getToken().equals("Def")) {
+            if (t.getTokenType() == TokenType.ID_KEYWORD && (t.getToken().equals("Def") || t.getToken().equals("def"))) {
                 // Will throw ParseException if it fails
                 FunctionDefNode funcDef = FunctionDefNode.parseFunctionDefNode(tokens);
                 functionDefs.add(funcDef);
