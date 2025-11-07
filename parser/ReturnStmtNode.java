@@ -3,14 +3,18 @@ package parser;
 import provided.Token;
 import provided.TokenType;
 import provided.JottTree;
+import semantics.SemanticException;
+import semantics.SymbolTable;
 
 import java.util.ArrayList;
 
 public class ReturnStmtNode implements JottTree {
+    private final Token returnToken;
     private final ExpressionNode expression;
     private final boolean isEmpty;
 
-    public ReturnStmtNode(ExpressionNode expression, boolean isEmpty) {
+    public ReturnStmtNode(ExpressionNode expression, boolean isEmpty, Token returnToken) {
+        this.returnToken = returnToken;
         this.expression = expression;
         this.isEmpty = isEmpty;
     }
@@ -27,7 +31,7 @@ public class ReturnStmtNode implements JottTree {
         // TokenType would be R_Bracket leading to epsilon)
         if (t.getTokenType() != TokenType.ID_KEYWORD || !t.getToken().equals("Return")) {
             // Epsilon case - no return statement
-            return new ReturnStmtNode(null, true);
+            return new ReturnStmtNode(null, true, t);
         }
 
         // Consume "Return" keyword
@@ -51,7 +55,7 @@ public class ReturnStmtNode implements JottTree {
         // Consume semicolon
         tokens.remove(0);
 
-        return new ReturnStmtNode(expr, false);
+        return new ReturnStmtNode(expr, false, t);
     }
 
     @Override
@@ -79,17 +83,42 @@ public class ReturnStmtNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        return validateTree("Void");
     }
 
     // parser/ReturnStmtNode.java
     public boolean validateTree(String expectedReturnType) {
-        // For now, just reuse your existing logic.
-        // Later you can:
-        // - if expectedReturnType == "Void": ensure either no expr, or error if there
-        // is an expr
-        // - else: ensure an expr exists and expr.getType().equals(expectedReturnType)
-        return validateTree();
+        String expectedType = expectedReturnType;
+
+        if (isEmpty) {
+            if ("Void".equals(expectedType)) {
+                return true;
+            }
+            throw new SemanticException(
+                    "ReturnStmtNode: Expected a return value of type '" + expectedType + "', but no value was returned.", null);
+        }
+
+        if (expression == null) {
+            throw new SemanticException("ReturnStmtNode: Return statement without an expression.", returnToken);
+        }
+
+        String exprType = expression.getType(SymbolTable.globalSymbolTable);
+
+        if ("Void".equals(expectedType)) {
+            throw new SemanticException("ReturnStmtNode: Void functions must not return a value.", returnToken);
+        }
+
+        if (exprType == null) {
+            throw new SemanticException(
+                    "ReturnStmtNode: Unable to determine the type of the return expression.", returnToken);
+        }
+
+        if (!exprType.equals(expectedType)) {
+            throw new SemanticException(
+                    "ReturnStmtNode: Return type mismatch. Expected '" + expectedType + "', but found '" + exprType + "'.", returnToken);
+        }
+
+        return true;
     }
 
 }

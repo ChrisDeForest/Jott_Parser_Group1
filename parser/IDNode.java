@@ -58,19 +58,6 @@ public class IDNode implements OperandNode {
     }
 
     public boolean validateTree() {
-        String varName = idToken.getToken();
-
-        // check if var exists
-        if (!SymbolTable.variableExists(varName)) {
-            throw new SemanticException("IdNode: Variable '" + varName + "' is not declared.", idToken);
-        }
-
-        SymbolTable.VariableInfo varInfo = SymbolTable.getVariable(varName);
-        // check if var is initialized before use
-        if (!varInfo.isInitialized()) {
-            throw new SemanticException("IdNode: Variable '" + varName + "' is not initialized before use.", idToken);
-        }
-
         return true;
     }
 }
