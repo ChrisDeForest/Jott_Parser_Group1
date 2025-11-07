@@ -22,8 +22,9 @@ public class ReturnStmtNode implements JottTree {
         }
 
         Token t = tokens.get(0);
-        
-        // Check if this is a Return statement (If there is no return statement, the TokenType would be R_Bracket leading to epsilon)
+
+        // Check if this is a Return statement (If there is no return statement, the
+        // TokenType would be R_Bracket leading to epsilon)
         if (t.getTokenType() != TokenType.ID_KEYWORD || !t.getToken().equals("Return")) {
             // Epsilon case - no return statement
             return new ReturnStmtNode(null, true);
@@ -42,7 +43,9 @@ public class ReturnStmtNode implements JottTree {
 
         Token semicolon = tokens.get(0);
         if (semicolon.getTokenType() != TokenType.SEMICOLON) {
-            throw new ParseException("parseReturnStmtNode: Expected ';' after return expression, got '" + semicolon.getToken() + "'", semicolon);
+            throw new ParseException(
+                    "parseReturnStmtNode: Expected ';' after return expression, got '" + semicolon.getToken() + "'",
+                    semicolon);
         }
 
         // Consume semicolon
@@ -78,4 +81,15 @@ public class ReturnStmtNode implements JottTree {
     public boolean validateTree() {
         return false;
     }
+
+    // parser/ReturnStmtNode.java
+    public boolean validateTree(String expectedReturnType) {
+        // For now, just reuse your existing logic.
+        // Later you can:
+        // - if expectedReturnType == "Void": ensure either no expr, or error if there
+        // is an expr
+        // - else: ensure an expr exists and expr.getType().equals(expectedReturnType)
+        return validateTree();
+    }
+
 }

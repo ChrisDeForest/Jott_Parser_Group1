@@ -13,11 +13,13 @@ public class IDNode implements OperandNode {
     }
 
     public static IDNode parseIDNode(ArrayList<Token> tokens) {
-        if (tokens.isEmpty()) throw new ParseException("parseIDNode: Unexpected EOF", null);
-		
+        if (tokens.isEmpty())
+            throw new ParseException("parseIDNode: Unexpected EOF", null);
+
         Token t = tokens.get(0);
-        if (t.getTokenType() != TokenType.ID_KEYWORD) throw new ParseException("parseIDNode: Missing an ID Keyword", t);
-        
+        if (t.getTokenType() != TokenType.ID_KEYWORD)
+            throw new ParseException("parseIDNode: Missing an ID Keyword", t);
+
         // consume the token and return a new IDNode
         tokens.remove(0);
         return new IDNode(t);
@@ -29,6 +31,10 @@ public class IDNode implements OperandNode {
         return symbolTable.getVariableType(idToken.getToken());
     }
 
+    public provided.Token getToken() {
+        return idToken;
+    }
+
     public String getName() {
         // returns string name of ID
         return idToken.getToken();
@@ -38,16 +44,18 @@ public class IDNode implements OperandNode {
         // returns a string representation of the token/ID
         return idToken.getToken();
     }
+
     public String convertToJava(String classname) {
         return null;
     }
+
     public String convertToC() {
         return null;
     }
+
     public String convertToPython() {
         return null;
     }
-
 
     public boolean validateTree() {
         String varName = idToken.getToken();
@@ -56,9 +64,9 @@ public class IDNode implements OperandNode {
         if (!SymbolTable.variableExists(varName)) {
             throw new SemanticException("IdNode: Variable '" + varName + "' is not declared.", idToken);
         }
-        
+
         SymbolTable.VariableInfo varInfo = SymbolTable.getVariable(varName);
-         // check if var is initialized before use
+        // check if var is initialized before use
         if (!varInfo.isInitialized()) {
             throw new SemanticException("IdNode: Variable '" + varName + "' is not initialized before use.", idToken);
         }
