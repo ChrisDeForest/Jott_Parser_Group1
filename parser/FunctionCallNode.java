@@ -47,7 +47,7 @@ public class FunctionCallNode implements OperandNode {
     public String getType(SymbolTable symbolTable) {
         // Look up the function in the symbol table and return its return type
         String funcName = functionName.convertToJott();
-        return symbolTable.getFunctionReturnType(funcName);
+        return SymbolTable.getFunctionReturnType(funcName);
     }
 
     public String convertToJott() {
@@ -95,7 +95,10 @@ public class FunctionCallNode implements OperandNode {
             String actualType = argNode.getType(SymbolTable.globalSymbolTable);
             String expectedType = expectedParamTypes.get(i);
             if (!actualType.equals(expectedType)) {
-                throw new SemanticException("FunctionCallNode: Parameter " + (i + 1) + " of function '" + funcName + "' expects type '" + expectedType + "', but got '" + actualType + "'.", functionHeaderToken);
+                if(!(expectedType.equals("Any") && (actualType.equals("Double") || actualType.equals("Integer") || actualType.equals("String") || actualType.equals("Boolean")))){
+                    throw new SemanticException("FunctionCallNode: Parameter " + (i + 1) + " of function '" + funcName + "' expects type '" + expectedType + "', but got '" + actualType + "'.", functionHeaderToken);
+
+                }
             }
         }
 
