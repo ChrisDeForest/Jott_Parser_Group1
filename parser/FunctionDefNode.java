@@ -149,23 +149,56 @@ public class FunctionDefNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        functionId.validateTree();
-        params.validateTree();
-        returnType.validateTree();
-        body.validateTree();
+        boolean ok = true;
 
-        // - Enter new variable scope
+        // 1) DO NOT validate the function identifier as a variable.
+        // It's a function name, not a var use.
+        // functionId.validateTree(); // <-- remove this line
+
+        // These two are fine: they check syntax/types (not symbol lookups).
+        if (params != null)
+            ok &= params.validateTree();
+        ok &= returnType.validateTree();
+
+        // 2) New scope for the function body (so params live inside it)
         SymbolTable.enterScope();
+        try {
+            // 3) Add params to the current scope as initialized variables.
+            // You need names AND types. Adapt the accessor to whatever you have.
+            // Example API — adjust to your real methods:
+            // params.getParamEntries() -> List<ParamEntry>
+            // ParamEntry#getNameToken(), #getTypeToken()
+            if (params != null) {
+                for (var p : params.getParamEntries()) {
+                    String pname = p.getNameToken().getToken();
+                    String ptype = p.getTypeToken().getToken();
 
-        // - Add parameters as initialized variables
-        // for (VarDecNode param : params.getParamList()) {
-        // param.validateTree(); // this will throw error if false
-        // }
+                    // declare
+                    if (!SymbolTable.addVariable(pname, ptype)) {
+                        throw new semantics.SemanticException(
+                                "Duplicate parameter " + pname, p.getNameToken());
+                    }
+                    // mark initialized so it can be used immediately
+                    SymbolTable.initializeVariable(pname);
+                }
+            }
 
-        // - Validate function body
-        // - Check return statements match return type
-        // - Exit scope
+            // 4) Validate the body with awareness of the function’s return type.
+            // Ideally your FBodyNode has a validateTree(expectedReturnType) that
+            // checks "all paths return" when expectedReturnType != "Void".
+            String expectedReturn = returnType.isVoid() ? "Void" : returnType.getReturnTypeToken().getToken();
 
-        return true;
+            ok &= body.validateTree(expectedReturn);
+
+        } catch (semantics.SemanticException se) {
+            System.err.println(se.getMessage());
+            return false;
+        } finally {
+            // 5) Always leave the function scope
+            SymbolTable.exitScope();
+        }
+
+        return ok;
     }
+
 }

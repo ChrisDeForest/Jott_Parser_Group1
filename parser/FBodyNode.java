@@ -9,7 +9,7 @@ import provided.TokenType;
 public class FBodyNode implements JottTree {
     private final ArrayList<VarDecNode> varDecs;
     private final BodyNode body;
-    
+
     public FBodyNode(ArrayList<VarDecNode> varDecs, BodyNode body) {
         this.varDecs = varDecs;
         this.body = body;
@@ -17,24 +17,21 @@ public class FBodyNode implements JottTree {
 
     public static FBodyNode parseFBodyNode(ArrayList<Token> tokens) {
         if (tokens.isEmpty()) {
-			throw new ParseException("parseFBodyNody: Unexpected EOF while parsing <f_body>", null);
-		}
+            throw new ParseException("parseFBodyNody: Unexpected EOF while parsing <f_body>", null);
+        }
         ArrayList<VarDecNode> varDecs = new ArrayList<>();
 
         // Parse zero or more variable declarations (Kleene star)
-        // A variable declaration starts with a type keyword (Double, Integer, String, or Boolean)
+        // A variable declaration starts with a type keyword (Double, Integer, String,
+        // or Boolean)
         while (!tokens.isEmpty()) {
             Token t = tokens.get(0);
-            
-            // Check if this is a type keyword (start of var_dec)
-            if (t.getTokenType() == TokenType.ID_KEYWORD && 
-                (t.getToken().equals("Double") || t.getToken().equals("Integer") || 
-                 t.getToken().equals("String") || t.getToken().equals("Boolean"))) {
-                // Will throw ParseException if it fails
+            if (t.getTokenType() == provided.TokenType.ID_KEYWORD &&
+                    ("Double".equals(t.getToken()) || "Integer".equals(t.getToken()) ||
+                            "String".equals(t.getToken()) || "Boolean".equals(t.getToken()))) {
                 VarDecNode varDec = VarDecNode.parseVarDecNode(tokens);
                 varDecs.add(varDec);
             } else {
-                // Not a variable declaration, break to parse body
                 break;
             }
         }
@@ -72,6 +69,17 @@ public class FBodyNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        return validateTree("Void");
+    }
+
+    // NEW: used by FunctionDefNode
+    public boolean validateTree(String expectedReturnType) {
+        boolean ok = true;
+        for (VarDecNode v : varDecs) {
+            ok &= v.validateTree(); // typical place where vars hit the symbol table
+        }
+        // Have BodyNode enforce statements & return rules knowing the expected type
+        ok &= body.validateTree(expectedReturnType);
+        return ok;
     }
 }
