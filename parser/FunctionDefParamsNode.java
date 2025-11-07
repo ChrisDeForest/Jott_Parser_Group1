@@ -44,7 +44,8 @@ public class FunctionDefParamsNode implements JottTree {
         // first param: <id> : <type>
         Token idTok = tokens.get(0);
         if (idTok.getTokenType() != TokenType.ID_KEYWORD) {
-            throw new ParseException("parseFunctionDefParamsNode: Expected parameter name (id) in function definition", idTok);
+            throw new ParseException("parseFunctionDefParamsNode: Expected parameter name (id) in function definition",
+                    idTok);
         }
         tokens.remove(0); // consume id
 
@@ -73,10 +74,18 @@ public class FunctionDefParamsNode implements JottTree {
         Token t = tokens.get(0);
         String s = t.getToken();
         if (!("Double".equals(s) || "Integer".equals(s) || "String".equals(s) || "Boolean".equals(s))) {
-            throw new ParseException("parseFunctionDefParamsNode: Expected a type (Double | Integer | String | Boolean)", t);
+            throw new ParseException(
+                    "parseFunctionDefParamsNode: Expected a type (Double | Integer | String | Boolean)", t);
         }
         tokens.remove(0);
         return t;
+    }
+
+    public java.util.List<provided.Token> getParamTypeTokens() {
+        java.util.List<provided.Token> out = new java.util.ArrayList<>();
+        for (var p : params)
+            out.add(p.type);
+        return out;
     }
 
     @Override

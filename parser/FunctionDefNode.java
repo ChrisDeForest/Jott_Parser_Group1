@@ -12,8 +12,9 @@ public class FunctionDefNode implements JottTree {
     private final FunctionDefParamsNode params;
     private final FunctionReturnNode returnType;
     private final FBodyNode body;
-    
-    public FunctionDefNode(IDNode functionId, FunctionDefParamsNode params, FunctionReturnNode returnType, FBodyNode body) {
+
+    public FunctionDefNode(IDNode functionId, FunctionDefParamsNode params, FunctionReturnNode returnType,
+            FBodyNode body) {
         this.functionId = functionId;
         this.params = params;
         this.returnType = returnType;
@@ -22,86 +23,113 @@ public class FunctionDefNode implements JottTree {
 
     public static FunctionDefNode parseFunctionDefNode(ArrayList<Token> tokens) {
         // <function_def> -> Def <id> [function_def_params]:<function_return>{<f_body>}
-        
+
         if (tokens.isEmpty()) {
             throw new ParseException("parseFunctionDefNode: Unexpected EOF while parsing function definition", null);
         }
-        
+
         // Check for "Def" keyword
         Token defToken = tokens.get(0);
         if (defToken.getTokenType() != TokenType.ID_KEYWORD || !defToken.getToken().equals("Def")) {
-            throw new ParseException("parseFunctionDefNode: Expected 'Def' keyword, got '" + defToken.getToken() + "'", defToken);
+            throw new ParseException("parseFunctionDefNode: Expected 'Def' keyword, got '" + defToken.getToken() + "'",
+                    defToken);
         }
         tokens.remove(0); // consume "Def"
-        
+
         // Parse function ID
         IDNode functionId = IDNode.parseIDNode(tokens);
-        
+
         // Check for opening bracket '['
         if (tokens.isEmpty()) {
             throw new ParseException("parseFunctionDefNode: Unexpected EOF after function name", null);
         }
         Token openBracket = tokens.get(0);
         if (openBracket.getTokenType() != TokenType.L_BRACKET) {
-            throw new ParseException("parseFunctionDefNode: Expected '[' after function name, got '" + openBracket.getToken() + "'", openBracket);
+            throw new ParseException(
+                    "parseFunctionDefNode: Expected '[' after function name, got '" + openBracket.getToken() + "'",
+                    openBracket);
         }
         tokens.remove(0); // consume '['
-        
+
         // Parse function parameters
         FunctionDefParamsNode params = FunctionDefParamsNode.parseFunctionDefParamsNode(tokens);
-        
+
         // Check for closing bracket ']'
         if (tokens.isEmpty()) {
             throw new ParseException("parseFunctionDefNode: Unexpected EOF after function parameters", null);
         }
         Token closeBracket = tokens.get(0);
         if (closeBracket.getTokenType() != TokenType.R_BRACKET) {
-            throw new ParseException("parseFunctionDefNode: Expected ']' after function parameters, got '" + closeBracket.getToken() + "'", closeBracket);
+            throw new ParseException("parseFunctionDefNode: Expected ']' after function parameters, got '"
+                    + closeBracket.getToken() + "'", closeBracket);
         }
         tokens.remove(0); // consume ']'
-        
+
         // Check for colon ':'
         if (tokens.isEmpty()) {
             throw new ParseException("parseFunctionDefNode: Unexpected EOF after function parameters", null);
         }
         Token colon = tokens.get(0);
         if (colon.getTokenType() != TokenType.COLON) {
-            throw new ParseException("parseFunctionDefNode: Expected ':' after function parameters, got '" + colon.getToken() + "'", colon);
+            throw new ParseException(
+                    "parseFunctionDefNode: Expected ':' after function parameters, got '" + colon.getToken() + "'",
+                    colon);
         }
         tokens.remove(0); // consume ':'
-        
+
         // Parse return type
         FunctionReturnNode returnType = FunctionReturnNode.parseFunctionReturnNode(tokens);
-        
+
         // Check for opening brace '{'
         if (tokens.isEmpty()) {
             throw new ParseException("parseFunctionDefNode: Unexpected EOF after function return type", null);
         }
         Token openBrace = tokens.get(0);
         if (openBrace.getTokenType() != TokenType.L_BRACE) {
-            throw new ParseException("parseFunctionDefNode: Expected '{' after function return type, got '" + openBrace.getToken() + "'", openBrace);
+            throw new ParseException(
+                    "parseFunctionDefNode: Expected '{' after function return type, got '" + openBrace.getToken() + "'",
+                    openBrace);
         }
         tokens.remove(0); // consume '{'
-        
+
         // Parse function body
         FBodyNode body = FBodyNode.parseFBodyNode(tokens);
-        
+
         // Check for closing brace '}'
         if (tokens.isEmpty()) {
             throw new ParseException("parseFunctionDefNode: Unexpected EOF after function body", null);
         }
         Token closeBrace = tokens.get(0);
         if (closeBrace.getTokenType() != TokenType.R_BRACE) {
-            throw new ParseException("parseFunctionDefNode: Expected '}' after function body, got '" + closeBrace.getToken() + "'", closeBrace);
+            throw new ParseException(
+                    "parseFunctionDefNode: Expected '}' after function body, got '" + closeBrace.getToken() + "'",
+                    closeBrace);
         }
         tokens.remove(0); // consume '}'
-        
+
         return new FunctionDefNode(functionId, params, returnType, body);
+    }
+
+    public IDNode getId() {
+        return functionId;
+    }
+
+    public FunctionDefParamsNode getParams() {
+        return params;
+    }
+
+    public FunctionReturnNode getReturnType() {
+        return returnType;
+    }
+
+    public FBodyNode getBody() {
+        return body;
     }
 
     @Override
     public String convertToJott() {
-        return "Def " + functionId.convertToJott() + "[" + params.convertToJott() + "]:" + returnType.convertToJott() + "{" + body.convertToJott() + "}";
+        return "Def " + functionId.convertToJott() + "[" + params.convertToJott() + "]:" + returnType.convertToJott()
+                + "{" + body.convertToJott() + "}";
     }
 
     @Override
@@ -126,21 +154,17 @@ public class FunctionDefNode implements JottTree {
         returnType.validateTree();
         body.validateTree();
 
-        //- Enter new variable scope
+        // - Enter new variable scope
         SymbolTable.enterScope();
 
         // - Add parameters as initialized variables
         // for (VarDecNode param : params.getParamList()) {
-        //     param.validateTree(); // this will throw error if false
+        // param.validateTree(); // this will throw error if false
         // }
-
 
         // - Validate function body
         // - Check return statements match return type
         // - Exit scope
-
-
-
 
         return true;
     }
