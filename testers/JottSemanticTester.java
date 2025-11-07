@@ -50,7 +50,7 @@ public class JottSemanticTester {
         this.testCases.add(new TestCase("function call param type not matching", "funcCallParamInvalid.jott", SEMANTIC, true));
         this.testCases.add(new TestCase("function not defined", "funcNotDefined.jott", SEMANTIC, true));
         this.testCases.add(new TestCase("i_expr relop d_expr function return", "funcReturnInExpr.jott", SEMANTIC, true));
-        this.testCases.add(new TestCase("main must be integer", "mainReturnNotInt.jott", SEMANTIC, true));
+        this.testCases.add(new TestCase("main must be void", "mainReturnNotInt.jott", SEMANTIC, true));
         this.testCases.add(new TestCase("mismatch return type", "mismatchedReturn.jott", SEMANTIC, true));
         this.testCases.add(new TestCase("missing main", "missingMain.jott", SEMANTIC, true));
         this.testCases.add(new TestCase("missing return", "missingReturn.jott", SEMANTIC, true));
