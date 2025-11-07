@@ -114,7 +114,12 @@ public class BodyNode implements JottTree {
 
 		// Special case: if we're inside a while loop or if statement body, skip return validation
 		// Returns inside these structures don't guarantee a function return
-		if ("__WHILE_LOOP_BODY__".equals(expectedReturnType) || "__IF_STATEMENT_BODY__".equals(expectedReturnType)) {
+		if ("__WHILE_LOOP_BODY__".equals(expectedReturnType)) {
+			// Still validate the return statement exists syntactically, but don't check types
+			// We just validate statements, not the return
+			return ok;
+		}
+		if ("__IF_STATEMENT_BODY__".equals(expectedReturnType)) {
 			// Still validate the return statement exists syntactically, but don't check types
 			// We just validate statements, not the return
 			return ok;

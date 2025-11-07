@@ -162,7 +162,6 @@ public class FunctionDefNode implements JottTree {
 
         // 2) New scope for the function body (so params live inside it)
         SymbolTable.enterScope();
-        try {
             // 3) Add params to the current scope as initialized variables.
             // You need names AND types. Adapt the accessor to whatever you have.
             // Example API — adjust to your real methods:
@@ -188,15 +187,10 @@ public class FunctionDefNode implements JottTree {
             // checks "all paths return" when expectedReturnType != "Void".
             String expectedReturn = returnType.isVoid() ? "Void" : returnType.getReturnTypeToken().getToken();
 
-            ok &= body.validateTree(expectedReturn);
+        ok &= body.validateTree(expectedReturn);
 
-        } catch (semantics.SemanticException se) {
-            System.err.println(se.getMessage());
-            return false;
-        } finally {
-            // 5) Always leave the function scope
-            SymbolTable.exitScope();
-        }
+        // 5) Always leave the function scope
+        SymbolTable.exitScope();
 
         return ok;
     }
