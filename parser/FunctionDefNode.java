@@ -8,13 +8,15 @@ import provided.TokenType;
 import semantics.SymbolTable;
 
 public class FunctionDefNode implements JottTree {
+    private final Token defToken;
     private final IDNode functionId;
     private final FunctionDefParamsNode params;
     private final FunctionReturnNode returnType;
     private final FBodyNode body;
 
-    public FunctionDefNode(IDNode functionId, FunctionDefParamsNode params, FunctionReturnNode returnType,
+    public FunctionDefNode(Token defToken, IDNode functionId, FunctionDefParamsNode params, FunctionReturnNode returnType,
             FBodyNode body) {
+        this.defToken = defToken;
         this.functionId = functionId;
         this.params = params;
         this.returnType = returnType;
@@ -107,28 +109,28 @@ public class FunctionDefNode implements JottTree {
         }
         tokens.remove(0); // consume '}'
 
-        return new FunctionDefNode(functionId, params, returnType, body);
+        return new FunctionDefNode(defToken, functionId, params, returnType, body);
     }
 
     public IDNode getId() {
-        return functionId;
+        return this.functionId;
     }
 
     public FunctionDefParamsNode getParams() {
-        return params;
+        return this.params;
     }
 
     public FunctionReturnNode getReturnType() {
-        return returnType;
+        return this.returnType;
     }
 
     public FBodyNode getBody() {
-        return body;
+        return this.body;
     }
 
     @Override
     public String convertToJott() {
-        return "Def " + functionId.convertToJott() + "[" + params.convertToJott() + "]:" + returnType.convertToJott()
+        return this.defToken.getToken() + " " + this.functionId.convertToJott() + "[" + this.params.convertToJott() + "]:" + this.returnType.convertToJott()
                 + "{" + body.convertToJott() + "}";
     }
 
