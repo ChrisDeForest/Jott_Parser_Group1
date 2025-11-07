@@ -2,15 +2,16 @@ package parser;
 import java.util.ArrayList;
 
 import provided.*;
+import semantics.*;
 
 public class ElseIfNode implements JottTree {
     private final Token elseIfToken;
-    private final ExpressionNode expression;
+    private final ExpressionNode condition;
     private final BodyNode body;
 
-    public ElseIfNode(Token elseIftoken, ExpressionNode expression, BodyNode body) {
+    public ElseIfNode(Token elseIftoken, ExpressionNode condition, BodyNode body) {
         this.elseIfToken = elseIftoken;
-        this.expression = expression;
+        this.condition = condition;
         this.body = body;
     }
 
@@ -73,7 +74,7 @@ public class ElseIfNode implements JottTree {
     @Override
     public String convertToJott() {
         // Elseif [ < expr >]{ < body >}
-        return "Elseif [" + this.expression.convertToJott() + "]{" + this.body.convertToJott() + "}";
+        return "Elseif [" + this.condition.convertToJott() + "]{" + this.body.convertToJott() + "}";
     }
 
     @Override
@@ -93,6 +94,14 @@ public class ElseIfNode implements JottTree {
 
     @Override
     public boolean validateTree() {
+		condition.validateTree(); // throws error if false
+
+		String type = condition.getType(SymbolTable.globalSymbolTable);
+		if (!type.equals("Boolean")) {
+			throw new SemanticException("ElseIfNode: Elseif condition must be of type Boolean, but got '" + type + "'.", elseIfToken);
+		}
+
+		body.validateTree();
         return false;
     }
     

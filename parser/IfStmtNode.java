@@ -3,6 +3,7 @@ package parser;
 import provided.Token;
 import provided.TokenType;
 import provided.JottTree;
+import semantics.*;
 
 import java.util.ArrayList;
 
@@ -137,6 +138,19 @@ public class IfStmtNode implements JottTree {
 
     @Override
     public boolean validateTree() {
+        condition.validateTree(); // throws error if false
+
+        String type = condition.getType(SymbolTable.globalSymbolTable);
+        if (!type.equals("Boolean")) {
+            throw new SemanticException("IfStmtNode: If statement condition must be of type Boolean, but got '" + type + "'.", null);
+        }
+        body.validateTree();
+
+        for (ElseIfNode elseIf : elseIfList) {
+            elseIf.validateTree();
+        }
+
+        elseNode.validateTree();
         return false;
     }
 }

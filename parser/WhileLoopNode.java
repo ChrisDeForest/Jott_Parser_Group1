@@ -1,5 +1,7 @@
 package parser;
 import provided.*;
+import semantics.*;
+
 import java.util.ArrayList;
 
 public class WhileLoopNode implements JottTree{
@@ -84,7 +86,16 @@ public class WhileLoopNode implements JottTree{
 
 	@Override
 	public boolean validateTree() {
-		// TODO: Implement validation logic
+		condition.validateTree(); // throws error if false
+
+	
+		// check if condition is a boolean
+		String type = condition.getType(SymbolTable.globalSymbolTable);
+		if (!type.equals("Boolean")) {
+			throw new SemanticException("WhileLoopNode: While loop condition must be of type Boolean, but got '" + type + "'.", whileToken);
+		}
+		
+		body.validateTree();
 		return true;
 	}
 

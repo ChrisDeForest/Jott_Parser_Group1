@@ -83,7 +83,9 @@ public class ElseNode implements JottTree{
 
     @Override
     public boolean validateTree() {
-        // TODO: Implement validation logic
+        if (this.isEmpty) {return true;} // if empty, nothing to validate
+
+        bodyNode.validateTree();
         return true;
     }
 }
