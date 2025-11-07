@@ -55,6 +55,8 @@ public class ParamTNode implements JottTree {
 
     @Override
     public boolean validateTree() {
+        // i dont think this actually ever gets called bc of how params is implemented
+        expr.validateTree();
         return true;
     }
 }

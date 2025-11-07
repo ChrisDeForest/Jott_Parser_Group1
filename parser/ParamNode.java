@@ -71,6 +71,9 @@ public class ParamNode implements JottTree {
 
     @Override
     public boolean validateTree() {
+        for (ExpressionNode arg : args) {
+            arg.validateTree();
+        }
         return true;
     }
 

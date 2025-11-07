@@ -35,7 +35,7 @@ public class StringLiteralNode implements ExpressionNode {
 
     @Override
     public boolean validateTree() {
-        return true;
+        return true; // String literals are always valid
     }
 
 
