@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class ParamTNode implements JottTree {
 
-    final JottTree expr; // ExpressionNode
+    final ExpressionNode expr; // ExpressionNode
 
-    public ParamTNode(JottTree expr) {
+    public ParamTNode(ExpressionNode expr) {
         this.expr = expr;
     }
 
@@ -25,8 +25,12 @@ public class ParamTNode implements JottTree {
         }
         tokens.remove(0);
 
-        JottTree e = ExpressionNode.parseExpressionNode(tokens);
+        ExpressionNode e = ExpressionNode.parseExpressionNode(tokens);
         return new ParamTNode(e);
+    }
+
+    public ExpressionNode getExprNode() {
+        return expr;
     }
 
     @Override

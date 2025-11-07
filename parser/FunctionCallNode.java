@@ -68,7 +68,7 @@ public class FunctionCallNode implements OperandNode {
     }
     public boolean validateTree() {
         String funcName = functionName.getName();
-        List<JottTree> argList = params.getArgs();
+        List<ExpressionNode> argList = params.getArgs();
         int actualArgCount = argList.size();
 
 
@@ -86,19 +86,17 @@ public class FunctionCallNode implements OperandNode {
 
         // - Check each parameter type matches expected type
         List<String> expectedParamTypes = funcInfo.getParamTypes();
-        
-        // TODO: finish IDK how to implement this yet
+            
         for (int i = 0; i < actualArgCount; i++) {
 
-            JottTree argNode = argList.get(i);
-            if (!argNode.validateTree()) {
-                throw new SemanticException("FunctionCallNode: Invalid parameter at position " + (i + 1) + " in function call to '" + funcName + "'.", functionHeaderToken);
+            ExpressionNode argNode = argList.get(i);
+            argNode.validateTree(); // this will throw error if false
+
+            String actualType = argNode.getType(SymbolTable.globalSymbolTable);
+            String expectedType = expectedParamTypes.get(i);
+            if (!actualType.equals(expectedType)) {
+                throw new SemanticException("FunctionCallNode: Parameter " + (i + 1) + " of function '" + funcName + "' expects type '" + expectedType + "', but got '" + actualType + "'.", functionHeaderToken);
             }
-
-
-
-          
-
         }
 
 

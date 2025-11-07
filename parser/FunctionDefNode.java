@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import provided.JottTree;
 import provided.Token;
 import provided.TokenType;
+import semantics.SymbolTable;
 
 public class FunctionDefNode implements JottTree {
     private final IDNode functionId;
@@ -120,6 +121,27 @@ public class FunctionDefNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        functionId.validateTree();
+        params.validateTree();
+        returnType.validateTree();
+        body.validateTree();
+
+        //- Enter new variable scope
+        SymbolTable.enterScope();
+
+        // - Add parameters as initialized variables
+        // for (VarDecNode param : params.getParamList()) {
+        //     param.validateTree(); // this will throw error if false
+        // }
+
+
+        // - Validate function body
+        // - Check return statements match return type
+        // - Exit scope
+
+
+
+
+        return true;
     }
 }

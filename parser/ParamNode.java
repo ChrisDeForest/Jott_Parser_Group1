@@ -9,15 +9,15 @@ import java.util.List;
 
 public class ParamNode implements JottTree {
 
-    private final List<JottTree> args; // each is an ExpressionNode
+    private final List<ExpressionNode> args; // each is an ExpressionNode
 
-    public ParamNode(List<JottTree> args) {
+    public ParamNode(List<ExpressionNode> args) {
         this.args = args;
     }
 
     // <params> -> <expr> <params_t>* | ε
     public static ParamNode parseParamNode(ArrayList<Token> tokens) {
-        List<JottTree> list = new ArrayList<>();
+        List<ExpressionNode> list = new ArrayList<>();
 
         if (tokens.isEmpty())
             throw new ParseException("parseParamNode: Unexpected EOF parsing function call params", null);
@@ -28,13 +28,14 @@ public class ParamNode implements JottTree {
         }
 
         // First <expr>
-        JottTree first = ExpressionNode.parseExpressionNode(tokens);
+        ExpressionNode first = ExpressionNode.parseExpressionNode(tokens);
         list.add(first);
 
         // Zero or more tails
         while (!tokens.isEmpty() && tokens.get(0).getTokenType() == TokenType.COMMA) {
-            ParamTNode tail = ParamTNode.parseParamTNode(tokens);
-            list.add(tail.expr);
+            ParamTNode paramTail = ParamTNode.parseParamTNode(tokens);
+            ExpressionNode paramT_expr_node = paramTail.getExprNode();
+            list.add(paramT_expr_node);
         }
 
         return new ParamNode(list);
@@ -73,7 +74,7 @@ public class ParamNode implements JottTree {
         return true;
     }
 
-    public List<JottTree> getArgs() {
+    public List<ExpressionNode> getArgs() {
         return args;
     }
 }
