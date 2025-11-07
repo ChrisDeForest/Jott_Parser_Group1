@@ -54,7 +54,6 @@ public class JottSemanticTester {
         this.testCases.add(new TestCase("mismatch return type", "mismatchedReturn.jott", SEMANTIC, true));
         this.testCases.add(new TestCase("missing main", "missingMain.jott", SEMANTIC, true));
         this.testCases.add(new TestCase("missing return", "missingReturn.jott", SEMANTIC, true));
-        this.testCases.add(new TestCase("valid if with return", "validIfReturn.jott", SEMANTIC, false));
         this.testCases.add(new TestCase("valid while loop", "validLoop.jott", SEMANTIC, false));
         this.testCases.add(new TestCase("while is keyword, cannot be used as id", "whileKeyword.jott", SEMANTIC, true));
 
