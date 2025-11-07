@@ -7,4 +7,4 @@ Def foo[]:Void{
 	::print[While];
 }
 
-Def main[]:void{}
+Def main[]:Void{}
