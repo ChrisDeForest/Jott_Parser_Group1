@@ -61,6 +61,11 @@ public class VarDecNode implements JottTree {
         
         String type = typeNode.getType();
         String name = idNode.getName();
+
+        if(name.equals("While")){
+            throw new SemanticException("VarDecNode: While is keyword, cannot be used as id", null);
+        }
+
         boolean add_success = SymbolTable.addVariable(name, type); // will return false if variable already exists in current scope
         if (!add_success) {
             throw new SemanticException("VarDecNode: Variable '" + name + "' is already declared in the current scope.", null);

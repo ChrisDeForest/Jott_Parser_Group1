@@ -47,18 +47,18 @@ public class JottSemanticTester {
         this.testCases = new ArrayList<>();
 
         // phase 2 testcases that are still relevant to phase 3
-        this.testCases.add(new TestCase("function call param type not matching", "funcCallParamInvalid.jott", PARSER, true));
-        this.testCases.add(new TestCase("function not defined", "funcNotDefined.jott", PARSER, true));
-        this.testCases.add(new TestCase("i_expr relop d_expr function return", "funcReturnInExpr.jott", PARSER, true));
-        this.testCases.add(new TestCase("main must be integer", "mainReturnNotInt.jott", PARSER, true));
-        this.testCases.add(new TestCase("mismatch return type", "mismatchedReturn.jott", PARSER, true));
-        this.testCases.add(new TestCase("missing main", "missingMain.jott", PARSER, true));
-        this.testCases.add(new TestCase("missing return", "missingReturn.jott", PARSER, true));
-        this.testCases.add(new TestCase("valid if with return", "validIfReturn.jott", PARSER, false));
-        this.testCases.add(new TestCase("valid while loop", "validLoop.jott", PARSER, false));
-        this.testCases.add(new TestCase("while is keyword, cannot be used as id", "whileKeyword.jott", PARSER, true));
+        this.testCases.add(new TestCase("function call param type not matching", "funcCallParamInvalid.jott", SEMANTIC, true));
+        this.testCases.add(new TestCase("function not defined", "funcNotDefined.jott", SEMANTIC, true));
+        this.testCases.add(new TestCase("i_expr relop d_expr function return", "funcReturnInExpr.jott", SEMANTIC, true));
+        this.testCases.add(new TestCase("main must be integer", "mainReturnNotInt.jott", SEMANTIC, true));
+        this.testCases.add(new TestCase("mismatch return type", "mismatchedReturn.jott", SEMANTIC, true));
+        this.testCases.add(new TestCase("missing main", "missingMain.jott", SEMANTIC, true));
+        this.testCases.add(new TestCase("missing return", "missingReturn.jott", SEMANTIC, true));
+        this.testCases.add(new TestCase("valid if with return", "validIfReturn.jott", SEMANTIC, false));
+        this.testCases.add(new TestCase("valid while loop", "validLoop.jott", SEMANTIC, false));
+        this.testCases.add(new TestCase("while is keyword, cannot be used as id", "whileKeyword.jott", SEMANTIC, true));
 
-        // phase 3 specific testcases
+        // phase 3 specific testcases 
         this.testCases.add(new TestCase("func wrong param type", "funcWrongParamType.jott", SEMANTIC, true));
         this.testCases.add(new TestCase("hello world", "helloWorld.jott", SEMANTIC, false));
         this.testCases.add(new TestCase("if stmt returns", "ifStmtReturns.jott", SEMANTIC, false));
