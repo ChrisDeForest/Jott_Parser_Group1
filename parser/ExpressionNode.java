@@ -71,7 +71,12 @@ public interface ExpressionNode extends JottTree {
 				}
 				return null; // Type error
 			}
-			@Override public boolean validateTree(){ return false;}
+			@Override public boolean validateTree(){ 
+				// Validate both operands
+				left.validateTree();
+				right.validateTree();
+				return true;
+			}
 			@Override public String convertToJava(String indentLevel){ return null;}
 			@Override public String convertToC(){ return null; }
 			@Override public String convertToPython(){ return null;}

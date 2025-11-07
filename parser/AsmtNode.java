@@ -98,7 +98,7 @@ public class AsmtNode implements JottTree {
 
 		// mark variable as initialized
 		SymbolTable.initializeVariable(varName);
-		return false;
+		return true;
 	}
 
 	@Override
