@@ -3,6 +3,7 @@ package parser;
 import java.util.ArrayList;
 
 import provided.*;
+import semantics.SemanticException;
 
 public class BodyNode implements JottTree {
 	private final ArrayList<JottTree> bodyStmtNodes;
@@ -111,7 +112,19 @@ public class BodyNode implements JottTree {
 			ok &= stmt.validateTree();
 		}
 
+		// Special case: if we're inside a while loop or if statement body, skip return validation
+		// Returns inside these structures don't guarantee a function return
+		if ("__WHILE_LOOP_BODY__".equals(expectedReturnType) || "__IF_STATEMENT_BODY__".equals(expectedReturnType)) {
+			// Still validate the return statement exists syntactically, but don't check types
+			// We just validate statements, not the return
+			return ok;
+		}
+
 		// validate the (optional) return statement with knowledge of the expected type
+		if(returnStmt == null && !expectedReturnType.equals("Void")){
+			throw new SemanticException("BodyNode: No valid return path found for a non-Void function", null);
+		}
+
 		if (returnStmt != null) {
 			ok &= returnStmt.validateTree(expectedReturnType);
 		}

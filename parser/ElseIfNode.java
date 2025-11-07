@@ -94,15 +94,17 @@ public class ElseIfNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-		condition.validateTree(); // throws error if false
+	condition.validateTree(); // throws error if false
 
-		String type = condition.getType(SymbolTable.globalSymbolTable);
-		if (!type.equals("Boolean")) {
-			throw new SemanticException("ElseIfNode: Elseif condition must be of type Boolean, but got '" + type + "'.", elseIfToken);
-		}
+	String type = condition.getType(SymbolTable.globalSymbolTable);
+	if (!type.equals("Boolean")) {
+		throw new SemanticException("ElseIfNode: Elseif condition must be of type Boolean, but got '" + type + "'.", elseIfToken);
+	}
 
-		body.validateTree();
-        return false;
+	// Validate body with special marker to skip return validation
+	// Returns inside elseif statements don't count as guaranteed returns for the function
+	body.validateTree("__IF_STATEMENT_BODY__");
+        return true;
     }
     
 }

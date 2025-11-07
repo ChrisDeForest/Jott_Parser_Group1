@@ -85,7 +85,9 @@ public class ElseNode implements JottTree{
     public boolean validateTree() {
         if (this.isEmpty) {return true;} // if empty, nothing to validate
 
-        bodyNode.validateTree();
+        // Validate body with special marker to skip return validation
+        // Returns inside else statements don't count as guaranteed returns for the function
+        bodyNode.validateTree("__IF_STATEMENT_BODY__");
         return true;
     }
 }

@@ -144,13 +144,16 @@ public class IfStmtNode implements JottTree {
         if (!type.equals("Boolean")) {
             throw new SemanticException("IfStmtNode: If statement condition must be of type Boolean, but got '" + type + "'.", null);
         }
-        body.validateTree();
+        
+        // Validate body with special marker to skip return validation
+        // Returns inside if statements don't count as guaranteed returns for the function
+        body.validateTree("__IF_STATEMENT_BODY__");
 
         for (ElseIfNode elseIf : elseIfList) {
             elseIf.validateTree();
         }
 
         elseNode.validateTree();
-        return false;
+        return true;
     }
 }

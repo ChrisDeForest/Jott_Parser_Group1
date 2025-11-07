@@ -95,7 +95,9 @@ public class WhileLoopNode implements JottTree{
 			throw new SemanticException("WhileLoopNode: While loop condition must be of type Boolean, but got '" + type + "'.", whileToken);
 		}
 		
-		body.validateTree();
+		// Validate body with a special marker to skip return statement validation
+		// Returns inside while loops don't count as guaranteed returns for the function
+		body.validateTree("__WHILE_LOOP_BODY__");
 		return true;
 	}
 
