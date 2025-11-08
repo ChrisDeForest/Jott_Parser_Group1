@@ -61,9 +61,7 @@ public class BodyNode implements JottTree {
 			}
 		}
 
-		ReturnStmtNode returnStmt = ReturnStmtNode.parseReturnStmtNode(tokens); // Parse return statement, if tokens is
-																				// empty
-																				// returnStmtNode will catch error.
+		ReturnStmtNode returnStmt = ReturnStmtNode.parseReturnStmtNode(tokens); // may be epsilon (isEmpty)
 		return new BodyNode(bodyStmtNodes, isFunctionCall, returnStmt);
 	}
 
@@ -112,28 +110,68 @@ public class BodyNode implements JottTree {
 			ok &= stmt.validateTree();
 		}
 
-		// Special case: if we're inside a while loop or if statement body, skip return validation
-		// Returns inside these structures don't guarantee a function return
-		if ("__WHILE_LOOP_BODY__".equals(expectedReturnType)) {
-			// Still validate the return statement exists syntactically, but don't check types
-			// We just validate statements, not the return
-			return ok;
-		}
-		if ("__IF_STATEMENT_BODY__".equals(expectedReturnType)) {
-			// Still validate the return statement exists syntactically, but don't check types
-			// We just validate statements, not the return
+		// Special case: if we're inside a while loop or if statement body, skip
+		// function-level return validation
+		if ("__WHILE_LOOP_BODY__".equals(expectedReturnType) || "__IF_STATEMENT_BODY__".equals(expectedReturnType)) {
 			return ok;
 		}
 
-		// validate the (optional) return statement with knowledge of the expected type
-		if(returnStmt == null && !expectedReturnType.equals("Void")){
-			throw new SemanticException("BodyNode: No valid return path found for a non-Void function", null);
+		// Function-level body: enforce return rules
+		if (!"Void".equals(expectedReturnType)) {
+			// 1) if there is an explicit trailing return, validate it
+			if (returnStmt != null && !returnStmt.isEmptyReturn()) {
+				ok &= returnStmt.validateTree(expectedReturnType);
+				return ok;
+			}
+			// 2) otherwise allow success if the last statement is an if that returns on all
+			// paths
+			if (endsWithIfThatReturns(expectedReturnType)) {
+				return ok;
+			}
+			// 3) no guaranteed return path
+			throw new SemanticException("ReturnStmtNode: Expected a return value of type '" + expectedReturnType
+					+ "', but no value was returned.", null);
 		}
 
-		if (returnStmt != null) {
-			ok &= returnStmt.validateTree(expectedReturnType);
+		// expected void: it's fine not to have a return
+		if (returnStmt != null && !returnStmt.isEmptyReturn()) {
+			// returning a value in a Void function is an error; let ReturnStmtNode throw
+			// its message
+			ok &= returnStmt.validateTree("Void");
 		}
-
 		return ok;
+	}
+
+	/*
+	 * ------------------ NEW helpers used by IfStmtNode detection
+	 * ------------------
+	 */
+
+	private boolean endsWithIfThatReturns(String expectedReturnType) {
+		if (bodyStmtNodes.isEmpty())
+			return false;
+		JottTree last = bodyStmtNodes.get(bodyStmtNodes.size() - 1);
+		if (last instanceof IfStmtNode ifNode) {
+			return ifNode.returnsOnAllPaths(expectedReturnType);
+		}
+		return false;
+	}
+
+	/**
+	 * Returns true iff this body guarantees a return along all paths for the given
+	 * type.
+	 * Used by If/ElseIf/Else branch analysis without throwing.
+	 */
+	public boolean returnsOnAllPaths(String expectedReturnType) {
+		// try: a proper trailing return of the right type
+		if (returnStmt != null && !returnStmt.isEmptyReturn()) {
+			try {
+				return returnStmt.validateTree(expectedReturnType);
+			} catch (RuntimeException ex) {
+				return false;
+			}
+		}
+		// or: ends in an if whose branches all return
+		return endsWithIfThatReturns(expectedReturnType);
 	}
 }

@@ -27,8 +27,7 @@ public class ReturnStmtNode implements JottTree {
 
         Token t = tokens.get(0);
 
-        // Check if this is a Return statement (If there is no return statement, the
-        // TokenType would be R_Bracket leading to epsilon)
+        // Check if this is a Return statement (epsilon otherwise)
         if (t.getTokenType() != TokenType.ID_KEYWORD || !t.getToken().equals("Return")) {
             // Epsilon case - no return statement
             return new ReturnStmtNode(null, true, t);
@@ -86,7 +85,6 @@ public class ReturnStmtNode implements JottTree {
         return validateTree("Void");
     }
 
-    // parser/ReturnStmtNode.java
     public boolean validateTree(String expectedReturnType) {
         String expectedType = expectedReturnType;
 
@@ -95,7 +93,9 @@ public class ReturnStmtNode implements JottTree {
                 return true;
             }
             throw new SemanticException(
-                    "ReturnStmtNode: Expected a return value of type '" + expectedType + "', but no value was returned.", null);
+                    "ReturnStmtNode: Expected a return value of type '" + expectedType
+                            + "', but no value was returned.",
+                    null);
         }
 
         if (expression == null) {
@@ -115,10 +115,15 @@ public class ReturnStmtNode implements JottTree {
 
         if (!exprType.equals(expectedType)) {
             throw new SemanticException(
-                    "ReturnStmtNode: Return type mismatch. Expected '" + expectedType + "', but found '" + exprType + "'.", returnToken);
+                    "ReturnStmtNode: Return type mismatch. Expected '" + expectedType + "', but found '" + exprType
+                            + "'.",
+                    returnToken);
         }
 
         return true;
     }
 
+    public boolean isEmptyReturn() {
+        return isEmpty;
+    }
 }
