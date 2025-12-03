@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import provided.Token;
 import provided.TokenType;
+import semantics.SymbolTable;
 
 public class RelOpNode implements ExpressionNode {
 
@@ -21,6 +22,12 @@ public class RelOpNode implements ExpressionNode {
         throw new ParseException("parseRelOpNode: Expected relational operator, found: " + t.getToken() + " ", t);
     }
 
+	@Override
+    public String getType(SymbolTable symbolTable) {
+        // Look up the variable in the symbol table
+        return null;
+    }
+
     @Override
 	public String convertToJott() {
 		return this.relOp.getToken();
@@ -34,7 +41,7 @@ public class RelOpNode implements ExpressionNode {
 
 	@Override
 	public boolean validateTree() {
-		// TODO: Implement this method
+		// just returns true no validation needed
 		return true;
 	}
 

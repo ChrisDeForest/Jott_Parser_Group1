@@ -3,6 +3,7 @@ package parser;
 import provided.Token;
 import provided.TokenType;
 import provided.JottTree;
+import semantics.*;
 
 import java.util.ArrayList;
 
@@ -37,7 +38,8 @@ public class IfStmtNode implements JottTree {
         }
         Token leftBracket = tokens.get(0);
         if (leftBracket.getTokenType() != TokenType.L_BRACKET) {
-            throw new ParseException("parseIfStmtNode: Expected '[' after 'If', got '" + leftBracket.getToken() + "'", leftBracket);
+            throw new ParseException("parseIfStmtNode: Expected '[' after 'If', got '" + leftBracket.getToken() + "'",
+                    leftBracket);
         }
         tokens.remove(0);
 
@@ -50,7 +52,9 @@ public class IfStmtNode implements JottTree {
         }
         Token rightBracket = tokens.get(0);
         if (rightBracket.getTokenType() != TokenType.R_BRACKET) {
-            throw new ParseException("parseIfStmtNode: Expected ']' after condition, got '" + rightBracket.getToken() + "'", rightBracket);
+            throw new ParseException(
+                    "parseIfStmtNode: Expected ']' after condition, got '" + rightBracket.getToken() + "'",
+                    rightBracket);
         }
         tokens.remove(0);
 
@@ -60,7 +64,8 @@ public class IfStmtNode implements JottTree {
         }
         Token leftBrace = tokens.get(0);
         if (leftBrace.getTokenType() != TokenType.L_BRACE) {
-            throw new ParseException("parseIfStmtNode: Expected '{' after condition, got '" + leftBrace.getToken() + "'", leftBrace);
+            throw new ParseException(
+                    "parseIfStmtNode: Expected '{' after condition, got '" + leftBrace.getToken() + "'", leftBrace);
         }
         tokens.remove(0);
 
@@ -73,7 +78,8 @@ public class IfStmtNode implements JottTree {
         }
         Token rightBrace = tokens.get(0);
         if (rightBrace.getTokenType() != TokenType.R_BRACE) {
-            throw new ParseException("parseIfStmtNode: Expected '}' after body, got '" + rightBrace.getToken() + "'", rightBrace);
+            throw new ParseException("parseIfStmtNode: Expected '}' after body, got '" + rightBrace.getToken() + "'",
+                    rightBrace);
         }
         tokens.remove(0);
 
@@ -108,15 +114,15 @@ public class IfStmtNode implements JottTree {
         sb.append("]{");
         sb.append(body.convertToJott());
         sb.append("}");
-        
+
         // Add all elseif nodes
         for (ElseIfNode elseIf : elseIfList) {
             sb.append(elseIf.convertToJott());
         }
-        
+
         // Add else node
         sb.append(elseNode.convertToJott());
-        
+
         return sb.toString();
     }
 
@@ -137,6 +143,64 @@ public class IfStmtNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        condition.validateTree(); // throws error if false
+
+        String type = condition.getType(SymbolTable.globalSymbolTable);
+        if (!type.equals("Boolean")) {
+            throw new SemanticException(
+                    "IfStmtNode: If statement condition must be of type Boolean, but got '" + type + "'.", null);
+        }
+
+        // Validate body with special marker to skip function-return validation
+        body.validateTree("__IF_STATEMENT_BODY__");
+
+        for (ElseIfNode elseIf : elseIfList) {
+            elseIf.validateTree();
+        }
+
+        elseNode.validateTree();
+        return true;
+    }
+
+    /*
+     * ------------------ NEW: support for all-paths-return analysis
+     * ------------------
+     */
+
+    /** expose then-body to BodyNode without changing parser API elsewhere */
+    public BodyNode getThenBody() {
+        return body;
+    }
+
+    public ArrayList<ElseIfNode> getElseIfList() {
+        return elseIfList;
+    }
+
+    public ElseNode getElseNode() {
+        return elseNode;
+    }
+
+    public boolean returnsOnAllPaths(String expectedReturnType) {
+        // then branch must return
+        if (body == null || !body.returnsOnAllPaths(expectedReturnType)) {
+            return false;
+        }
+
+        // every elseif must return
+        if (elseIfList != null) {
+            for (ElseIfNode ei : elseIfList) {
+                BodyNode b = ei.getBody(); // ElseIfNode should expose its body
+                if (b == null || !b.returnsOnAllPaths(expectedReturnType)) {
+                    return false;
+                }
+            }
+        }
+
+        // must have an else and it must return
+        if (elseNode == null || !elseNode.isPresent()) {
+            return false;
+        }
+        BodyNode eb = elseNode.getBody(); // ElseNode should expose body if present
+        return eb != null && eb.returnsOnAllPaths(expectedReturnType);
     }
 }

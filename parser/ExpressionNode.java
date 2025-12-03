@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import provided.Token;
 import provided.JottTree;
 import provided.TokenType;
+import semantics.SemanticException;
+import semantics.SymbolTable;
 
 public interface ExpressionNode extends JottTree {
 		// < expr > -> < operand > | < operand > < relop > < operand > |
@@ -42,24 +44,99 @@ public interface ExpressionNode extends JottTree {
 			OperandNode right = OperandNode.parseOperand(tokens);
 			if (right == null) throw new ParseException("parseExpressionNode: Error parsing right operand", null);
 
-			return new ExpressionNode() {
-				@Override public String convertToJott(){
-					StringBuilder sb = new StringBuilder();
-					sb.append(left.convertToJott());
-					sb.append(" " + opToken + " ");
-					sb.append(right.convertToJott());
-					return sb.toString();
+		return new ExpressionNode() {
+			@Override public String convertToJott(){
+				StringBuilder sb = new StringBuilder();
+				sb.append(left.convertToJott());
+				sb.append(" " + opToken + " ");
+				sb.append(right.convertToJott());
+				return sb.toString();
+			}
+			@Override public String getType(SymbolTable symbolTable) {
+				String leftType = left.getType(symbolTable);
+				String rightType = right.getType(symbolTable);
+
+				if (leftType == null || rightType == null) {
+					return null;
 				}
-				@Override public boolean validateTree(){ return false;}
-				@Override public String convertToJava(String indentLevel){ return null;}
-				@Override public String convertToC(){ return null; }
-				@Override public String convertToPython(){ return null;}
-			};
+
+				if (!leftType.equals(rightType)) {
+					return null;
+				}
+
+				if (operand.getTokenType().equals(TokenType.REL_OP)) {
+					// Inequality comparisons require numeric operands
+					if (opToken.equals("<") || opToken.equals(">") ||
+						opToken.equals("<=") || opToken.equals(">=")) {
+						if (!"Integer".equals(leftType) && !"Double".equals(leftType)) {
+							return null;
+						}
+					}
+					return "Boolean";
+				}
+				// For math operators, determine result type from operands
+				if (operand.getTokenType().equals(TokenType.MATH_OP)) {
+					if (!"Integer".equals(leftType) && !"Double".equals(leftType)) {
+						return null;
+					}
+					return leftType;
+				}
+				return null; // Type error
+			}
+			@Override public boolean validateTree(){ 
+				// Validate both operands
+				boolean ok = left.validateTree();
+				ok &= right.validateTree();
+
+				String leftType = left.getType(SymbolTable.globalSymbolTable);
+				String rightType = right.getType(SymbolTable.globalSymbolTable);
+
+				if (leftType == null || rightType == null) {
+					throw new SemanticException("ExpressionNode: Unable to determine operand types in expression.", null);
+				}
+
+				if (!leftType.equals(rightType)) {
+					throw new SemanticException("ExpressionNode: Type mismatch in expression. Left type '" + leftType
+							+ "', right type '" + rightType + "'.", null);
+				}
+
+				if (operand.getTokenType().equals(TokenType.MATH_OP)) {
+					if (!"Integer".equals(leftType) && !"Double".equals(leftType)) {
+						throw new SemanticException("ExpressionNode: Math operations require numeric operands.", null);
+					}
+				}
+
+				if (operand.getTokenType().equals(TokenType.REL_OP)) {
+					if ((opToken.equals("<") || opToken.equals(">") ||
+							opToken.equals("<=") || opToken.equals(">=")) &&
+							(!"Integer".equals(leftType) && !"Double".equals(leftType))) {
+						throw new SemanticException("ExpressionNode: Relational operator '" + opToken
+								+ "' requires numeric operands.", null);
+					}
+				}
+
+				if (getType(SymbolTable.globalSymbolTable) == null) {
+					throw new SemanticException("ExpressionNode: Invalid operand types for operator '" + opToken + "'.", null);
+				}
+
+				return ok;
+			}
+			@Override public String convertToJava(String indentLevel){ return null;}
+			@Override public String convertToC(){ return null; }
+			@Override public String convertToPython(){ return null;}
+		};
 		} else {
 			// No operator found, return single operand
 			return left;
 		}
     }
+
+	/**
+	 * Get the type of this expression
+	 * @param symbolTable The symbol table for looking up variable and function types
+	 * @return The type string ("Integer", "Double", "String", "Boolean"), or null if type cannot be determined
+	 */
+	public String getType(SymbolTable symbolTable);
 
 	@Override
 	public String convertToJott();

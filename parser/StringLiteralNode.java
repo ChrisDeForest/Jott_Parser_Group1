@@ -3,6 +3,7 @@ package parser;
 import java.util.ArrayList;
 
 import provided.Token;
+import semantics.SymbolTable;
 
 public class StringLiteralNode implements ExpressionNode {
 
@@ -18,6 +19,11 @@ public class StringLiteralNode implements ExpressionNode {
     }
 
     @Override
+    public String getType(SymbolTable symbolTable) {
+        return "String";
+    }
+
+    @Override
     public String convertToJott() {
         return this.stringLiteralToken.getToken();
     }
@@ -29,7 +35,7 @@ public class StringLiteralNode implements ExpressionNode {
 
     @Override
     public boolean validateTree() {
-        return true;
+        return true; // String literals are always valid
     }
 
 

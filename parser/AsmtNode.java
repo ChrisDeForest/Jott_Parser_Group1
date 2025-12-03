@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import provided.JottTree;
 import provided.Token;
 import provided.TokenType;
+import semantics.*;
 
 public class AsmtNode implements JottTree {
 
@@ -77,8 +78,27 @@ public class AsmtNode implements JottTree {
 
 	@Override
 	public boolean validateTree() {
-		// TODO: Implement validation logic
-		return false;
+		expr.validateTree();
+		id.validateTree();
+
+		// check if variable is declared
+		String varName = id.getName();
+		if (!SymbolTable.variableExists(varName)) {
+			throw new SemanticException("AsmtNode: Variable '" + varName + "' is not declared.", null);
+		}
+		
+		String varType = SymbolTable.getVariableType(varName);
+		String exprType = expr.getType(SymbolTable.globalSymbolTable);
+
+
+		// check if types match
+		if (!varType.equals(exprType)) {
+			throw new SemanticException("AsmtNode: Type mismatch in assignment to variable '" + varName + "'. Expected '" + varType + "', but got '" + exprType + "'.", null);
+		}
+
+		// mark variable as initialized
+		SymbolTable.initializeVariable(varName);
+		return true;
 	}
 
 	@Override

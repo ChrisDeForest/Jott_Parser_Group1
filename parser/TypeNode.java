@@ -27,12 +27,16 @@ public class TypeNode implements JottTree {
         String tokenValue = t.getToken();
         if (!tokenValue.equals("Double") && !tokenValue.equals("Integer") && 
             !tokenValue.equals("String") && !tokenValue.equals("Boolean")) {
-            throw new ParseException("parseTypeNode: Expected type (Double, Integer, String, or Boolean), got '" + tokenValue + "'", t);
+            throw new ParseException("TypeNode: Expected type (Double, Integer, String, or Boolean), got '" + tokenValue + "'", t);
         }
 
         // consume the token and return a new TypeNode
         tokens.remove(0);
         return new TypeNode(t);
+    }
+
+    public String getType() {
+        return typeToken.getToken();
     }
 
     @Override
@@ -58,6 +62,6 @@ public class TypeNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        return true; // TypeNode is always valid
     }
 }

@@ -1,8 +1,8 @@
 package parser;
-
-import provided.TokenType;
-import provided.Token;
+import provided.*;
 import java.util.ArrayList;
+import java.util.List;
+import semantics.*;
 
 public class FunctionCallNode implements OperandNode {
     private final Token functionHeaderToken;
@@ -43,6 +43,13 @@ public class FunctionCallNode implements OperandNode {
         return new FunctionCallNode(t, functionName, params);
     }
 
+    @Override
+    public String getType(SymbolTable symbolTable) {
+        // Look up the function in the symbol table and return its return type
+        String funcName = functionName.convertToJott();
+        return SymbolTable.getFunctionReturnType(funcName);
+    }
+
     public String convertToJott() {
          // < func_call > -> :: < id >[ < params >]
         return this.functionHeaderToken.getToken() + 
@@ -60,6 +67,42 @@ public class FunctionCallNode implements OperandNode {
         return null;
     }
     public boolean validateTree() {
-        return false;
+        String funcName = functionName.getName();
+        List<ExpressionNode> argList = params.getArgs();
+        int actualArgCount = argList.size();
+
+
+        // - Verify function exists
+        if (!SymbolTable.functionExists(funcName)) {
+            throw new SemanticException("FunctionCallNode: Function '" + funcName + "' is not declared.", functionHeaderToken);
+        }
+
+         // - Check parameter count matches
+        SymbolTable.FunctionInfo funcInfo = SymbolTable.getFunction(funcName);
+        int expectedArgCount = funcInfo.getParamCount();
+        if (expectedArgCount != actualArgCount) {
+            throw new SemanticException("FunctionCallNode: Function '" + funcName + "' expects " + expectedArgCount + " parameters, but got " + actualArgCount + ".", functionHeaderToken);
+        }
+
+        // - Check each parameter type matches expected type
+        List<String> expectedParamTypes = funcInfo.getParamTypes();
+            
+        for (int i = 0; i < actualArgCount; i++) {
+
+            ExpressionNode argNode = argList.get(i);
+            argNode.validateTree(); // this will throw error if false
+
+            String actualType = argNode.getType(SymbolTable.globalSymbolTable);
+            String expectedType = expectedParamTypes.get(i);
+            if (!actualType.equals(expectedType)) {
+                if(!(expectedType.equals("Any") && (actualType.equals("Double") || actualType.equals("Integer") || actualType.equals("String") || actualType.equals("Boolean")))){
+                    throw new SemanticException("FunctionCallNode: Parameter " + (i + 1) + " of function '" + funcName + "' expects type '" + expectedType + "', but got '" + actualType + "'.", functionHeaderToken);
+
+                }
+            }
+        }
+
+
+        return true;
     }
 }

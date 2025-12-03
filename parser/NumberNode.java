@@ -2,6 +2,7 @@ package parser;
 
 import provided.Token;
 import provided.TokenType;
+import semantics.SymbolTable;
 import java.util.ArrayList;
 
 
@@ -28,6 +29,17 @@ public class NumberNode implements OperandNode {
         return new NumberNode(t, isNegative);
     }
 
+    @Override
+    public String getType(SymbolTable symbolTable) {
+        // Check if the number contains a decimal point
+        String tokenValue = numberToken.getToken();
+        if (tokenValue.contains(".")) {
+            return "Double";
+        } else {
+            return "Integer";
+        }
+    }
+
     public String convertToJott() {
         // returns a string representation of the number
         return isNegative ? "-" + numberToken.getToken() : numberToken.getToken();
@@ -43,6 +55,7 @@ public class NumberNode implements OperandNode {
         return null;
     }
     public boolean validateTree() {
-        return false;
+        // num literals are always valid
+        return true;
     }
 }

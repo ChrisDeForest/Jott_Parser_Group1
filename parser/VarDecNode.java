@@ -3,6 +3,7 @@ package parser;
 import provided.JottTree;
 import provided.Token;
 import provided.TokenType;
+import semantics.*;
 
 import java.util.ArrayList;
 
@@ -53,7 +54,23 @@ public class VarDecNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        // TODO: Implement validation logic
+        // - Add variable to symbol table
+        // - Check for duplicate declaration in current scope
+        typeNode.validateTree(); // this will throw error if false
+        idNode.validateTree();
+        
+        String type = typeNode.getType();
+        String name = idNode.getName();
+
+        if(name.equals("While")){
+            throw new SemanticException("VarDecNode: While is keyword, cannot be used as id", null);
+        }
+
+        boolean add_success = SymbolTable.addVariable(name, type); // will return false if variable already exists in current scope
+        if (!add_success) {
+            throw new SemanticException("VarDecNode: Variable '" + name + "' is already declared in the current scope.", null);
+        }
+
         return true;
     }
 
@@ -71,6 +88,7 @@ public class VarDecNode implements JottTree {
     @Override
     public String convertToPython() {
         // TODO: Implement conversion logic
+    
         return "";
     }
     
