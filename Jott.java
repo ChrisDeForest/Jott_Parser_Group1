@@ -1,9 +1,8 @@
-package semantics;
-
 import provided.JottTokenizer;
 import provided.JottTree;
 import provided.JottParser;
 import provided.Token;
+import semantics.SemanticException;
 import parser.ParseException;
 
 import java.util.ArrayList;
