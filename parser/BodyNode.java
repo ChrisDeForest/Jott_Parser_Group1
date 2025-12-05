@@ -174,4 +174,19 @@ public class BodyNode implements JottTree {
 		// or: ends in an if whose branches all return
 		return endsWithIfThatReturns(expectedReturnType);
 	}
+
+	public Object evaluate(){
+		Object result = null;
+
+		for (JottTree stmt : bodyStmtNodes) {
+			result = stmt.evaluate(); // assignments, loops, if statements
+		}
+
+		if ((returnStmt != null) && !returnStmt.isEmptyReturn()) {
+			result = returnStmt.evaluate();
+			return result;
+		}
+
+		return null; // if void function body or no return statement.
+	}
 }

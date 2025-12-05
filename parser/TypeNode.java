@@ -64,4 +64,9 @@ public class TypeNode implements JottTree {
     public boolean validateTree() {
         return true; // TypeNode is always valid
     }
+
+    @Override
+    public Object evaluate() {
+        return null;
+    }
 }

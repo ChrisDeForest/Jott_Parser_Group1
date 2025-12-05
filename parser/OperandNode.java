@@ -37,4 +37,7 @@ public interface OperandNode extends ExpressionNode {
     public String convertToPython();
 
     public boolean validateTree();
+
+    @Override 
+	public Object evaluate();
 }

@@ -48,4 +48,9 @@ public class StringLiteralNode implements ExpressionNode {
     public String convertToPython() {
         return "";
     }
+
+    @Override
+    public Object evaluate() {
+        return stringLiteralToken;
+    }
 }

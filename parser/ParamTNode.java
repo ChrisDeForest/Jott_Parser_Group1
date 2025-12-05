@@ -59,4 +59,9 @@ public class ParamTNode implements JottTree {
         expr.validateTree();
         return true;
     }
+
+    @Override 
+	public Object evaluate(){
+		return null;
+	}
 }

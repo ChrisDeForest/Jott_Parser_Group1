@@ -58,4 +58,21 @@ public class NumberNode implements OperandNode {
         // num literals are always valid
         return true;
     }
+
+    @Override
+    public Object evaluate() {
+        String tokenValue = numberToken.getToken();
+
+        if (tokenValue.contains(".")) {
+            // is a Double
+            double val = Double.parseDouble(tokenValue); // convert to double
+            if (isNegative){return -val;}
+            else { return val;}
+        } else {
+            // Integer
+            int val = Integer.parseInt(tokenValue);
+            if (isNegative){return -val;}
+            else { return val;}
+        }
+    }
 }

@@ -2,7 +2,6 @@ package parser;
 
 import java.util.ArrayList;
 import provided.*;
-import semantics.SemanticException;
 
 public class ElseNode implements JottTree {
     private final BodyNode bodyNode;
@@ -92,7 +91,7 @@ public class ElseNode implements JottTree {
         return true;
     }
 
-    /** true iff an Else block is actually present (not epsilon). */
+    /** true if an Else block is actually present (not epsilon). */
     public boolean isPresent() {
         return !isEmpty;
     }
@@ -100,5 +99,9 @@ public class ElseNode implements JottTree {
     /** returns the Else body (may be null if isEmpty). */
     public BodyNode getBody() {
         return bodyNode;
+    }
+
+    public Object evaluate(){
+        return null;
     }
 }

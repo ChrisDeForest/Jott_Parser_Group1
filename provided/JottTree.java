@@ -37,4 +37,6 @@ public interface JottTree {
      * @return true if valid Jott code; false otherwise
      */
     public boolean validateTree();
+
+    public Object evaluate();
 }

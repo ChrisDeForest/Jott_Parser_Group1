@@ -49,4 +49,7 @@ public interface BodyStmtNode extends JottTree {
 
 	@Override
 	public String convertToPython();
+
+	@Override
+	public Object evaluate();
 }

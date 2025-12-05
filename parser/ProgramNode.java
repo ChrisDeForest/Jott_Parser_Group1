@@ -3,6 +3,7 @@ package parser;
 import provided.Token;
 import provided.TokenType;
 import semantics.SemanticException;
+import semantics.SymbolTable;
 import provided.JottTree;
 import java.util.ArrayList;
 
@@ -162,6 +163,13 @@ public class ProgramNode implements JottTree {
         semantics.SymbolTable.addFunction("print", "Void", java.util.List.of("Any"));
         semantics.SymbolTable.addFunction("concat", "String", java.util.List.of("String", "String"));
         semantics.SymbolTable.addFunction("length", "Integer", java.util.List.of("String"));
+    }
+
+    public Object evaluate() {
+        for (FunctionDefNode f : functionDefs) {
+            f.evaluate(); 
+        }
+        return null;
     }
 
 }

@@ -60,4 +60,16 @@ public class IDNode implements OperandNode {
     public boolean validateTree() {
         return true;
     }
+
+    @Override
+    public Object evaluate(){
+         String varName = idToken.getToken();
+
+        // Look up the variable in the runtime environment
+        if (!execution.RuntimeEnv.variableExists(varName)) {
+            throw new RuntimeException("IDNode: Variable '" + varName + "' not initialized at runtime.");
+        }
+
+        return execution.RuntimeEnv.getVariable(varName);
+    }
 }

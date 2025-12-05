@@ -6,6 +6,8 @@ import java.util.*;
  * RuntimeEnv manages variable values and function execution at runtime.
  * Supports scoping for nested scopes (e.g., function calls, loops).
  */
+
+
 public class RuntimeEnv {
 
     // Stack of scopes, where each scope is a map of variable name -> value

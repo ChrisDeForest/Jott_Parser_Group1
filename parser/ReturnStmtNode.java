@@ -126,4 +126,19 @@ public class ReturnStmtNode implements JottTree {
     public boolean isEmptyReturn() {
         return isEmpty;
     }
+
+    public Object evaluate(){
+        // if empty return
+        if (isEmpty) {
+            return null; // Void return
+        }
+
+        // expression (could be another function call or whatever still needs to be evaluated)
+        if (expression != null) {
+            return expression.evaluate();
+        }
+
+        return null;
+    }
+    
 }

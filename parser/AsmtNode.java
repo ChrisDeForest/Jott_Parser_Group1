@@ -2,6 +2,7 @@ package parser;
 
 import java.util.ArrayList;
 
+import execution.RuntimeEnv;
 import provided.JottTree;
 import provided.Token;
 import provided.TokenType;
@@ -111,5 +112,15 @@ public class AsmtNode implements JottTree {
 	public String convertToPython() {
 		// TODO: Implement conversion logic
 		return "";
+	}
+
+	@Override
+	public Object evaluate(){
+		Object value = expr.evaluate();
+		String name = id.getName();
+
+		RuntimeEnv.setVariable(name, value); // update runtime env, initalize variable
+
+		return null;
 	}
 }

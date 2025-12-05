@@ -83,4 +83,8 @@ public class FunctionReturnNode implements JottTree {
         // TODO: Implement conversion logic
         return "";
     }
+
+    public Object evaluate(){
+        return null;
+    }
 }

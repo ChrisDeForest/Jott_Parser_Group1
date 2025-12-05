@@ -124,13 +124,84 @@ public interface ExpressionNode extends JottTree {
 			@Override public String convertToJava(String indentLevel){ return null;}
 			@Override public String convertToC(){ return null; }
 			@Override public String convertToPython(){ return null;}
+
+			@Override
+			public Object evaluate(){
+				Object leftVal = left.evaluate();
+				Object rightVal = right.evaluate();
+
+				String leftType = left.getType(SymbolTable.globalSymbolTable); // only have to check left?
+
+				switch (opToken) {
+					case "+":
+						if ("Integer".equals(leftType)) {
+							return (Integer) leftVal + (Integer) rightVal;
+						}
+						if ("Double".equals(leftType)) {
+							return (Double) leftVal + (Double) rightVal;
+						}
+						break;
+					case "-":
+						if ("Integer".equals(leftType)) {
+							return (Integer) leftVal - (Integer) rightVal;
+						}
+						if ("Double".equals(leftType)) {
+							return (Double) leftVal - (Double) rightVal;
+						}
+						break;
+					case "*":
+						if ("Integer".equals(leftType)) {
+							return (Integer) leftVal * (Integer) rightVal;
+						}
+						if ("Double".equals(leftType)) {
+							return (Double) leftVal * (Double) rightVal;
+						}
+						break;
+					case "/":
+						// check for division by zero
+						if ("Integer".equals(leftType) && (Integer) rightVal == 0) {
+							throw new RuntimeException("ExpressionNode: Division by Zero");
+						}
+						if ("Double".equals(leftType) && (Double) rightVal == 0.0) {
+							throw new RuntimeException("ExpressionNode: Division by Zero");
+						}
+						
+						if ("Integer".equals(leftType)) {
+							return (Integer) leftVal / (Integer) rightVal;
+						}
+						if ("Double".equals(leftType)) {
+							return (Double) leftVal / (Double) rightVal;
+						}
+						break;
+					case "==":
+						return leftVal.equals(rightVal);
+					case "!=":
+						return !leftVal.equals(rightVal);
+					case "<":
+						if ("Integer".equals(leftType)) {
+							return (Integer) leftVal < (Integer) rightVal;
+						}
+						if ("Double".equals(leftType)) {
+							return (Double) leftVal < (Double) rightVal;
+						}
+						break;
+					case ">":
+						if ("Integer".equals(leftType)) {
+							return (Integer) leftVal > (Integer) rightVal;
+						}
+						if ("Double".equals(leftType)) {
+							return (Double) leftVal > (Double) rightVal;
+						}
+						break;
+				}
+				return null;
+			}
 		};
 		} else {
 			// No operator found, return single operand
 			return left;
 		}
     }
-
 	/**
 	 * Get the type of this expression
 	 * @param symbolTable The symbol table for looking up variable and function types
@@ -152,4 +223,7 @@ public interface ExpressionNode extends JottTree {
 
 	@Override
 	public String convertToPython();
+
+	@Override
+	public Object evaluate();
 }

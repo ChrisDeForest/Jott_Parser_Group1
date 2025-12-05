@@ -2,6 +2,8 @@ package parser;
 import provided.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import execution.RuntimeEnv;
 import semantics.*;
 
 public class FunctionCallNode implements OperandNode {
@@ -101,8 +103,15 @@ public class FunctionCallNode implements OperandNode {
                 }
             }
         }
-
-
         return true;
+    }
+
+    @Override
+    public Object evaluate() {
+        List<Object> argValues = new ArrayList<>();
+        for (ExpressionNode arg : params.getArgs()) {
+            argValues.add(arg.evaluate()); // no env passed
+        }
+        return RuntimeEnv.callFunction(functionName.getName(), argValues);
     }
 }

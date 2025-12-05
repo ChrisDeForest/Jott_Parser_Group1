@@ -7,6 +7,8 @@ import semantics.*;
 
 import java.util.ArrayList;
 
+import execution.RuntimeEnv;
+
 public class VarDecNode implements JottTree {
 
     private final TypeNode typeNode;
@@ -92,4 +94,12 @@ public class VarDecNode implements JottTree {
         return "";
     }
     
+    @Override
+    public Object evaluate() {
+        String name = idNode.getName();
+
+        RuntimeEnv.setVariable(name, null); // declares as unitialized, will get initialized in assignment or param passage
+
+        return null;
+    }
 }

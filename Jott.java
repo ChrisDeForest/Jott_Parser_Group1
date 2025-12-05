@@ -13,6 +13,7 @@ public class Jott {
             ArrayList<Token> tokens = JottTokenizer.tokenize(args[0]);
             JottTree root = JottParser.parse(tokens);
             root.validateTree();
+            root.evaluate();
             System.exit(0);
         } catch (SemanticException se) {
             System.err.println(se.getMessage());

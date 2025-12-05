@@ -3,7 +3,6 @@ package parser;
 import java.util.ArrayList;
 
 import provided.*;
-import semantics.SemanticException;
 
 public class ElseIfNode implements JottTree {
 	private final ExpressionNode condition;
@@ -70,6 +69,10 @@ public class ElseIfNode implements JottTree {
 		return new ElseIfNode(cond, body);
 	}
 
+	public ExpressionNode getCondition(){
+		return condition;
+	}
+
 	@Override
 	public String convertToJott() {
 		StringBuilder sb = new StringBuilder();
@@ -112,5 +115,9 @@ public class ElseIfNode implements JottTree {
 
 	public BodyNode getBody() {
 		return body;
+	}
+
+	public Object evaluate() {
+		return null;
 	}
 }

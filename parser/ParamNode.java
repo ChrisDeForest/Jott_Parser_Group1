@@ -80,4 +80,9 @@ public class ParamNode implements JottTree {
     public List<ExpressionNode> getArgs() {
         return args;
     }
+
+    @Override 
+	public Object evaluate(){
+		return null;
+	}
 }

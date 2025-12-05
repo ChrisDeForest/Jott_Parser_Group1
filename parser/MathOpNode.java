@@ -56,4 +56,9 @@ public class MathOpNode implements ExpressionNode{
 		// TODO: Implement this method
 		return "";
 	}
+
+	@Override 
+	public Object evaluate(){
+		return null;
+	}
 }

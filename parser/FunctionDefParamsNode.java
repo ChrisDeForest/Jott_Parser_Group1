@@ -144,4 +144,8 @@ public class FunctionDefParamsNode implements JottTree {
         }
         return ok;
     }
+
+    public Object evaluate(){
+        return null;
+    } 
 }

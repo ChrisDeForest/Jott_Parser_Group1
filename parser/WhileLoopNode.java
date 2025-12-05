@@ -112,4 +112,26 @@ public class WhileLoopNode implements JottTree{
 		// TODO: Implement conversion logic
 		return "";
 	}
+
+	@Override
+	public Object evaluate() {
+		while (true) {
+			Object condVal = condition.evaluate();
+
+			if (!((Boolean) condVal)) {
+				break; // exit the loop
+			}
+
+			// exec body
+			Object result = body.evaluate();
+
+			// If body has return statement, return upward
+			if (result != null) {
+				return result;
+			}
+		}
+    	// loop completed without a return
+    	return null;
+	}
+
 }
