@@ -16,20 +16,12 @@ public class JottExecutionTester {
     public static void main(String[] args) {
         try {
             String testFile = "phase4testcases\\test1.jott";
-
-            // Tokenize the file
             ArrayList<Token> tokens = JottTokenizer.tokenize(testFile);
-            
-
-            // Parse into AST
             JottTree root = JottParser.parse(tokens);
-
-            // Validate semantics
             root.validateTree();
 
-            // Evaluate (this will print to stdout if the program uses ::print)
-            RuntimeEnv.reset();
-            root.evaluate();
+            RuntimeEnv.reset(); // reset env, sets it up
+            root.evaluate()
         } catch (SemanticException se) {
             System.err.println("Semantic Error: " + se.getMessage());
         } catch (ParseException pe) {

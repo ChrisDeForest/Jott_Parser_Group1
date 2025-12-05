@@ -25,28 +25,26 @@ public class RuntimeEnv {
         public void setValue(Object value) { this.value = value; }
     }
 
-    // Stack of scopes, where each scope is a map of variable name -> VariableRecord
+    // stack of scopes
     private final Deque<Map<String, VariableRecord>> variableScopes;
 
-    // Global function table (functions are not scoped)
+    // global func table
     private final Map<String, JottFunction> functions;
 
-    // 🔑 Global static instance
+    // global static instance
     public static final RuntimeEnv globalRuntimeEnv = new RuntimeEnv();
 
     private RuntimeEnv() {
         this.variableScopes = new ArrayDeque<>();
         this.functions = new HashMap<>();
-        // Start with a global scope
+        // start with a global scope
         this.variableScopes.push(new HashMap<>());
     }
 
-    /** Enter a new scope (e.g., when entering a function body). */
     public static void enterScope() {
         globalRuntimeEnv.variableScopes.push(new HashMap<>());
     }
 
-    /** Exit the current scope (e.g., when leaving a function body). */
     public static void exitScope() {
         if (globalRuntimeEnv.variableScopes.size() <= 1) {
             throw new IllegalStateException("Cannot exit the global scope");
@@ -54,7 +52,7 @@ public class RuntimeEnv {
         globalRuntimeEnv.variableScopes.pop();
     }
 
-    /** Reset runtime environment (clear all variables and functions). */
+    // reset runtime env, must call before evaluating to seedthebuiltin functions
     public static void reset() {
         globalRuntimeEnv.functions.clear();
         globalRuntimeEnv.variableScopes.clear();
@@ -62,7 +60,7 @@ public class RuntimeEnv {
         seedBuiltins();
     }
 
-    /** Declare a variable in the current scope with type and initial value. */
+    
     public static void declareVariable(String name, String type, Object value) {
         globalRuntimeEnv.variableScopes.peek().put(name, new VariableRecord(type, value));
     }
