@@ -28,7 +28,7 @@ public class IDNode implements OperandNode {
     @Override
     public String getType(SymbolTable symbolTable) {
         // Look up the variable in the symbol table
-        return symbolTable.getVariableType(idToken.getToken());
+        return SymbolTable.getVariableType(idToken.getToken());
     }
 
     public provided.Token getToken() {

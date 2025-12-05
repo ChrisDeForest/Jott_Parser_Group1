@@ -94,11 +94,14 @@ public class VarDecNode implements JottTree {
         return "";
     }
     
+   
     @Override
     public Object evaluate() {
         String name = idNode.getName();
+        String type = typeNode.getType();
 
-        RuntimeEnv.setVariable(name, null); // declares as unitialized, will get initialized in assignment or param passage
+        // Declare the variable with its type and an initial null value
+        RuntimeEnv.declareVariable(name, type, null);
 
         return null;
     }

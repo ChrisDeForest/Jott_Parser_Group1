@@ -6,17 +6,32 @@ import java.util.*;
  * RuntimeEnv manages variable values and function execution at runtime.
  * Supports scoping for nested scopes (e.g., function calls, loops).
  */
-
-
 public class RuntimeEnv {
 
-    // Stack of scopes, where each scope is a map of variable name -> value
-    private final Deque<Map<String, Object>> variableScopes;
+    /**
+     * VariableRecord holds both the declared type and the current value.
+     */
+    public static class VariableRecord {
+        private final String type; // "Integer", "Double", "String", "Boolean"
+        private Object value;
+
+        public VariableRecord(String type, Object value) {
+            this.type = type;
+            this.value = value;
+        }
+
+        public String getType() { return type; }
+        public Object getValue() { return value; }
+        public void setValue(Object value) { this.value = value; }
+    }
+
+    // Stack of scopes, where each scope is a map of variable name -> VariableRecord
+    private final Deque<Map<String, VariableRecord>> variableScopes;
 
     // Global function table (functions are not scoped)
     private final Map<String, JottFunction> functions;
 
-    // 🔑 Global static instance (like SymbolTable.globalSymbolTable)
+    // 🔑 Global static instance
     public static final RuntimeEnv globalRuntimeEnv = new RuntimeEnv();
 
     private RuntimeEnv() {
@@ -47,14 +62,25 @@ public class RuntimeEnv {
         seedBuiltins();
     }
 
-    /** Add or update a variable in the current scope. */
+    /** Declare a variable in the current scope with type and initial value. */
+    public static void declareVariable(String name, String type, Object value) {
+        globalRuntimeEnv.variableScopes.peek().put(name, new VariableRecord(type, value));
+    }
+
+    /** Update an existing variable’s value. */
     public static void setVariable(String name, Object value) {
-        globalRuntimeEnv.variableScopes.peek().put(name, value);
+        for (Map<String, VariableRecord> scope : globalRuntimeEnv.variableScopes) {
+            if (scope.containsKey(name)) {
+                scope.get(name).setValue(value);
+                return;
+            }
+        }
+        throw new RuntimeException("Variable '" + name + "' not declared");
     }
 
     /** Check if a variable exists in any accessible scope. */
     public static boolean variableExists(String name) {
-        for (Map<String, Object> scope : globalRuntimeEnv.variableScopes) {
+        for (Map<String, VariableRecord> scope : globalRuntimeEnv.variableScopes) {
             if (scope.containsKey(name)) {
                 return true;
             }
@@ -64,12 +90,22 @@ public class RuntimeEnv {
 
     /** Get the value of a variable from the most recent accessible scope. */
     public static Object getVariable(String name) {
-        for (Map<String, Object> scope : globalRuntimeEnv.variableScopes) {
+        for (Map<String, VariableRecord> scope : globalRuntimeEnv.variableScopes) {
             if (scope.containsKey(name)) {
-                return scope.get(name);
+                return scope.get(name).getValue();
             }
         }
         return null; // undeclared at runtime
+    }
+
+    /** Get the type of a variable from the most recent accessible scope. */
+    public static String getVariableType(String name) {
+        for (Map<String, VariableRecord> scope : globalRuntimeEnv.variableScopes) {
+            if (scope.containsKey(name)) {
+                return scope.get(name).getType();
+            }
+        }
+        return null;
     }
 
     /** Add a function to the global function table. */
@@ -118,6 +154,7 @@ public class RuntimeEnv {
         // length[String]:Integer
         addFunction("length", (env, args) -> {
             if (args.size() == 1) {
+                System.out.println("Arg" + args.get(0) + "Arg length: " + String.valueOf(args.get(0)).length());
                 return String.valueOf(args.get(0)).length();
             }
             throw new RuntimeException("length expects 1 string argument");

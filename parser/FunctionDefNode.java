@@ -212,8 +212,10 @@ public class FunctionDefNode implements JottTree {
                     List<FunctionDefParamsNode.ParamDecl> paramDecls = params.getParamEntries();
                     for (int i = 0; i < paramDecls.size(); i++) {
                         String pname = paramDecls.get(i).getNameToken().getToken();
+                        String ptype = paramDecls.get(i).getTypeToken().getToken();
                         Object argVal = args.get(i);
-                        RuntimeEnv.setVariable(pname, argVal);
+
+                        RuntimeEnv.declareVariable(pname, ptype, argVal);
                     }
                 }
 

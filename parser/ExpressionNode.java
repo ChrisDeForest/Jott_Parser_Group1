@@ -2,6 +2,7 @@ package parser;
 
 import java.util.ArrayList;
 
+import execution.RuntimeEnv;
 import provided.Token;
 import provided.JottTree;
 import provided.TokenType;
@@ -130,46 +131,42 @@ public interface ExpressionNode extends JottTree {
 				Object leftVal = left.evaluate();
 				Object rightVal = right.evaluate();
 
-				String leftType = left.getType(SymbolTable.globalSymbolTable); // only have to check left?
-
 				switch (opToken) {
 					case "+":
-						if ("Integer".equals(leftType)) {
+						if (leftVal instanceof Integer) {
 							return (Integer) leftVal + (Integer) rightVal;
 						}
-						if ("Double".equals(leftType)) {
+						if (leftVal instanceof Double) {
 							return (Double) leftVal + (Double) rightVal;
 						}
 						break;
 					case "-":
-						if ("Integer".equals(leftType)) {
+						if (leftVal instanceof Integer) {
 							return (Integer) leftVal - (Integer) rightVal;
 						}
-						if ("Double".equals(leftType)) {
+						if (leftVal instanceof Double) {
 							return (Double) leftVal - (Double) rightVal;
 						}
 						break;
 					case "*":
-						if ("Integer".equals(leftType)) {
+						if (leftVal instanceof Integer) {
 							return (Integer) leftVal * (Integer) rightVal;
 						}
-						if ("Double".equals(leftType)) {
+						if (leftVal instanceof Double) {
 							return (Double) leftVal * (Double) rightVal;
 						}
 						break;
 					case "/":
-						// check for division by zero
-						if ("Integer".equals(leftType) && (Integer) rightVal == 0) {
-							throw new RuntimeException("ExpressionNode: Division by Zero");
-						}
-						if ("Double".equals(leftType) && (Double) rightVal == 0.0) {
-							throw new RuntimeException("ExpressionNode: Division by Zero");
-						}
-						
-						if ("Integer".equals(leftType)) {
+						if (leftVal instanceof Integer) {
+							if ((Integer) rightVal == 0) {
+								throw new RuntimeException("ExpressionNode: Division by Zero");
+							}
 							return (Integer) leftVal / (Integer) rightVal;
 						}
-						if ("Double".equals(leftType)) {
+						if (leftVal instanceof Double) {
+							if ((Double) rightVal == 0.0) {
+								throw new RuntimeException("ExpressionNode: Division by Zero");
+							}
 							return (Double) leftVal / (Double) rightVal;
 						}
 						break;
@@ -178,22 +175,23 @@ public interface ExpressionNode extends JottTree {
 					case "!=":
 						return !leftVal.equals(rightVal);
 					case "<":
-						if ("Integer".equals(leftType)) {
+						if (leftVal instanceof Integer) {
 							return (Integer) leftVal < (Integer) rightVal;
 						}
-						if ("Double".equals(leftType)) {
+						if (leftVal instanceof Double) {
 							return (Double) leftVal < (Double) rightVal;
 						}
 						break;
 					case ">":
-						if ("Integer".equals(leftType)) {
+						if (leftVal instanceof Integer) {
 							return (Integer) leftVal > (Integer) rightVal;
 						}
-						if ("Double".equals(leftType)) {
+						if (leftVal instanceof Double) {
 							return (Double) leftVal > (Double) rightVal;
 						}
 						break;
 				}
+
 				return null;
 			}
 		};

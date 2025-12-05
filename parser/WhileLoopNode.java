@@ -64,7 +64,7 @@ public class WhileLoopNode implements JottTree{
 			throw new ParseException("parseWhileLoopNode: Unexpected EOF", null);
 		}
 		if (!(tokens.get(0).getTokenType() == TokenType.R_BRACE)) {
-			throw new ParseException("parseWhileLoopNode: Expected '{' to end while body", tokens.get(0));
+			throw new ParseException("parseWhileLoopNode: Expected '}' to end while body", tokens.get(0));
 		}
 		tokens.remove(0); // consume ({)
 		

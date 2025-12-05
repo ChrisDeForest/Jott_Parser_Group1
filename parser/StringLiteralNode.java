@@ -51,6 +51,6 @@ public class StringLiteralNode implements ExpressionNode {
 
     @Override
     public Object evaluate() {
-        return stringLiteralToken;
+        return stringLiteralToken.getToken();
     }
 }
