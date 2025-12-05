@@ -1,0 +1,10 @@
+# Unitialized variable error test
+
+Def testUninit[]:Void{
+    Integer x;        # declared but not assigned
+    ::print[x];      
+}
+
+Def main[]:Void{
+    ::testUninit[];
+}

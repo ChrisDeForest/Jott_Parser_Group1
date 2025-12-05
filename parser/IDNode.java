@@ -66,7 +66,7 @@ public class IDNode implements OperandNode {
          String varName = idToken.getToken();
 
         // Look up the variable in the runtime environment
-        if (!execution.RuntimeEnv.variableExists(varName)) {
+        if (execution.RuntimeEnv.getVariable(varName) == null) {
             throw new RuntimeException("IDNode: Variable '" + varName + "' not initialized at runtime.");
         }
 
