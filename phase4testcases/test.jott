@@ -1,3 +1,17 @@
+# Unitialized variable error test
+
+Def testUninit[]:Void{
+    Integer x;
+    x = 5;        
+    ::print[x]; 
+    x = 10;  
+    ::print[x]; 
+    x = x + 1;
+    ::print[x]; 
+    x = x - 1;
+    ::print[x];   
+}
+
 Def main[]:Void{
-    ::print["Hello World"];
+    ::testUninit[];
 }

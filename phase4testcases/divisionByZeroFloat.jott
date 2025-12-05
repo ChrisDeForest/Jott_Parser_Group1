@@ -1,0 +1,13 @@
+# Division by zero float test
+
+Def testDivZero[x:Double]:Double{
+    Double result;
+    result = x / 0.0;   # fails here
+    Return result;
+}
+
+Def main[]:Void{
+    Double val;
+    val = ::testDivZero[5.5];
+    ::print[val];
+}
