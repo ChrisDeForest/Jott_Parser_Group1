@@ -15,7 +15,7 @@ public class JottExecutionTester {
 
     public static void main(String[] args) {
         try {
-            String testFile = "phase4testcases\\test1.jott";
+            String testFile = "phase4testcases\\reallyLong.jott";
             ArrayList<Token> tokens = JottTokenizer.tokenize(testFile);
             JottTree root = JottParser.parse(tokens);
             root.validateTree();

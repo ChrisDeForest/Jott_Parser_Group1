@@ -152,8 +152,9 @@ public class RuntimeEnv {
         // length[String]:Integer
         addFunction("length", (env, args) -> {
             if (args.size() == 1) {
-                System.out.println("Arg" + args.get(0) + "Arg length: " + String.valueOf(args.get(0)).length());
-                return String.valueOf(args.get(0)).length();
+
+                String s = args.get(0).toString();
+                return s.length();
             }
             throw new RuntimeException("length expects 1 string argument");
         });
