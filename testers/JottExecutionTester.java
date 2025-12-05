@@ -14,20 +14,33 @@ import execution.RuntimeEnv;
 public class JottExecutionTester {
 
     public static void main(String[] args) {
-        try {
-            String testFile = "phase4testcases\\reallyLong.jott";
-            ArrayList<Token> tokens = JottTokenizer.tokenize(testFile);
-            JottTree root = JottParser.parse(tokens);
-            root.validateTree();
+        String[] testcases = {
+            "phase4testcases\\divisionByZero.jott",
+            "phase4testcases\\divisionByZeroFloat.jott",
+            "phase4testcases\\reallyLong.jott",
+            "phase4testcases\\test.jott",
+            "phase4testcases\\test1.jott",
+            "phase4testcases\\unitializedVariable.jott",
+        };
+        for (String testcase: testcases) {
+            System.out.println("Running test case: " + testcase);
+            try {
+                String testFile = "phase4testcases\\reallyLong.jott";
+                ArrayList<Token> tokens = JottTokenizer.tokenize(testFile);
+                JottTree root = JottParser.parse(tokens);
+                root.validateTree();
 
-            RuntimeEnv.reset(); // reset env, sets it up
-            root.evaluate();
-        } catch (SemanticException se) {
-            System.err.println("Semantic Error: " + se.getMessage());
-        } catch (ParseException pe) {
-            System.err.println("Parse Error: " + pe.getMessage());
-        } catch (RuntimeException re) {
-            System.err.println("Runtime Error: " + re.getMessage());
+                RuntimeEnv.reset(); // reset env, sets it up
+                root.evaluate();
+            } catch (SemanticException se) {
+                System.err.println("Semantic Error: " + se.getMessage());
+            } catch (ParseException pe) {
+                System.err.println("Parse Error: " + pe.getMessage());
+            } catch (RuntimeException re) {
+                System.err.println("Runtime Error: " + re.getMessage());
+            }
+            System.out.println();
         }
+        
     }
 }
