@@ -61,7 +61,7 @@ public class ParamTNode implements JottTree {
     }
 
     @Override 
-	public Object evaluate(){
+	public Object execute(){
 		return null;
 	}
 }

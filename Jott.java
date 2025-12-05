@@ -14,7 +14,7 @@ public class Jott {
             JottTree root = JottParser.parse(tokens);
             root.validateTree();
             RuntimeEnv.reset(); // needed to set up the runtime env for execution
-            root.evaluate();
+            root.execute();
             System.exit(0);
         } catch (SemanticException se) {
             System.err.println(se.getMessage());

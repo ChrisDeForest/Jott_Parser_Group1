@@ -60,7 +60,7 @@ public class NumberNode implements OperandNode {
     }
 
     @Override
-    public Object evaluate() {
+    public Object execute() {
         String tokenValue = numberToken.getToken();
 
         if (tokenValue.contains(".")) {

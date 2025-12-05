@@ -84,7 +84,7 @@ public class FunctionReturnNode implements JottTree {
         return "";
     }
 
-    public Object evaluate(){
+    public Object execute(){
         return null;
     }
 }

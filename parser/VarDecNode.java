@@ -96,7 +96,7 @@ public class VarDecNode implements JottTree {
     
    
     @Override
-    public Object evaluate() {
+    public Object execute() {
         String name = idNode.getName();
         String type = typeNode.getType();
 

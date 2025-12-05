@@ -57,7 +57,7 @@ public class BoolNode implements ExpressionNode {
     }
 
     @Override
-    public Object evaluate(){
+    public Object execute(){
         String tokenValue = boolToken.getToken();
         if (tokenValue.equals("True")) {
             return Boolean.TRUE;

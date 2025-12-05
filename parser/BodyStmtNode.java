@@ -51,5 +51,5 @@ public interface BodyStmtNode extends JottTree {
 	public String convertToPython();
 
 	@Override
-	public Object evaluate();
+	public Object execute();
 }

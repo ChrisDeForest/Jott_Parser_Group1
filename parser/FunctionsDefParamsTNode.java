@@ -88,7 +88,7 @@ public class FunctionsDefParamsTNode implements JottTree {
 		return "";
 	}
 
-	public Object evaluate(){
+	public Object execute(){
 		return null;
 	}
 }

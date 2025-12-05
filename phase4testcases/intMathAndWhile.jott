@@ -1,0 +1,15 @@
+Def main[]:Void{
+    Integer x;
+    Integer sum;
+
+    x = 1;
+    sum = 0;
+
+    While[x < 6]{
+        sum = sum + x;
+        x = x + 1;
+    }
+
+    ::print[sum];
+    ::print[x];
+}

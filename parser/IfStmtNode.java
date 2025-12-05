@@ -205,25 +205,25 @@ public class IfStmtNode implements JottTree {
     }
 
     @Override
-    public Object evaluate(){
-        Object condVal = condition.evaluate();
+    public Object execute(){
+        Object condVal = condition.execute();
 
         if ((Boolean) condVal) {
-            return body.evaluate();
+            return body.execute();
         }
 
         // if not, check each else if
         for (ElseIfNode elseIf: elseIfList){
-            Object elseIfCond = elseIf.getCondition().evaluate();
+            Object elseIfCond = elseIf.getCondition().execute();
 
             if ((Boolean) elseIfCond) {
-                return elseIf.getBody().evaluate();
+                return elseIf.getBody().execute();
             }
         }
 
         // otherwise, execute else if present
         if (elseNode.isPresent() && elseNode != null) {
-            return elseNode.getBody().evaluate();
+            return elseNode.getBody().execute();
         }
 
         return null; 

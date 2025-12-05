@@ -66,7 +66,7 @@ public class TypeNode implements JottTree {
     }
 
     @Override
-    public Object evaluate() {
+    public Object execute() {
         return null;
     }
 }

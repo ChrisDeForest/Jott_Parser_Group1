@@ -198,7 +198,7 @@ public class FunctionDefNode implements JottTree {
         return ok;
     }
 
-    public Object evaluate() {
+    public Object execute() {
         String funcName = functionId.getName();
 
         // Register this function in the runtime environment
@@ -219,7 +219,7 @@ public class FunctionDefNode implements JottTree {
                     }
                 }
 
-                Object result = body.evaluate();
+                Object result = body.execute();
 
                 execution.RuntimeEnv.exitScope();
 

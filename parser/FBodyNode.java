@@ -85,13 +85,13 @@ public class FBodyNode implements JottTree {
     
 
     @Override
-    public Object evaluate(){
+    public Object execute(){
 
         for (VarDecNode v: varDecs) {
-            v.evaluate(); // declaration happens in varDecNode
+            v.execute(); // declaration happens in varDecNode
         }
 
-        Object result = body.evaluate(); // actually evaluate body
+        Object result = body.execute(); // actually execute body
 
         return result;
 

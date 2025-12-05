@@ -62,7 +62,7 @@ public class IDNode implements OperandNode {
     }
 
     @Override
-    public Object evaluate(){
+    public Object execute(){
          String varName = idToken.getToken();
 
         // Look up the variable in the runtime environment

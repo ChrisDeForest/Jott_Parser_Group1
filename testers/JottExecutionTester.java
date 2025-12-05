@@ -17,7 +17,12 @@ public class JottExecutionTester {
         String[] testcases = {
             "phase4testcases\\divisionByZero.jott",
             "phase4testcases\\divisionByZeroFloat.jott",
+            "phase4testcases\\doubleMathAndIf.jott",
+            "phase4testcases\\functionChainMultipleTypes.jott",
+            "phase4testcases\\helloWorld.jott",
+            "phase4testcases\\intMathAndWhile.jott",
             "phase4testcases\\reallyLong.jott",
+            "phase4testcases\\stringsConcatLength.jott",
             "phase4testcases\\test.jott",
             "phase4testcases\\test1.jott",
             "phase4testcases\\unitializedVariable.jott",
@@ -30,7 +35,7 @@ public class JottExecutionTester {
                 root.validateTree();
 
                 RuntimeEnv.reset(); // reset env, sets it up
-                root.evaluate();
+                root.execute();
             } catch (SemanticException se) {
                 System.err.println("Semantic Error: " + se.getMessage());
             } catch (ParseException pe) {

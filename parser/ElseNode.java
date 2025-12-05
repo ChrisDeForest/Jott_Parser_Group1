@@ -101,7 +101,7 @@ public class ElseNode implements JottTree {
         return bodyNode;
     }
 
-    public Object evaluate(){
+    public Object execute(){
         return null;
     }
 }

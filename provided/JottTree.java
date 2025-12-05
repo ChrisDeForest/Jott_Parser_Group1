@@ -38,5 +38,5 @@ public interface JottTree {
      */
     public boolean validateTree();
 
-    public Object evaluate();
+    public Object execute();
 }

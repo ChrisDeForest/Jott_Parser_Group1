@@ -1,0 +1,5 @@
+Def main[]:Void{
+    String msg;
+    msg = "Hello World!";
+    ::print[msg];
+}

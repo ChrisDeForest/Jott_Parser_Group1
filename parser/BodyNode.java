@@ -175,15 +175,15 @@ public class BodyNode implements JottTree {
 		return endsWithIfThatReturns(expectedReturnType);
 	}
 
-	public Object evaluate(){
+	public Object execute(){
 		Object result = null;
 
 		for (JottTree stmt : bodyStmtNodes) {
-			result = stmt.evaluate(); // assignments, loops, if statements
+			result = stmt.execute(); // assignments, loops, if statements
 		}
 
 		if ((returnStmt != null) && !returnStmt.isEmptyReturn()) {
-			result = returnStmt.evaluate();
+			result = returnStmt.execute();
 			return result;
 		}
 

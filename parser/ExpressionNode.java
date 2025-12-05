@@ -127,9 +127,9 @@ public interface ExpressionNode extends JottTree {
 			@Override public String convertToPython(){ return null;}
 
 			@Override
-			public Object evaluate(){
-				Object leftVal = left.evaluate();
-				Object rightVal = right.evaluate();
+			public Object execute(){
+				Object leftVal = left.execute();
+				Object rightVal = right.execute();
 
 				switch (opToken) {
 					case "+":
@@ -223,5 +223,5 @@ public interface ExpressionNode extends JottTree {
 	public String convertToPython();
 
 	@Override
-	public Object evaluate();
+	public Object execute();
 }

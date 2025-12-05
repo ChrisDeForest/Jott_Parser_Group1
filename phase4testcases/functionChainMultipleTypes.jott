@@ -1,0 +1,44 @@
+Def addThreeInts[a:Integer, b:Integer, c:Integer]:Integer{
+Integer sum;
+sum = a + b;
+sum = sum + c;
+Return sum;
+}
+
+Def averageThree[d1:Double, d2:Double, d3:Double]:Double{
+Double total;
+Double three;
+Double avg;
+
+total = d1 + d2;
+total = total + d3;
+
+three = 3.0;
+avg = total / three;
+Return avg;
+}
+
+Def main[]:Void{
+Integer i1;
+Integer i2;
+Integer i3;
+Integer isum;
+
+Double d1;
+Double d2;
+Double d3;
+Double davg;
+
+i1 = 2;
+i2 = 4;
+i3 = 6;
+isum = ::addThreeInts[i1, i2, i3];
+
+d1 = 1.5;
+d2 = 2.5;
+d3 = 3.5;
+davg = ::averageThree[d1, d2, d3];
+
+::print[isum];
+::print[davg];
+}

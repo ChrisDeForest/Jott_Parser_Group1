@@ -115,8 +115,8 @@ public class AsmtNode implements JottTree {
 	}
 
 	@Override
-	public Object evaluate(){
-		Object value = expr.evaluate();
+	public Object execute(){
+		Object value = expr.execute();
 		String name = id.getName();
 
 		RuntimeEnv.setVariable(name, value); // update runtime env, initalize variable

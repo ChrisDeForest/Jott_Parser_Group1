@@ -39,5 +39,5 @@ public interface OperandNode extends ExpressionNode {
     public boolean validateTree();
 
     @Override 
-	public Object evaluate();
+	public Object execute();
 }

@@ -107,10 +107,10 @@ public class FunctionCallNode implements OperandNode {
     }
 
     @Override
-    public Object evaluate() {
+    public Object execute() {
         List<Object> argValues = new ArrayList<>();
         for (ExpressionNode arg : params.getArgs()) {
-            argValues.add(arg.evaluate()); // no env passed
+            argValues.add(arg.execute()); // no env passed
         }
         return RuntimeEnv.callFunction(functionName.getName(), argValues);
     }

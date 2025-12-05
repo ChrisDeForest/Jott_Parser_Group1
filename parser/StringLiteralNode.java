@@ -50,7 +50,7 @@ public class StringLiteralNode implements ExpressionNode {
     }
 
     @Override
-    public Object evaluate() {
+    public Object execute() {
         String result = stringLiteralToken.getToken();
         result = result.substring(1, result.length() - 1); // remove beginning and end quotes
         return result;

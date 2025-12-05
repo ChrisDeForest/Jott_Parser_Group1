@@ -82,7 +82,7 @@ public class ParamNode implements JottTree {
     }
 
     @Override 
-	public Object evaluate(){
+	public Object execute(){
 		return null;
 	}
 }

@@ -165,9 +165,9 @@ public class ProgramNode implements JottTree {
         semantics.SymbolTable.addFunction("length", "Integer", java.util.List.of("String"));
     }
 
-    public Object evaluate() {
+    public Object execute() {
         for (FunctionDefNode f : functionDefs) {
-            f.evaluate(); 
+            f.execute(); 
         }
 
         if (RuntimeEnv.functionExists("main")) {

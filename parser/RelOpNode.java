@@ -58,7 +58,7 @@ public class RelOpNode implements ExpressionNode {
 	}
 
 	@Override 
-	public Object evaluate(){
+	public Object execute(){
 		return null;
 	}
 }

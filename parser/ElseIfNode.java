@@ -117,7 +117,7 @@ public class ElseIfNode implements JottTree {
 		return body;
 	}
 
-	public Object evaluate() {
+	public Object execute() {
 		return null;
 	}
 }

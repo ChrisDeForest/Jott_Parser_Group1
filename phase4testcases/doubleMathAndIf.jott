@@ -1,0 +1,35 @@
+# Double math and if/else only (no elif, no <=)
+
+Def classifyScore[s:Double]:String{
+    String label;
+
+    # default
+    label = "high";
+
+    If[s < 7.0]{
+        label = "medium";
+        If[s < 3.0]{
+            label = "low";
+        }
+    }
+
+    Return label;
+}
+
+Def main[]:Void{
+    Double a;
+    Double b;
+    Double c;
+    String label;
+
+    a = 2.5;
+    b = 4.0;
+    c = a + b;    # 6.5
+
+    label = ::classifyScore[c];
+    ::print[label];
+
+    a = 8.0;
+    label = ::classifyScore[a];
+    ::print[label];
+}
