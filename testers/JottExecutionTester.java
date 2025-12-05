@@ -21,7 +21,7 @@ public class JottExecutionTester {
             root.validateTree();
 
             RuntimeEnv.reset(); // reset env, sets it up
-            root.evaluate()
+            root.evaluate();
         } catch (SemanticException se) {
             System.err.println("Semantic Error: " + se.getMessage());
         } catch (ParseException pe) {
