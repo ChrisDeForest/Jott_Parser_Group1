@@ -55,4 +55,15 @@ public class BoolNode implements ExpressionNode {
     public String convertToPython() {
         return "";
     }
+
+    @Override
+    public Object execute(){
+        String tokenValue = boolToken.getToken();
+        if (tokenValue.equals("True")) {
+            return Boolean.TRUE;
+        } else if (tokenValue.equals("False")) {
+            return Boolean.FALSE;
+        }
+        return null;
+    }
 }

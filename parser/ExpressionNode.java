@@ -2,6 +2,7 @@ package parser;
 
 import java.util.ArrayList;
 
+import execution.RuntimeEnv;
 import provided.Token;
 import provided.JottTree;
 import provided.TokenType;
@@ -124,13 +125,81 @@ public interface ExpressionNode extends JottTree {
 			@Override public String convertToJava(String indentLevel){ return null;}
 			@Override public String convertToC(){ return null; }
 			@Override public String convertToPython(){ return null;}
+
+			@Override
+			public Object execute(){
+				Object leftVal = left.execute();
+				Object rightVal = right.execute();
+
+				switch (opToken) {
+					case "+":
+						if (leftVal instanceof Integer) {
+							return (Integer) leftVal + (Integer) rightVal;
+						}
+						if (leftVal instanceof Double) {
+							return (Double) leftVal + (Double) rightVal;
+						}
+						break;
+					case "-":
+						if (leftVal instanceof Integer) {
+							return (Integer) leftVal - (Integer) rightVal;
+						}
+						if (leftVal instanceof Double) {
+							return (Double) leftVal - (Double) rightVal;
+						}
+						break;
+					case "*":
+						if (leftVal instanceof Integer) {
+							return (Integer) leftVal * (Integer) rightVal;
+						}
+						if (leftVal instanceof Double) {
+							return (Double) leftVal * (Double) rightVal;
+						}
+						break;
+					case "/":
+						if (leftVal instanceof Integer) {
+							if ((Integer) rightVal == 0) {
+								throw new RuntimeException("ExpressionNode: Division by Zero");
+							}
+							return (Integer) leftVal / (Integer) rightVal;
+						}
+						if (leftVal instanceof Double) {
+							if ((Double) rightVal == 0.0) {
+								throw new RuntimeException("ExpressionNode: Division by Zero");
+							}
+							return (Double) leftVal / (Double) rightVal;
+						}
+						break;
+					case "==":
+						return leftVal.equals(rightVal);
+					case "!=":
+						return !leftVal.equals(rightVal);
+					case "<":
+						if (leftVal instanceof Integer) {
+							return (Integer) leftVal < (Integer) rightVal;
+						}
+						if (leftVal instanceof Double) {
+							return (Double) leftVal < (Double) rightVal;
+						}
+						break;
+					case ">":
+						if (leftVal instanceof Integer) {
+							return (Integer) leftVal > (Integer) rightVal;
+						}
+						if (leftVal instanceof Double) {
+							return (Double) leftVal > (Double) rightVal;
+						}
+						break;
+				}
+
+				return null;
+			}
 		};
 		} else {
 			// No operator found, return single operand
 			return left;
 		}
     }
-
 	/**
 	 * Get the type of this expression
 	 * @param symbolTable The symbol table for looking up variable and function types
@@ -152,4 +221,7 @@ public interface ExpressionNode extends JottTree {
 
 	@Override
 	public String convertToPython();
+
+	@Override
+	public Object execute();
 }

@@ -203,4 +203,29 @@ public class IfStmtNode implements JottTree {
         BodyNode eb = elseNode.getBody(); // ElseNode should expose body if present
         return eb != null && eb.returnsOnAllPaths(expectedReturnType);
     }
+
+    @Override
+    public Object execute(){
+        Object condVal = condition.execute();
+
+        if ((Boolean) condVal) {
+            return body.execute();
+        }
+
+        // if not, check each else if
+        for (ElseIfNode elseIf: elseIfList){
+            Object elseIfCond = elseIf.getCondition().execute();
+
+            if ((Boolean) elseIfCond) {
+                return elseIf.getBody().execute();
+            }
+        }
+
+        // otherwise, execute else if present
+        if (elseNode.isPresent() && elseNode != null) {
+            return elseNode.getBody().execute();
+        }
+
+        return null; 
+    }
 }

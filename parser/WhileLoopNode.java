@@ -64,7 +64,7 @@ public class WhileLoopNode implements JottTree{
 			throw new ParseException("parseWhileLoopNode: Unexpected EOF", null);
 		}
 		if (!(tokens.get(0).getTokenType() == TokenType.R_BRACE)) {
-			throw new ParseException("parseWhileLoopNode: Expected '{' to end while body", tokens.get(0));
+			throw new ParseException("parseWhileLoopNode: Expected '}' to end while body", tokens.get(0));
 		}
 		tokens.remove(0); // consume ({)
 		
@@ -112,4 +112,26 @@ public class WhileLoopNode implements JottTree{
 		// TODO: Implement conversion logic
 		return "";
 	}
+
+	@Override
+	public Object execute() {
+		while (true) {
+			Object condVal = condition.execute();
+
+			if (!((Boolean) condVal)) {
+				break; // exit the loop
+			}
+
+			// exec body
+			Object result = body.execute();
+
+			// If body has return statement, return upward
+			if (result != null) {
+				return result;
+			}
+		}
+    	// loop completed without a return
+    	return null;
+	}
+
 }

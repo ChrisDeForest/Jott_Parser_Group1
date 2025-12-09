@@ -28,7 +28,7 @@ public class IDNode implements OperandNode {
     @Override
     public String getType(SymbolTable symbolTable) {
         // Look up the variable in the symbol table
-        return symbolTable.getVariableType(idToken.getToken());
+        return SymbolTable.getVariableType(idToken.getToken());
     }
 
     public provided.Token getToken() {
@@ -59,5 +59,17 @@ public class IDNode implements OperandNode {
 
     public boolean validateTree() {
         return true;
+    }
+
+    @Override
+    public Object execute(){
+         String varName = idToken.getToken();
+
+        // Look up the variable in the runtime environment
+        if (execution.RuntimeEnv.getVariable(varName) == null) {
+            throw new RuntimeException("IDNode: Variable '" + varName + "' not initialized at runtime.");
+        }
+
+        return execution.RuntimeEnv.getVariable(varName);
     }
 }

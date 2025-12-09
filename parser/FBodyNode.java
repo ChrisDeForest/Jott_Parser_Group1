@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import provided.JottTree;
 import provided.Token;
-import provided.TokenType;
 
 public class FBodyNode implements JottTree {
     private final ArrayList<VarDecNode> varDecs;
@@ -81,5 +80,20 @@ public class FBodyNode implements JottTree {
         // Have BodyNode enforce statements & return rules knowing the expected type
         ok &= body.validateTree(expectedReturnType);
         return ok;
+    }
+
+    
+
+    @Override
+    public Object execute(){
+
+        for (VarDecNode v: varDecs) {
+            v.execute(); // declaration happens in varDecNode
+        }
+
+        Object result = body.execute(); // actually execute body
+
+        return result;
+
     }
 }

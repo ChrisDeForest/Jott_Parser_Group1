@@ -1,12 +1,11 @@
-package semantics;
-
 import provided.JottTokenizer;
 import provided.JottTree;
 import provided.JottParser;
 import provided.Token;
+import semantics.SemanticException;
 import parser.ParseException;
-
 import java.util.ArrayList;
+import execution.RuntimeEnv;
 
 public class Jott {
     public static void main(String[] args){
@@ -14,6 +13,8 @@ public class Jott {
             ArrayList<Token> tokens = JottTokenizer.tokenize(args[0]);
             JottTree root = JottParser.parse(tokens);
             root.validateTree();
+            RuntimeEnv.reset(); // needed to set up the runtime env for execution
+            root.execute();
             System.exit(0);
         } catch (SemanticException se) {
             System.err.println(se.getMessage());

@@ -1,0 +1,41 @@
+Def makeName[first:String, last:String]:String{
+    String space;
+    String tmp;
+
+    space = " ";
+    tmp = ::concat[first, space];
+    Return ::concat[tmp, last];
+}
+
+Def describeName[name:String]:String{
+    String base;
+    String size;
+    Integer len;
+
+    base = "Name ";
+    len = ::length[name];
+
+    size = "long";
+
+    If[len < 7]{
+        size = "short";
+    }
+    Else{
+        If[len < 12]{
+            size = "medium";
+        }
+    }
+
+    Return ::concat[base, size];
+}
+
+Def main[]:Void{
+    String full;
+    String desc;
+
+    full = ::makeName["Chris", "DeForest"];
+    desc = ::describeName[full];
+
+    ::print[full];
+    ::print[desc];
+}

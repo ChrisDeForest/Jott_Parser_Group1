@@ -87,4 +87,8 @@ public class FunctionsDefParamsTNode implements JottTree {
 	public String convertToPython() {
 		return "";
 	}
+
+	public Object execute(){
+		return null;
+	}
 }

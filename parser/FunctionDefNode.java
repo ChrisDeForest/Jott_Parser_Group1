@@ -1,7 +1,8 @@
 package parser;
 
 import java.util.ArrayList;
-
+import java.util.List;
+import execution.*;
 import provided.JottTree;
 import provided.Token;
 import provided.TokenType;
@@ -197,4 +198,40 @@ public class FunctionDefNode implements JottTree {
         return ok;
     }
 
+    public Object execute() {
+        String funcName = functionId.getName();
+
+        // Register this function in the runtime environment
+        RuntimeEnv.addFunction(funcName, new RuntimeEnv.JottFunction() {
+
+            @Override
+            public Object invoke(RuntimeEnv env, List<Object> args) {
+
+                RuntimeEnv.enterScope();
+                if (params != null) {
+                    List<FunctionDefParamsNode.ParamDecl> paramDecls = params.getParamEntries();
+                    for (int i = 0; i < paramDecls.size(); i++) {
+                        String pname = paramDecls.get(i).getNameToken().getToken();
+                        String ptype = paramDecls.get(i).getTypeToken().getToken();
+                        Object argVal = args.get(i);
+
+                        RuntimeEnv.declareVariable(pname, ptype, argVal);
+                    }
+                }
+
+                Object result = body.execute();
+
+                execution.RuntimeEnv.exitScope();
+
+                if (returnType.isVoid()){
+                    return null;
+                }
+                else {
+                    return result;
+                }
+            }
+        });
+
+        return null;
+    }   
 }

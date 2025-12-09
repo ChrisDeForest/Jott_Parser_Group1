@@ -2,9 +2,10 @@ package parser;
 
 import provided.Token;
 import provided.TokenType;
-import semantics.SemanticException;
 import provided.JottTree;
 import java.util.ArrayList;
+
+import execution.RuntimeEnv;
 
 public class ProgramNode implements JottTree {
     private final ArrayList<FunctionDefNode> functionDefs;
@@ -162,6 +163,18 @@ public class ProgramNode implements JottTree {
         semantics.SymbolTable.addFunction("print", "Void", java.util.List.of("Any"));
         semantics.SymbolTable.addFunction("concat", "String", java.util.List.of("String", "String"));
         semantics.SymbolTable.addFunction("length", "Integer", java.util.List.of("String"));
+    }
+
+    public Object execute() {
+        for (FunctionDefNode f : functionDefs) {
+            f.execute(); 
+        }
+
+        if (RuntimeEnv.functionExists("main")) {
+            return RuntimeEnv.callFunction("main", new ArrayList<>()); // no args
+        } else {
+            throw new RuntimeException("No main function defined");
+        }
     }
 
 }
